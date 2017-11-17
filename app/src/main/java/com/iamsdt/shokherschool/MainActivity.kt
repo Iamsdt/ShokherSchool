@@ -10,8 +10,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.iamsdt.shokherschool.adapter.MainAdapter
-import com.iamsdt.shokherschool.database.MyDatabase
-import com.iamsdt.shokherschool.database.table.Categories
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -20,16 +18,13 @@ class MainActivity : AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener{
 
     private var adapter:MainAdapter ?= null
-    private var myDatabase:MyDatabase ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val list:List<Categories> ?= null
-
-        adapter = MainAdapter(list)
+        adapter = MainAdapter()
 
         val manager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 

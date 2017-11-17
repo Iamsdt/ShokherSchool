@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.item_row.view.*
 /**
 * Created by Shudipto Trafder Trafder on 11/14/2017.
 */
-class MainAdapter(private var list:List<Categories>?):RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
+class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
+
+    private var list:List<Categories> ?= null
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
 
@@ -34,8 +36,6 @@ class MainAdapter(private var list:List<Categories>?):RecyclerView.Adapter<MainA
 
         return MyViewHolder(view)
     }
-
-    val clickListener:ClickListener ?= null
 
     interface ClickListener{
         fun onItemClick(int: Int)
