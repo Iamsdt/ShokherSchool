@@ -40,8 +40,11 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-
     //to avoid runtime error must add this line
     //this is required only for kotlin
     kapt "android.arch.persistence.room:compiler:1.0.0"
+
+    // Retrofit & OkHttp
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

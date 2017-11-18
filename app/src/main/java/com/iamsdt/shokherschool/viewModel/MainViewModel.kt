@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import com.iamsdt.shokherschool.database.MyDatabase
-import com.iamsdt.shokherschool.database.table.Post
 
 /**
 * Created by Shudipto Trafder Trafder on 11/17/2017.
