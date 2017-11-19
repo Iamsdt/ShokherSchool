@@ -18,8 +18,8 @@ interface AuthorDao {
     @get:Query("Select * From Author")
     val getAllData : LiveData<List<Author>>
 
-    @Query("Select author_name From Author where author_ID = :id")
-    fun getAuthorName(id:Int):List<String>
+//    @Query("Select author_name From Author where author_ID = :id")
+//    fun getAuthorName(id:Int):List<String>
 
     @Delete
     fun deleteAllData(author: Author):Int

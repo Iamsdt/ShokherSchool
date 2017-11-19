@@ -1,5 +1,7 @@
 package com.iamsdt.shokherschool
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -10,12 +12,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.iamsdt.shokherschool.adapter.MainAdapter
+import com.iamsdt.shokherschool.retrofit.pojo.post.Post
+import com.iamsdt.shokherschool.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener{
+
 
     private var adapter:MainAdapter ?= null
 
@@ -31,6 +36,11 @@ class MainActivity : AppCompatActivity(),
         mainRcv.layoutManager = manager
         mainRcv.adapter = adapter
 
+        val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+        viewModel.allPost!!.observe(this,
+                Observer<List<Post>> { allpost -> adapter!!.replaceList(allpost!!)})
+
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -43,6 +53,7 @@ class MainActivity : AppCompatActivity(),
 
         nav_view.setNavigationItemSelectedListener(this)
     }
+
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -50,7 +61,6 @@ class MainActivity : AppCompatActivity(),
             super.onBackPressed()
         }
     }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)

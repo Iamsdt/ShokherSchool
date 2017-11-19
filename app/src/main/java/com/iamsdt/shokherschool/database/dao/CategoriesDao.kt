@@ -18,11 +18,11 @@ interface CategoriesDao {
     @get:Query("Select * From Categories")
     val getAllData:LiveData<List<Categories>>
 
-    @Query("Select categories_link From Categories where categories_id = :int")
-    fun getCategorieLink(int: Int):List<String>
-
-    @Query("Select categories_name From Categories where categories_id = :int")
-    fun getCategorieName(int: Int):List<String>
+//    @Query("Select categories_link From Categories where categories_id = :int")
+//    fun getCategorieLink(int: Int):List<String>
+//
+//    @Query("Select categories_name From Categories where categories_id = :int")
+//    fun getCategorieName(int: Int):List<String>
 
 
     @Update

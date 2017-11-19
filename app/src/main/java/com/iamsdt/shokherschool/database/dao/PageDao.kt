@@ -18,21 +18,22 @@ interface PageDao {
     @get:Query("Select * From Page")
     val allData: LiveData<List<Page>>
 
-    @Query("Select page_link From Page where page_id = :int")
-    fun getPageLink(int: Int):List<String>
-
-
-    @Query("Select page_title From Page where page_id = :int")
-    fun getPageTitle(int: Int):List<Page>
-
-    //complete join sql queries
-    @Query("Select Author.author_name as authorName From Page " +
-            "LEFT JOIN Author ON Page.page_author_id = Author.author_ID " +
-            "where Page.page_id = :int")
-    fun getPageAuthorName(int: Int):List<Page>
-
-    @Query("Select page_media_id From Page where page_id = :int")
-    fun getPageMediaID(int: Int):List<Page>
+//    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+//    @Query("Select page_link From Page where page_id = :int")
+//    fun getPageLink(int: Int):List<String>
+//
+//
+//    @Query("Select page_title From Page where page_id = :int")
+//    fun getPageTitle(int: Int):List<Page>
+//
+//    //complete join sql queries
+//    @Query("Select Author.author_name as authorName From Page " +
+//            "LEFT JOIN Author ON Page.page_author_id = Author.author_ID " +
+//            "where Page.page_id = :int")
+//    fun getPageAuthorName(int: Int):List<Page>
+//
+//    @Query("Select page_media_id From Page where page_id = :int")
+//    fun getPageMediaID(int: Int):List<Page>
 
 
     @Delete
