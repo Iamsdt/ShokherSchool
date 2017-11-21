@@ -12,7 +12,7 @@ import com.iamsdt.shokherschool.database.table.Categories
 import com.iamsdt.shokherschool.database.table.Page
 
 /**
-* Created by Shudipto Trafder Trafder on 11/15/2017.
+* Created by Shudipto Trafder on 11/15/2017.
 */
 
 @Database(entities = arrayOf(Categories::class,Page::class,Author::class),

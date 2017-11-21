@@ -4,7 +4,7 @@ import android.util.Log
 import com.iamsdt.shokherschool.BuildConfig
 
 /**
-* Created by Shudipto Trafder Trafder on 11/14/2017.
+* Created by Shudipto Trafder on 11/14/2017.
 */
 
 class Utility{

@@ -6,7 +6,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
-* Created by Shudipto Trafder Trafder on 11/19/2017.
+* Created by Shudipto Trafder on 11/19/2017.
 */
 class RetrofitLiveData<T>(private val call: Call<T>) : LiveData<T>(), Callback<T> {
 

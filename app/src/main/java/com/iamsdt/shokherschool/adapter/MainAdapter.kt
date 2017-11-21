@@ -10,7 +10,7 @@ import com.iamsdt.shokherschool.retrofit.pojo.post.Post
 import kotlinx.android.synthetic.main.item_row.view.*
 
 /**
-* Created by Shudipto Trafder Trafder on 11/14/2017.
+* Created by Shudipto Trafder on 11/14/2017.
 */
 class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
 

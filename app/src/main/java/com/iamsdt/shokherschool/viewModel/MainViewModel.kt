@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
-* Created by Shudipto Trafder Trafder on 11/17/2017.
+* Created by Shudipto Trafder on 11/17/2017.
 */
 
 class MainViewModel(application: Application):AndroidViewModel(application){

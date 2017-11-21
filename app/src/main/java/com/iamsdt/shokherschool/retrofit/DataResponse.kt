@@ -5,8 +5,9 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 /**
- * Created by Shudipto Trafder on 11/18/2017.
- */
+* Created by Shudipto Trafder on 11/18/2017.
+* at 11:27 PM
+*/
 
 interface DataResponse{
 
