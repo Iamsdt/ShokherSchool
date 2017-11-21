@@ -8,14 +8,8 @@ import android.arch.persistence.room.PrimaryKey
 */
 
 @Entity
-class Author(){
-
-    @PrimaryKey
-    var author_ID:Int ?= null
-    var author_name:String ?= null
-
-    constructor(author_ID: Int?, author_name: String?):this() {
-        this.author_ID = author_ID
-        this.author_name = author_name
-    }
-}
+data class Author(@PrimaryKey val authorID:Int,
+                  val authorName:String,
+                  val authorLink: String,
+                  val authorDescription: String,
+                  val authorAvatarUrls: String)
