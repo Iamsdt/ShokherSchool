@@ -5,7 +5,7 @@ import android.arch.persistence.room.*
 import com.iamsdt.shokherschool.database.table.Author
 
 /**
-* Created by Shudipto Trafder Trafder on 11/15/2017.
+* Created by Shudipto Trafder on 11/15/2017.
 */
 
 @Dao
@@ -18,8 +18,9 @@ interface AuthorDao {
     @get:Query("Select * From Author")
     val getAllData : LiveData<List<Author>>
 
-//    @Query("Select author_name From Author where author_ID = :id")
-//    fun getAuthorName(id:Int):List<String>
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("Select author_name From Author where author_ID = :arg0")
+    fun getAuthorName(arg0:Int):List<String>
 
     @Delete
     fun deleteAllData(author: Author):Int
