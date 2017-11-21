@@ -19,12 +19,12 @@ interface CategoriesDao {
     val getAllData:LiveData<List<Categories>>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select categories_link From Categories where categories_id = :int")
-    fun getCategorieLink(int: Int):List<String>
+    @Query("Select categories_link From Categories where categories_id = :arg0")
+    fun getCategorieLink(arg0: Int):List<String>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select categories_name From Categories where categories_id = :int")
-    fun getCategorieName(int: Int):List<String>
+    @Query("Select categories_name From Categories where categories_id = :arg0")
+    fun getCategorieName(arg0: Int):List<String>
 
 
     @Update

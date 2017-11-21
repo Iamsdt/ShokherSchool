@@ -2,6 +2,7 @@ package com.iamsdt.shokherschool
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.retrofit.pojo.post.Post
 import com.iamsdt.shokherschool.viewModel.MainViewModel
@@ -20,7 +22,6 @@ import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener{
-
 
     private var adapter:MainAdapter ?= null
 
@@ -39,7 +40,12 @@ class MainActivity : AppCompatActivity(),
         val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         viewModel.allPost!!.observe(this,
-                Observer<List<Post>> { allpost -> adapter!!.replaceList(allpost!!)})
+                Observer<List<Post>> { allpost ->
+                    if (!allpost!!.isEmpty()){
+                        adapter!!.replaceList(allpost)
+                        mainProgressBar.visibility = View.GONE
+                    }
+                })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -72,7 +78,10 @@ class MainActivity : AppCompatActivity(),
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings ->{
+                startActivity(Intent(baseContext,SettingsActivity::class.java))
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -84,7 +93,7 @@ class MainActivity : AppCompatActivity(),
                 // Handle the camera action
             }
             R.id.nav_gallery -> {
-
+                startActivity(Intent(baseContext,DetailsActivity::class.java))
             }
             R.id.nav_slideshow -> {
 

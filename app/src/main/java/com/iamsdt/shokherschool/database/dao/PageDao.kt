@@ -36,7 +36,7 @@ interface PageDao {
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("Select page_media_id From Page where page_id = :arg0")
-    fun getPageMediaID(arg0: Int):List<String>
+    fun getPageMediaID(arg0: Int):List<Int>
 
 
     @Delete
