@@ -23,17 +23,20 @@ interface PageDao {
     fun getPageLink(arg0: Int):List<String>
 
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("Select page_title From Page where page_id = :arg0")
-    fun getPageTitle(arg0: Int):List<Page>
+    fun getPageTitle(arg0: Int):List<String>
 
     //complete join sql queries
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("Select Author.author_name as authorName From Page " +
             "LEFT JOIN Author ON Page.page_author_id = Author.author_ID " +
             "where Page.page_id = :arg0")
-    fun getPageAuthorName(arg0: Int):List<Page>
+    fun getPageAuthorName(arg0: Int):List<String>
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("Select page_media_id From Page where page_id = :arg0")
-    fun getPageMediaID(arg0: Int):List<Page>
+    fun getPageMediaID(arg0: Int):List<String>
 
 
     @Delete
