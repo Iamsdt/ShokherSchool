@@ -9,5 +9,4 @@ class RetrofitHandler(private val dataResponse: DataResponse) {
 
     fun getAllPostData(int: Int):RetrofitLiveData<List<Post>> =
             RetrofitLiveData(dataResponse.getAllPostResponse(int))
-
 }

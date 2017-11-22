@@ -1,6 +1,6 @@
 package com.iamsdt.shokherschool.retrofit
 
-import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -8,7 +8,7 @@ import retrofit2.Response
 /**
 * Created by Shudipto Trafder on 11/19/2017.
 */
-class RetrofitLiveData<T>(private val call: Call<T>) : LiveData<T>(), Callback<T> {
+class RetrofitLiveData<T>(private val call: Call<T>) : MutableLiveData<T>(), Callback<T> {
 
     override fun onActive() {
         if (!call.isCanceled && !call.isExecuted) call.enqueue(this)

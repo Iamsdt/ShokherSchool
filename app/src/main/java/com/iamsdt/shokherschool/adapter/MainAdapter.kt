@@ -17,12 +17,8 @@ class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
     private var list:List<Post> ?= null
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
-        val post:Post = list!![position]
-
-        holder!!.id.text = post.id.toString()
-        holder.link.text = post.link
-        holder.number.text = post.date
-        holder.name.text = post.title!!.rendered
+        val post = list!![position]
+        holder!!.bindTo(post)
     }
 
     fun replaceList(list: List<Post>){
@@ -45,6 +41,13 @@ class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
         val name: TextView = view.name
         val link:TextView = view.link
         val number: TextView = view.number
+
+        fun bindTo(post:Post){
+            id.text = post.id.toString()
+            link.text = post.link
+            number.text = post.date
+            name.text = post.title!!.rendered
+        }
 
     }
 

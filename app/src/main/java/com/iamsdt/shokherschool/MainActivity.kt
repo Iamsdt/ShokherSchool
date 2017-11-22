@@ -34,7 +34,8 @@ class MainActivity : AppCompatActivity(),
 
         adapter = MainAdapter()
 
-        val manager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        val manager = LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL,false)
 
         mainRcv.layoutManager = manager
         mainRcv.adapter = adapter
