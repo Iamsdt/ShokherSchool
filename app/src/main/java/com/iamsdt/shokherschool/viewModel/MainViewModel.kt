@@ -21,7 +21,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
     private var retrofit:Retrofit ?= null
 
     init {
-        myDatabase = MyDatabase.getInstance(application.applicationContext)
+        //myDatabase = MyDatabase.getInstance(application.applicationContext)
 
         retrofit = Retrofit.Builder().baseUrl(DataResponse.retrofitBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -29,7 +29,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
 
         val dataResponse = retrofit!!.create(DataResponse::class.java)
 
-        allPost = RetrofitHandler(dataResponse).getAllPostData()
+        allPost = RetrofitHandler(dataResponse).getAllPostData(20)
     }
 
     override fun onCleared() {

@@ -7,7 +7,7 @@ import com.iamsdt.shokherschool.retrofit.pojo.post.Post
 */
 class RetrofitHandler(private val dataResponse: DataResponse) {
 
-    fun getAllPostData():RetrofitLiveData<List<Post>> =
-            RetrofitLiveData(dataResponse.getAllPostResponse())
+    fun getAllPostData(int: Int):RetrofitLiveData<List<Post>> =
+            RetrofitLiveData(dataResponse.getAllPostResponse(int))
 
 }

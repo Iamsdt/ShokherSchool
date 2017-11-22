@@ -9,12 +9,14 @@ import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.retrofit.pojo.post.Post
+import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity(),
 
         mainRcv.layoutManager = manager
         mainRcv.adapter = adapter
+        mainRcv.itemAnimator = DefaultItemAnimator()
 
         val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
@@ -44,6 +47,7 @@ class MainActivity : AppCompatActivity(),
                     if (!allpost!!.isEmpty()){
                         adapter!!.replaceList(allpost)
                         mainProgressBar.visibility = View.GONE
+                        Utility.logger(allpost.size.toString(),"Item Size")
                     }
                 })
 

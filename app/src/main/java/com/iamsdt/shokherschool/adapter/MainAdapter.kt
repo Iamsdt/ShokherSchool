@@ -17,7 +17,7 @@ class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
     private var list:List<Post> ?= null
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
-        val post = list!![position]
+        val post:Post = list!![position]
 
         holder!!.id.text = post.id.toString()
         holder.link.text = post.link
