@@ -22,6 +22,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -45,7 +46,7 @@ dependencies {
     //this is required only for kotlin
     kapt "android.arch.persistence.room:compiler:1.0.0"
 
-    // Retrofit & OkHttp
+    // RetrofitData & OkHttp
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

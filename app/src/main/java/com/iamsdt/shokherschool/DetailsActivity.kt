@@ -18,7 +18,7 @@ class DetailsActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        actionBar.setDisplayShowHomeEnabled(true)
+       // actionBar.setDisplayShowHomeEnabled(true)
     }
 
 }

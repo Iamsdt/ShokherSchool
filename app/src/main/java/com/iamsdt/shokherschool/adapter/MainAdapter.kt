@@ -6,23 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.iamsdt.shokherschool.R
-import com.iamsdt.shokherschool.retrofit.pojo.post.Post
+import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import kotlinx.android.synthetic.main.item_row.view.*
 
-/**
-* Created by Shudipto Trafder on 11/14/2017.
-*/
-class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
 
-    private var list:List<Post> ?= null
+/**
+ * Created by Shudipto Trafder on 11/14/2017.
+ */
+class MainAdapter : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
+
+    private var list: List<PostResponse>? = null
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         val post = list!![position]
         holder!!.bindTo(post)
     }
 
-    fun replaceList(list: List<Post>){
-        this.list = list
+    fun replaceList(post: List<PostResponse>) {
+        this.list = post
         notifyDataSetChanged()
     }
 
@@ -30,19 +31,19 @@ class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent!!.context)
-                .inflate(R.layout.item_row,parent,false)
+                .inflate(R.layout.item_row, parent, false)
 
         return MyViewHolder(view)
     }
 
-    inner class MyViewHolder(view:View): RecyclerView.ViewHolder(view){
+    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val id:TextView = view.cat_id
+        val id: TextView = view.cat_id
         val name: TextView = view.name
-        val link:TextView = view.link
+        val link: TextView = view.link
         val number: TextView = view.number
 
-        fun bindTo(post:Post){
+        fun bindTo(post: PostResponse) {
             id.text = post.id.toString()
             link.text = post.link
             number.text = post.date

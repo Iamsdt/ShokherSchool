@@ -11,25 +11,23 @@ import com.iamsdt.shokherschool.database.table.Categories
 @Dao
 interface CategoriesDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(categories: Categories):Long
 
     //complete convert live data
     @get:Query("Select * From Categories")
     val getAllData:LiveData<List<Categories>>
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select categories_link From Categories where categories_id = :arg0")
-    fun getCategorieLink(arg0: Int):List<String>
+    @Query("Select * From Categories where id = :arg0")
+    fun getCategorize(arg0: Int):List<Categories>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select categories_name From Categories where categories_id = :arg0")
-    fun getCategorieName(arg0: Int):List<String>
+    @Query("Select name From Categories where id = :arg0")
+    fun getCategorizeName(arg0: Int):List<String>
 
-
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateCategories(categories: Categories):Int
 
     @Delete
-    fun deleteAll(vararg categories: Categories):Int
+    fun deleteAll(categories: Categories):Int
 }

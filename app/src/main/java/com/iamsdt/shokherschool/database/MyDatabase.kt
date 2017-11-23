@@ -7,15 +7,17 @@ import android.content.Context
 import com.iamsdt.shokherschool.database.dao.AuthorDao
 import com.iamsdt.shokherschool.database.dao.CategoriesDao
 import com.iamsdt.shokherschool.database.dao.PageDao
+import com.iamsdt.shokherschool.database.dao.PostDao
 import com.iamsdt.shokherschool.database.table.Author
 import com.iamsdt.shokherschool.database.table.Categories
 import com.iamsdt.shokherschool.database.table.Page
+import com.iamsdt.shokherschool.database.table.Post
 
 /**
 * Created by Shudipto Trafder on 11/15/2017.
 */
 
-@Database(entities = arrayOf(Categories::class,Page::class,Author::class),
+@Database(entities = arrayOf(Categories::class,Page::class,Author::class,Post::class),
         version = 1,exportSchema = false)
 abstract class MyDatabase:RoomDatabase() {
 
@@ -37,5 +39,6 @@ abstract class MyDatabase:RoomDatabase() {
     abstract val categoriesDao:CategoriesDao
     abstract val pageDao:PageDao
     abstract val authorDao:AuthorDao
+    abstract val postDao:PostDao
 
 }

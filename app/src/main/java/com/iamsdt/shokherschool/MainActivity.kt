@@ -11,11 +11,12 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.iamsdt.shokherschool.adapter.MainAdapter
-import com.iamsdt.shokherschool.retrofit.pojo.post.Post
+import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,6 +27,12 @@ class MainActivity : AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener{
 
     private var adapter:MainAdapter ?= null
+
+    private var request:Boolean = false
+
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +48,34 @@ class MainActivity : AppCompatActivity(),
         mainRcv.adapter = adapter
         mainRcv.itemAnimator = DefaultItemAnimator()
 
-        val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-
-        viewModel.allPost!!.observe(this,
-                Observer<List<Post>> { allpost ->
-                    if (!allpost!!.isEmpty()){
-                        adapter!!.replaceList(allpost)
+        viewModel.getPostData(this)?.observe(this,
+                Observer<List<PostResponse>> { allpost ->
+                    if (allpost != null && !allpost.isEmpty()){
+                        adapter?.replaceList(allpost)
                         mainProgressBar.visibility = View.GONE
                         Utility.logger(allpost.size.toString(),"Item Size")
+                        request = false
                     }
                 })
+
+        mainRcv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val totalItemCount = manager.itemCount
+                val lastVisible = manager.findLastVisibleItemPosition()
+
+                val endHasBeenReached = lastVisible + 5 >= totalItemCount
+                if (totalItemCount > 0 && endHasBeenReached) {
+                    //Toast.makeText(baseContext,"last",Toast.LENGTH_SHORT).show()
+                    if (!request){
+                        viewModel.requestNewPost(adapter!!,Utility.getDate(baseContext))
+                        request = true
+                    }
+                }
+
+            }
+        })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -58,7 +83,8 @@ class MainActivity : AppCompatActivity(),
         }
 
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 

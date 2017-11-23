@@ -11,7 +11,7 @@ import com.iamsdt.shokherschool.database.table.Page
 @Dao
 interface PageDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(page: Page): Long
 
     //complete convert live data
@@ -19,29 +19,29 @@ interface PageDao {
     val allData: LiveData<List<Page>>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select page_link From Page where page_id = :arg0")
+    @Query("Select link From Page where id = :arg0")
     fun getPageLink(arg0: Int):List<String>
 
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select page_title From Page where page_id = :arg0")
+    @Query("Select title From Page where id = :arg0")
     fun getPageTitle(arg0: Int):List<String>
 
     //complete join sql queries
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select Author.author_name as authorName From Page " +
-            "LEFT JOIN Author ON Page.page_author_id = Author.author_ID " +
-            "where Page.page_id = :arg0")
-    fun getPageAuthorName(arg0: Int):List<String>
+//    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+//    @Query("Select Author.name as authorName From Page " +
+//            "LEFT JOIN Author ON Page.page_author_id = Author.authorID " +
+//            "where Page.page_id = :arg0")
+//    fun getPageAuthorName(arg0: Int):List<String>
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select page_media_id From Page where page_id = :arg0")
-    fun getPageMediaID(arg0: Int):List<Int>
+//    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+//    @Query("Select page_media_id From Page where id = :arg0")
+//    fun getPageMediaID(arg0: Int):List<Int>
 
 
     @Delete
-    fun deleteAll(vararg page: Page): Int
+    fun deleteAll(page: Page): Int
 
-    @Update
-    fun update(page: Page)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(page: Page) : Int
 }
