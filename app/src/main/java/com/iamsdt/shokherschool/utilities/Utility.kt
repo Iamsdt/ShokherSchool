@@ -1,11 +1,14 @@
 package com.iamsdt.shokherschool.utilities
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
+import android.support.customtabs.CustomTabsIntent
 import android.util.Log
 import com.iamsdt.shokherschool.BuildConfig
-
+import com.iamsdt.shokherschool.R
 
 
 /**
@@ -57,6 +60,16 @@ class Utility{
             val info: NetworkInfo = manager.activeNetworkInfo
 
             return info.isConnectedOrConnecting
+        }
+
+        fun customTab(context: Context,link:String){
+            val builder = CustomTabsIntent.Builder()
+            builder.setToolbarColor(R.attr.colorPrimary)
+            builder.setShowTitle(false)
+            builder.setCloseButtonIcon(BitmapFactory.decodeResource(
+                    context.resources, R.drawable.dialog_back))
+            val customTabsIntent = builder.build()
+            customTabsIntent.launchUrl(context, Uri.parse(link))
         }
     }
 }

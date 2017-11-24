@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.utilities.Utility
@@ -24,13 +25,16 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(),
-        NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener,ClickListener{
 
+    //main adapter for recyclerView
     private var adapter:MainAdapter ?= null
 
+    //request to prevent duplicate request for getting new data
+    //on view model class
     private var request:Boolean = false
-    private var postList:List<PostResponse> ?= null
 
+    //view model
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
@@ -40,7 +44,7 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        adapter = MainAdapter()
+        adapter = MainAdapter(this)
 
         val manager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL,false)
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity(),
                     }
                 })
 
+        //scroll listener to lode more data on scroll
         mainRcv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -97,7 +102,7 @@ class MainActivity : AppCompatActivity(),
     private fun saveDate(allpost:List<PostResponse>){
         val thread = Thread(Runnable {
             viewModel.saveDate(baseContext, allpost)
-            Utility.logger("thread start")
+            Utility.logger("thread finished")
         })
         thread.start()
     }
@@ -109,12 +114,12 @@ class MainActivity : AppCompatActivity(),
             super.onBackPressed()
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -153,5 +158,11 @@ class MainActivity : AppCompatActivity(),
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onPostItemClick(string: String) {
+        val intent = Intent(baseContext,DetailsActivity::class.java)
+        intent.putExtra(Intent.EXTRA_TEXT,string)
+        startActivity(intent)
     }
 }

@@ -15,7 +15,9 @@ class KitsuPagedListAdapter : PagedListAdapter<PostResponse, MainAdapter.MyViewH
         //holder.bindTo(getItem(position)!!)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapter.MyViewHolder = MainAdapter.MyViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapter.MyViewHolder {
+        return null!!
+    }
 
     companion object {
         private val diffCallback = object : DiffCallback<PostResponse>() {

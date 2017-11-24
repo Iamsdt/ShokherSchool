@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_row.view.*
 /**
  * Created by Shudipto Trafder on 11/14/2017.
  */
-class MainAdapter : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
+class MainAdapter(val clickListener: ClickListener) : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     private var list: List<PostResponse>? = null
 
@@ -35,18 +35,31 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
         return MyViewHolder(view)
     }
 
-    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view),
+            View.OnClickListener {
 
         val id: TextView = view.cat_id
+
         val name: TextView = view.name
         val link: TextView = view.link
         val number: TextView = view.number
+
+        var linkOfPost:String = ""
+
+        init {
+            link.setOnClickListener(this)
+        }
 
         fun bindTo(post: PostResponse) {
             id.text = post.id.toString()
             link.text = post.link
             number.text = post.date
             name.text = post.title!!.rendered
+            linkOfPost = post.link
+        }
+
+        override fun onClick(v: View?) {
+            clickListener.onPostItemClick(linkOfPost)
         }
     }
 

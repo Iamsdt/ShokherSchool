@@ -22,6 +22,9 @@
 
     <include layout="@layout/content_details" />
 
+    <include layout="@layout/mock_loading"
+        android:id="@+id/details_mockLayout" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
