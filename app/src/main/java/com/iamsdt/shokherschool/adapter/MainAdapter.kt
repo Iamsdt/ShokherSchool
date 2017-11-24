@@ -9,7 +9,6 @@ import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import kotlinx.android.synthetic.main.item_row.view.*
 
-
 /**
  * Created by Shudipto Trafder on 11/14/2017.
  */
@@ -49,7 +48,6 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
             number.text = post.date
             name.text = post.title!!.rendered
         }
-
     }
 
 }

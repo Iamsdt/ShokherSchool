@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(),
     private var adapter:MainAdapter ?= null
 
     private var request:Boolean = false
+    private var postList:List<PostResponse> ?= null
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -48,13 +49,14 @@ class MainActivity : AppCompatActivity(),
         mainRcv.adapter = adapter
         mainRcv.itemAnimator = DefaultItemAnimator()
 
-        viewModel.getPostData(this)?.observe(this,
+        viewModel.getPostData()?.observe(this,
                 Observer<List<PostResponse>> { allpost ->
                     if (allpost != null && !allpost.isEmpty()){
                         adapter?.replaceList(allpost)
                         mainProgressBar.visibility = View.GONE
                         Utility.logger(allpost.size.toString(),"Item Size")
                         request = false
+                        saveDate(allpost)
                     }
                 })
 
@@ -69,8 +71,9 @@ class MainActivity : AppCompatActivity(),
                 if (totalItemCount > 0 && endHasBeenReached) {
                     //Toast.makeText(baseContext,"last",Toast.LENGTH_SHORT).show()
                     if (!request){
-                        viewModel.requestNewPost(adapter!!,Utility.getDate(baseContext))
+                        viewModel.requestNewPost(Utility.getDate(baseContext))
                         request = true
+                        Utility.logger("New request start")
                     }
                 }
 
@@ -89,6 +92,14 @@ class MainActivity : AppCompatActivity(),
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun saveDate(allpost:List<PostResponse>){
+        val thread = Thread(Runnable {
+            viewModel.saveDate(baseContext, allpost)
+            Utility.logger("thread start")
+        })
+        thread.start()
     }
 
     override fun onBackPressed() {
