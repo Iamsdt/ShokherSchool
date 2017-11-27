@@ -18,6 +18,7 @@ import android.view.View
 import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
+import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -124,12 +125,12 @@ class MainActivity : AppCompatActivity(),
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_settings ->{
                 startActivity(Intent(baseContext,SettingsActivity::class.java))
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -160,9 +161,12 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    override fun onPostItemClick(string: String) {
+    override fun onPostItemClick(post: PostResponse) {
         val intent = Intent(baseContext,DetailsActivity::class.java)
-        intent.putExtra(Intent.EXTRA_TEXT,string)
+        intent.putExtra(ConstantUtil.intentPostLink,post.link)
+        intent.putExtra(ConstantUtil.intentPostDate,post.date)
+        intent.putExtra(ConstantUtil.intentPostAuthorID,post.author)
+        intent.putExtra(ConstantUtil.intentPostTitle,post.title!!.rendered)
         startActivity(intent)
     }
 }

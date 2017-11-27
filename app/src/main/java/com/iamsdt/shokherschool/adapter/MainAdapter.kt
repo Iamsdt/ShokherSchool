@@ -44,7 +44,7 @@ class MainAdapter(val clickListener: ClickListener) : RecyclerView.Adapter<MainA
         val link: TextView = view.link
         val number: TextView = view.number
 
-        var linkOfPost:String = ""
+        var postResponse:PostResponse = PostResponse()
 
         init {
             link.setOnClickListener(this)
@@ -55,11 +55,11 @@ class MainAdapter(val clickListener: ClickListener) : RecyclerView.Adapter<MainA
             link.text = post.link
             number.text = post.date
             name.text = post.title!!.rendered
-            linkOfPost = post.link
+            postResponse = post
         }
 
         override fun onClick(v: View?) {
-            clickListener.onPostItemClick(linkOfPost)
+            clickListener.onPostItemClick(postResponse)
         }
     }
 

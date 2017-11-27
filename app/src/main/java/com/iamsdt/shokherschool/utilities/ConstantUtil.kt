@@ -8,5 +8,13 @@ class ConstantUtil{
     companion object {
         val dateSpName = "DateSp"
         val dateSpDefaultValue = "2017-01-26T23:32:00"
+
+
+        //intent parse to main activity to details activity
+        val intentPostLink = "postLink"
+        val intentPostDate = "postDate"
+        val intentPostTitle = "postTitle"
+        val intentPostAuthorID = "postTitle"
+
     }
 }
