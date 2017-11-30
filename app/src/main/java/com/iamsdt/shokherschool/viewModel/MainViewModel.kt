@@ -3,10 +3,10 @@ package com.iamsdt.shokherschool.viewModel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.content.Context
-import com.iamsdt.shokherschool.retrofit.DataResponse
 import com.iamsdt.shokherschool.retrofit.RetrofitData
 import com.iamsdt.shokherschool.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.retrofit.RetrofitLiveData
+import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.utilities.Utility
 import retrofit2.Call
@@ -24,7 +24,7 @@ import kotlin.collections.ArrayList
 class MainViewModel(application: Application):AndroidViewModel(application){
 
     private var allPost: RetrofitLiveData<List<PostResponse>> ?= null
-    private var dataResponse:DataResponse ?= null
+    private var wpRestInterface: WPRestInterface?= null
 
     //to remove possible re check again and again
     // when allpost size is 20
@@ -36,7 +36,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
 
     init {
         val retrofit = RetrofitData()
-        dataResponse = retrofit.dataResponse
+        wpRestInterface = retrofit.wpRestInterface
         dateChecked = ArrayList()
     }
 
@@ -46,10 +46,15 @@ class MainViewModel(application: Application):AndroidViewModel(application){
      * @return live data list*/
     fun getPostData():RetrofitLiveData<List<PostResponse>>?{
         if (allPost == null){
-            allPost = RetrofitHandler(dataResponse!!).getAllPostData()
+            allPost = RetrofitHandler(wpRestInterface!!).getAllPostData()
         }
 
         return allPost
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        allPost!!.cancel()
     }
 
     /**Get new post data according to date
@@ -67,7 +72,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
         val service = Executors.newSingleThreadExecutor()
         service.submit({
             // on background thread, obtain a fresh list of users
-            val newData = dataResponse?.getSegmentedPost(date)
+            val newData = wpRestInterface?.getFilterPostList(date)
 
             //for debug
             Utility.logger("Url ${newData!!.request().url()}")
@@ -113,15 +118,19 @@ class MainViewModel(application: Application):AndroidViewModel(application){
             list.add(n)
         }
 
+        //same as previous
+//        oldPost.value!!.listIterator().forEach {
+//            list.add(it)
+//        }
+
         //second add the new data
-        for (i in newData){
-            //remove possible duplication
-            //some times old data contain new data(for duplicate call)
-            // check new data is already exist or not
-            if (!list.contains(i)){
-                list.add(i)
-            }
-        }
+        newData
+                .filterNot { //remove possible duplication
+                    //some times old data contain new data(for duplicate call)
+                    // check new data is already exist or not
+                    list.contains(it)
+                }
+                .forEach { list.add(it) }
 
         Utility.logger("data join end")
 

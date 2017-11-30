@@ -19,6 +19,7 @@ import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.utilities.ConstantUtil
+import com.iamsdt.shokherschool.utilities.DataInsert
 import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -100,12 +101,16 @@ class MainActivity : AppCompatActivity(),
         nav_view.setNavigationItemSelectedListener(this)
     }
 
+    override fun onStart() {
+        super.onStart()
+        DataInsert.dataInsertStart(this)
+    }
+
     private fun saveDate(allpost:List<PostResponse>){
-        val thread = Thread(Runnable {
+        Thread(Runnable {
             viewModel.saveDate(baseContext, allpost)
             Utility.logger("thread finished")
-        })
-        thread.start()
+        }).start()
     }
 
     override fun onBackPressed() {

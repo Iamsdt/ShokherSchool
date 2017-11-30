@@ -8,6 +8,8 @@ import com.iamsdt.shokherschool.database.table.Post
  * Created by Shudipto Trafder on 11/23/2017.
  * at 7:04 PM
  */
+
+//not using right now
 @Dao
 interface PostDao {
 

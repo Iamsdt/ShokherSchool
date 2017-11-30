@@ -6,6 +6,10 @@ package com.iamsdt.shokherschool.utilities
  */
 class ConstantUtil{
     companion object {
+        //base url
+        val retrofitBaseUrl:String = "https://shokherschool.com/wp-json/wp/v2/"
+
+
         val dateSpName = "DateSp"
         val dateSpDefaultValue = "2017-01-26T23:32:00"
 
@@ -14,7 +18,7 @@ class ConstantUtil{
         val intentPostLink = "postLink"
         val intentPostDate = "postDate"
         val intentPostTitle = "postTitle"
-        val intentPostAuthorID = "postTitle"
+        val intentPostAuthorID = "postAuthorId"
 
     }
 }

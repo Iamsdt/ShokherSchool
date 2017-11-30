@@ -8,6 +8,8 @@ import android.arch.persistence.room.PrimaryKey
  * at 6:47 PM
  */
 
+
+//not using right now
 @Entity
 class Post(var date: String? = "",
            var author: Int? = 0,

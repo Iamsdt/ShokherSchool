@@ -1,6 +1,6 @@
 package com.iamsdt.shokherschool.paged
 
-import com.iamsdt.shokherschool.retrofit.DataResponse
+import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * at 12:06 AM
  */
 object KitsuRestApi {
-    private val kitsuApi: DataResponse
+    private val KITSU_API: WPRestInterface
 
     init {
         val retrofit = Retrofit.Builder()
@@ -18,7 +18,7 @@ object KitsuRestApi {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-        kitsuApi = retrofit.create(DataResponse::class.java)
+        KITSU_API = retrofit.create(WPRestInterface::class.java)
     }
 
     fun getKitsu(filter: String, offset: Int, limit: Int): Call<PostData> {
