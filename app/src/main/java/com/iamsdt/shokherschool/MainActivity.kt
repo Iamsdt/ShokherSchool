@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        adapter = MainAdapter(this)
+        adapter = MainAdapter(this,this)
 
         val manager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL,false)

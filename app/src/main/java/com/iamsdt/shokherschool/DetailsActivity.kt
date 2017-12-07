@@ -125,6 +125,7 @@ class DetailsActivity : AppCompatActivity() {
                         .first().remove()
 
                 uiHandler.post({
+                    //fixme 12/8/2017 move this data to viewModel
                     webView!!.loadData(htmlDocument.toString(),
                             "text/html", "UTF-8")
                     details_mockLayout.visibility = View.GONE

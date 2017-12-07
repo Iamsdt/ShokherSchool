@@ -15,8 +15,8 @@ interface AuthorDao {
     fun insert(author: Author):Long
 
     //complete convert live data
-    @get:Query("Select * From Author")
-    val getAllData : LiveData<List<Author>>
+    @Query("Select * From Author")
+    fun getAllData() : LiveData<List<Author>>
 
     @Query("Select * From Author where Author.id = :arg0")
     fun getAuthorDetails(arg0:Int):List<Author>

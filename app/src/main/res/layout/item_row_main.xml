@@ -4,17 +4,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/main_row_item">
+    android:layout_height="@dimen/main_row_item"
+    android:id="@+id/main_card_view">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/main_post_img"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:srcCompat="@drawable/sketch" />
+            app:srcCompat="@drawable/sketch"
+            android:contentDescription="@string/post_image"/>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,7 +25,7 @@
             android:background="@color/grey_0"
             android:backgroundTintMode="src_in">
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/main_post_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -44,11 +46,11 @@
                 android:textColor="@color/grey_900"
                 tools:text="Posted by:"
                 android:padding="5dp"
-                app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintStart_toStartOf="@+id/main_post_title"
+                app:layout_constraintTop_toBottomOf="@+id/main_post_title" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/main_post_author"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -58,7 +60,7 @@
                 android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@+id/main_post_title" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -73,7 +75,7 @@
                 tools:text="On" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/main_post_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
@@ -84,7 +86,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView7"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/main_post_author"
                 tools:text="07 may 2017" />
         </android.support.constraint.ConstraintLayout>
     </RelativeLayout>

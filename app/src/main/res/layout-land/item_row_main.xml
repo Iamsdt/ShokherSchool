@@ -4,19 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/main_row_item_horizontal">
+    android:layout_height="@dimen/main_row_item_horizontal"
+    android:id="@+id/main_card_view">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/main_post_img"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_row_item_horizontal"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            app:srcCompat="@drawable/sketch" />
+            app:srcCompat="@drawable/sketch"
+            android:contentDescription="@string/post_image"/>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,7 +27,7 @@
             android:background="@color/grey_0"
             android:backgroundTintMode="src_in">
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/main_post_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -46,11 +48,11 @@
                 android:textColor="@color/grey_900"
                 tools:text="Posted by:"
                 android:padding="5dp"
-                app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintStart_toStartOf="@+id/main_post_title"
+                app:layout_constraintTop_toBottomOf="@+id/main_post_title" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/main_post_author"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -59,7 +61,7 @@
                 android:textColor="@color/grey_900"
                 app:layout_constraintEnd_toStartOf="@+id/textView7"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/main_post_title"
                 tools:text="Shudipto Trafder" />
 
             <TextView
@@ -70,19 +72,19 @@
                 android:padding="5dp"
                 android:textColor="@color/grey_900"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:layout_constraintEnd_toStartOf="@+id/main_post_date"
+                app:layout_constraintTop_toBottomOf="@+id/main_post_title"
                 tools:text="On:" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/main_post_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:textColor="@color/grey_900"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:layout_constraintEnd_toEndOf="@+id/main_post_title"
+                app:layout_constraintTop_toBottomOf="@+id/main_post_title"
                 tools:text="07 may 2017" />
         </android.support.constraint.ConstraintLayout>
     </RelativeLayout>

@@ -9,17 +9,18 @@ import com.iamsdt.shokherschool.database.table.Post
  * at 7:04 PM
  */
 
-//not using right now
 @Dao
 interface PostDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(post: Post)
+    fun insert(post: Post):Long
 
     //complete convert live data
     @get:Query("Select * From Post")
     val getAllData : LiveData<List<Post>>
 
+    @get:Query("Select * From Post")
+    val getAllData2:LiveData<List<Post>>
 
     @Query("Select * From Post where id = :arg0")
     fun getSinglePost(arg0:Int):List<Post>
