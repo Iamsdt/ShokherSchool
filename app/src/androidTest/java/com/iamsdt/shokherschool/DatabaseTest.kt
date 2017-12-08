@@ -18,14 +18,14 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DatabaseTest {
 
-    private var authorDao: PostDao? = null
+    private var postDao: PostDao? = null
 
     @Before
     fun setup() {
         val database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
                 MyDatabase::class.java).allowMainThreadQueries().build()
 
-        authorDao = database.postDao
+        postDao = database.postDao
     }
 
     @Test
@@ -37,18 +37,12 @@ class DatabaseTest {
 
         val list:ArrayList<Long> = ArrayList()
 
-        list.add(authorDao!!.insert(author1))
-        list.add(authorDao!!.insert(author2))
-        list.add(authorDao!!.insert(author3))
-        list.add(authorDao!!.insert(author4))
+        list.add(postDao!!.insert(author1))
+        list.add(postDao!!.insert(author2))
+        list.add(postDao!!.insert(author3))
+        list.add(postDao!!.insert(author4))
 
 
-        val data = authorDao?.getAllData2
-
-        for (n in data!!.value!!){
-            val v = n.id
-            println(v)
-        }
-
+        val data = postDao!!.getAllData2
     }
 }

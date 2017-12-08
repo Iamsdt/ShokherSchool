@@ -20,7 +20,7 @@ interface PostDao {
     val getAllData : LiveData<List<Post>>
 
     @get:Query("Select * From Post")
-    val getAllData2:LiveData<List<Post>>
+    val getAllData2:List<Post>
 
     @Query("Select * From Post where id = :arg0")
     fun getSinglePost(arg0:Int):List<Post>

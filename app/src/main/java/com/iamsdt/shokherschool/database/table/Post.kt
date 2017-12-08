@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.database.table
 
+import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 /**
@@ -8,6 +9,7 @@ import android.arch.persistence.room.PrimaryKey
  */
 
 
+@Entity
 class Post(@PrimaryKey
            var id: Int? = 0,
            var date: String? = "",

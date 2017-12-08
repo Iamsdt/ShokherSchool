@@ -4,8 +4,9 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 /**
- * Created by Shudipto Trafder on 11/15/2017.
- */
+* Created by Shudipto Trafder on 11/15/2017.
+* at 5:22 PM
+*/
 @Entity
 class Page(var date: String? = "",
            var template: String? = "",

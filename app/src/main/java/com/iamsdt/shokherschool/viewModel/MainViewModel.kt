@@ -27,7 +27,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
     private var wpRestInterface: WPRestInterface?= null
 
     //to remove possible re check again and again
-    // when allpost size is 20
+    // when all post size is 20
     // the it will check 20 date
     // but 10 date is already checked
     //that's why i save the checked date
@@ -212,5 +212,4 @@ class MainViewModel(application: Application):AndroidViewModel(application){
      * */
     private fun compareTwoDate(first:Date, second:Date):Date
             = if (first.before(second)) { first} else{second}
-
 }
