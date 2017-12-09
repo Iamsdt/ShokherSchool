@@ -1,5 +1,7 @@
 package com.iamsdt.shokherschool.retrofit
 
+import com.iamsdt.shokherschool.retrofit.pojo.author.AuthorResponse
+import com.iamsdt.shokherschool.retrofit.pojo.media.MediaResponse
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 
 /**
@@ -7,6 +9,15 @@ import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 */
 class RetrofitHandler(private val wpRestInterface: WPRestInterface) {
 
-    fun getAllPostData():RetrofitLiveData<List<PostResponse>> =
+    fun getAllPostList():RetrofitLiveData<List<PostResponse>> =
             RetrofitLiveData(wpRestInterface.getAllPostList())
+
+    fun getFilterPostList(filter: String):RetrofitLiveData<List<PostResponse>> =
+            RetrofitLiveData(wpRestInterface.getFilterPostList(filter))
+
+    fun getMediaByID(id:Int):RetrofitLiveData<MediaResponse> =
+            RetrofitLiveData(wpRestInterface.getMediaByID(id))
+
+    fun getAuthorByID(id:Int):RetrofitLiveData<AuthorResponse> =
+            RetrofitLiveData(wpRestInterface.getAuthorByID(id))
 }

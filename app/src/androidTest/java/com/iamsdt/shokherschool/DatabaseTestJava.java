@@ -4,10 +4,9 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-
 import com.iamsdt.shokherschool.database.MyDatabase;
-import com.iamsdt.shokherschool.database.dao.PostDao;
-import com.iamsdt.shokherschool.database.table.Post;
+import com.iamsdt.shokherschool.database.dao.PostTableDao;
+import com.iamsdt.shokherschool.database.table.PostTable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +23,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class DatabaseTestJava {
 
-    private PostDao postDao;
+    private PostTableDao postDao;
 
     private Context context = InstrumentationRegistry.getContext();
 
@@ -35,20 +34,17 @@ public class DatabaseTestJava {
     @Before
     public void setUp() throws Exception {
         postDao = Room.inMemoryDatabaseBuilder(context, MyDatabase.class)
-                .allowMainThreadQueries().build().getPostDao();
+                .allowMainThreadQueries().build().getPostTableDao();
     }
 
     @Test
     public void dataCheck() throws Exception {
 
-        Post post = new Post(1,"2017",1,"link","Title","false",
-                1,"zer");
+        PostTable post = new PostTable(1,"2017",1,"title1",1);
 
-        Post post2 = new Post(2,"2017",1,"link","Title","false",
-                1,"zer");
+        PostTable post2 = new PostTable(2,"2018",1,"title2",1);
 
-        Post post3 = new Post(3,"2017",1,"link","Title","false",
-                1,"zer");
+        PostTable post3 = new PostTable(3,"2019",1,"title3",1);
 
 
         postDao.insert(post);
@@ -56,13 +52,18 @@ public class DatabaseTestJava {
         postDao.insert(post3);
 
 
-        List<Post> listLiveData = postDao.getGetAllData2();
+        List<PostTable> listLiveData = postDao.getGetAllDataList();
 
         ArrayList<String> name = new ArrayList<>();
 
-        for (Post post1: listLiveData){
-            String date = post1.getDate();
+        for (PostTable postTable: listLiveData){
+            String date = postTable.getDate();
             name.add(date);
+
+            if (postTable.getId() != null){
+                int id = postTable.getId();
+                int id2 = id;
+            }
         }
 
         System.out.print(name.size());

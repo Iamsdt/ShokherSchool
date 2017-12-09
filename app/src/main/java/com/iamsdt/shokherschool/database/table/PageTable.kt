@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey
 * at 5:22 PM
 */
 @Entity
-class Page(var date: String? = "",
+class PageTable(var date: String? = "",
            var template: String? = "",
            var parent: Int? = 0,
            var author: Int? = 0,

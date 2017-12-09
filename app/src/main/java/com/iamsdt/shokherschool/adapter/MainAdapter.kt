@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.iamsdt.shokherschool.R
-import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
+import com.iamsdt.shokherschool.viewModel.MainPostModelClass
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
 
@@ -17,14 +17,14 @@ import kotlinx.android.synthetic.main.item_row_main.view.*
 class MainAdapter(val clickListener: ClickListener,val context:Context) :
         RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
-    private var list: List<PostResponse>? = null
+    private var list: List<MainPostModelClass>? = null
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         val post = list!![position]
         holder?.bindTo(post)
     }
 
-    fun replaceList(post: List<PostResponse>) {
+    fun replaceList(post: List<MainPostModelClass>) {
         this.list = post
         notifyDataSetChanged()
     }
@@ -49,21 +49,17 @@ class MainAdapter(val clickListener: ClickListener,val context:Context) :
         private val image = view.main_post_img
 
 
-        var postResponse:PostResponse = PostResponse()
+        var postResponse:MainPostModelClass = MainPostModelClass()
 
         init {
             cardView.setOnClickListener(this)
         }
 
-        fun bindTo(post: PostResponse) {
-            title.text = post.title?.rendered
-            //fixme 12/3/2017 replace author id with name
-            author.text = post.author.toString()
-            //fixme 12/3/2017 format date like 07 may, 2017
+        fun bindTo(post: MainPostModelClass) {
+            title.text = post.title
+            author.text = post.author
             date.text = post.date
-
-            //fixme 12/8/2017 change link of the media
-            val link = "link"
+            val link = post.mediaLink
 
             Picasso.with(context).load(link).fit().into(image)
 

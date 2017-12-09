@@ -17,11 +17,12 @@ import android.view.MenuItem
 import android.view.View
 import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
-import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.DataInsert
+import com.iamsdt.shokherschool.utilities.MyDateUtil
 import com.iamsdt.shokherschool.utilities.Utility
-import com.iamsdt.shokherschool.viewModel.MainViewModel
+import com.iamsdt.shokherschool.viewModel.MainPostModelClass
+import com.iamsdt.shokherschool.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(),
 
     //view model
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
+        ViewModelProviders.of(this).get(MainVM::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,14 +56,14 @@ class MainActivity : AppCompatActivity(),
         mainRcv.adapter = adapter
         mainRcv.itemAnimator = DefaultItemAnimator()
 
-        viewModel.getPostData()?.observe(this,
-                Observer<List<PostResponse>> { allpost ->
-                    if (allpost != null && !allpost.isEmpty()){
-                        adapter?.replaceList(allpost)
+        viewModel.getAllPostList()?.observe(this,
+                Observer<List<MainPostModelClass>> { allPost ->
+                    if (allPost != null && !allPost.isEmpty()){
+                        adapter?.replaceList(allPost)
                         mainProgressBar.visibility = View.GONE
-                        Utility.logger(allpost.size.toString(),"Item Size")
+                        Utility.logger(allPost.size.toString(),"Item Size")
                         request = false
-                        saveDate(allpost)
+                        saveDate()
                     }
                 })
 
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity(),
                 if (totalItemCount > 0 && endHasBeenReached) {
                     //Toast.makeText(baseContext,"last",Toast.LENGTH_SHORT).show()
                     if (!request){
-                        viewModel.requestNewPost(Utility.getDate(baseContext))
+                        viewModel.requestNewPost(MyDateUtil.getDate(this@MainActivity))
                         request = true
                         Utility.logger("New request start")
                     }
@@ -106,9 +107,9 @@ class MainActivity : AppCompatActivity(),
         DataInsert.dataInsertStart(this)
     }
 
-    private fun saveDate(allpost:List<PostResponse>){
+    private fun saveDate(){
         Thread(Runnable {
-            viewModel.saveDate(baseContext, allpost)
+            viewModel.saveDate(baseContext)
             Utility.logger("thread finished")
         }).start()
     }
@@ -166,12 +167,12 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    override fun onPostItemClick(post: PostResponse) {
+    override fun onPostItemClick(post: MainPostModelClass) {
         val intent = Intent(baseContext,DetailsActivity::class.java)
-        intent.putExtra(ConstantUtil.intentPostLink,post.link)
+        intent.putExtra(ConstantUtil.intentPostLink,post.id)
         intent.putExtra(ConstantUtil.intentPostDate,post.date)
         intent.putExtra(ConstantUtil.intentPostAuthorID,post.author)
-        intent.putExtra(ConstantUtil.intentPostTitle,post.title!!.rendered)
+        intent.putExtra(ConstantUtil.intentPostTitle,post.title)
         startActivity(intent)
     }
 }

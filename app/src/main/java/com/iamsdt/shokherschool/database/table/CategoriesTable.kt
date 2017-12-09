@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey
 */
 
 @Entity
-class Categories(var count: Int? = 0,
+class CategoriesTable(var count: Int? = 0,
                  var link: String? = "",
                  var name: String? = "",
                  var description: String? = "",

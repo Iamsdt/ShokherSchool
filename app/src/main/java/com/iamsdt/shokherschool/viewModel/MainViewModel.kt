@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.content.Context
 import com.iamsdt.shokherschool.retrofit.RetrofitData
-import com.iamsdt.shokherschool.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.retrofit.RetrofitLiveData
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
@@ -15,7 +14,6 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
-import kotlin.collections.ArrayList
 
 /**
 * Created by Shudipto Trafder on 11/17/2017.
@@ -46,7 +44,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
      * @return live data list*/
     fun getPostData():RetrofitLiveData<List<PostResponse>>?{
         if (allPost == null){
-            allPost = RetrofitHandler(wpRestInterface!!).getAllPostData()
+            //allPost = RetrofitHandler(wpRestInterface!!).getAllPostData()
         }
 
         return allPost
@@ -151,34 +149,25 @@ class MainViewModel(application: Application):AndroidViewModel(application){
     fun saveDate(context: Context, allPost: List<PostResponse>){
 
         val pattern = "yyyy-MM-dd'T'HH:mm:ss"
-        val dtf = SimpleDateFormat(pattern,Locale.getDefault())
+        val dtf = SimpleDateFormat(pattern, Locale.getDefault())
 
         //current date and time
-        val today:Date = dtf.parse(dtf.format(Date()))
+        val today: Date = dtf.parse(dtf.format(Date()))
 
         var compareDate = today
         for (n in allPost){
-
-            //check date is already checked or not
-            if (dateChecked!!.contains(n.date)){
-                continue
-            }
-
             val date2 = dtf.parse(n.date)
             val date3 = compareTwoDate(today,date2)
 
             //for debug
             Utility.logger("Compare date: $compareDate and $date2 -> result:$date3")
             compareDate = date3
-
-            //save the checked date
-            dateChecked?.add(n.date)
         }
 
         //if all data is checked then loop is not work
         // so it saving today date
         // that's we we gate date from arraylist
-        val actualDate:Date?
+        val actualDate: Date?
 
         actualDate = when {
             today.before(compareDate) -> today
@@ -190,17 +179,14 @@ class MainViewModel(application: Application):AndroidViewModel(application){
 
         if (actualDate != null){
             val spSave = dtf.format(actualDate)
-            Utility.setDateOnSp(context,spSave)
+            //Utility.setDateOnSp(context,spSave)
             Utility.logger("date saved start: $spSave")
         } else{
             //for debug
             val spSave = dateChecked!![dateChecked!!.size - 1]
-            Utility.setDateOnSp(context,spSave)
+            //Utility.setDateOnSp(context,spSave)
             Utility.logger("date saved start: $spSave")
         }
-
-        //save data to sp
-
     }
 
     /**
@@ -210,6 +196,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
      * @param second is consider as a second date
      * @return the date older date
      * */
-    private fun compareTwoDate(first:Date, second:Date):Date
+    private fun compareTwoDate(first: Date, second: Date): Date
             = if (first.before(second)) { first} else{second}
+
 }
