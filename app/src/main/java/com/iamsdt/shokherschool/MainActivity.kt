@@ -169,9 +169,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun onPostItemClick(post: MainPostModelClass) {
         val intent = Intent(baseContext,DetailsActivity::class.java)
-        intent.putExtra(ConstantUtil.intentPostLink,post.id)
+        intent.putExtra(ConstantUtil.intentPostID,post.id)
         intent.putExtra(ConstantUtil.intentPostDate,post.date)
-        intent.putExtra(ConstantUtil.intentPostAuthorID,post.author)
+        intent.putExtra(ConstantUtil.intentPostAuthor,post.author)
         intent.putExtra(ConstantUtil.intentPostTitle,post.title)
         startActivity(intent)
     }

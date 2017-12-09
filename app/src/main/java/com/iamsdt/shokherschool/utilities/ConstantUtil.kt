@@ -15,10 +15,10 @@ class ConstantUtil{
 
 
         //intent parse to main activity to details activity
-        val intentPostLink = "postLink"
+        val intentPostID = "postLink"
         val intentPostDate = "postDate"
         val intentPostTitle = "postTitle"
-        val intentPostAuthorID = "postAuthorId"
+        val intentPostAuthor = "postAuthorId"
 
     }
 }
