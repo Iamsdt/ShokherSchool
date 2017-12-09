@@ -1,6 +1,5 @@
 package com.iamsdt.shokherschool.database.dao
 
-import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.iamsdt.shokherschool.database.table.AuthorTable
 
@@ -14,11 +13,11 @@ interface AuthorTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(AuthorTable: AuthorTable):Long
 
-    @Query("Select * From AuthorTable")
-    fun getAllData() : LiveData<List<AuthorTable>>
-
     @Query("Select * From AuthorTable where AuthorTable.id = :arg0")
     fun getAuthorDetails(arg0:Int):List<AuthorTable>
+
+    @Query("Select id From AuthorTable")
+    fun getAuthorIds():List<Int>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("Select avatarUrl24 From AuthorTable where AuthorTable.id = :arg0")

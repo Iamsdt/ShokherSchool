@@ -1,6 +1,5 @@
 package com.iamsdt.shokherschool.database.dao
 
-import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.iamsdt.shokherschool.database.table.MediaTable
 
@@ -16,7 +15,10 @@ interface MediaTableDao{
     fun insert(media: MediaTable):Long
 
     @get:Query("Select * From MediaTable")
-    val getAllMedia: LiveData<List<MediaTable>>
+    val getAllMedia: List<MediaTable>
+
+    @Query("Select id From MediaTable")
+    fun getMediaIds():List<Int>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("Select id From MediaTable where id = :arg0")

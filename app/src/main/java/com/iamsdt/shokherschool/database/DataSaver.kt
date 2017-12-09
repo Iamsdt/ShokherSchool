@@ -2,7 +2,6 @@ package com.iamsdt.shokherschool.database
 
 import com.iamsdt.shokherschool.database.table.AuthorTable
 import com.iamsdt.shokherschool.database.table.MediaTable
-import com.iamsdt.shokherschool.database.table.PostTable
 import com.iamsdt.shokherschool.retrofit.RetrofitData
 import com.iamsdt.shokherschool.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
@@ -81,11 +80,11 @@ class DataSaver(private val database: MyDatabase) {
                 mediaList.add(media)
             }
 
-            val table = PostTable(id, date, author, title, media)
-
-            //insert data
-            val insert = database.postTableDao.insert(table)
-            insertList.add(insert)
+//            val table = PostTable(id, date, author, title, media)
+//
+//            //insert data
+//            val insert = database.postTableDao.insert(table)
+//            insertList.add(insert)
         }
 
         Utility.logger("Post inserted: ${insertList.size}", "Post Inserted")
