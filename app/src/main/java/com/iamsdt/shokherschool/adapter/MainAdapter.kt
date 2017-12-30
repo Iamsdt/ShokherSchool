@@ -2,12 +2,15 @@ package com.iamsdt.shokherschool.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.iamsdt.shokherschool.R
-import com.iamsdt.shokherschool.viewModel.MainPostModelClass
+import com.iamsdt.shokherschool.activity.DetailsActivity
+import com.iamsdt.shokherschool.model.PostModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
 
@@ -18,15 +21,22 @@ import kotlinx.android.synthetic.main.item_row_main.view.*
 class MainAdapter(val picasso: Picasso,activityContext:Activity) :
         RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
-    private var list: List<MainPostModelClass>? = null
+    //list
+    private var list: List<PostModel>? = null
+
+    //context
     private val context:Context = activityContext.baseContext
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         val post = list!![position]
         holder?.bindTo(post)
+
+        holder!!.cardView.setOnClickListener {
+            context.startActivity(Intent(context,DetailsActivity::class.java))
+        }
     }
 
-    fun replaceList(post: List<MainPostModelClass>) {
+    fun replaceList(post: List<PostModel>) {
         this.list = post
         notifyDataSetChanged()
     }
@@ -40,36 +50,22 @@ class MainAdapter(val picasso: Picasso,activityContext:Activity) :
         return MyViewHolder(view)
     }
 
-    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view),
-            View.OnClickListener {
+    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
-        private val cardView = view.main_card_view
+        val cardView:CardView = view.main_card_view
         private val title = view.main_post_title
         private val author = view.main_post_author
         private val date = view.main_post_date
 
         private val image = view.main_post_img
 
-
-        var postResponse:MainPostModelClass = MainPostModelClass()
-
-        init {
-            cardView.setOnClickListener(this)
-        }
-
-        fun bindTo(post: MainPostModelClass) {
+        fun bindTo(post: PostModel) {
             title.text = post.title
             author.text = post.author
             date.text = post.date
             val link = post.mediaLink
 
             picasso.load(link).fit().into(image)
-
-            postResponse = post
-        }
-
-        override fun onClick(v: View?) {
-            //clickListener.onPostItemClick(postResponse)
         }
     }
 

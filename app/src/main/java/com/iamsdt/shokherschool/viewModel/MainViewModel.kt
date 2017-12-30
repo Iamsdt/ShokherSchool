@@ -7,7 +7,6 @@ import com.iamsdt.shokherschool.retrofit.RetrofitData
 import com.iamsdt.shokherschool.retrofit.RetrofitLiveData
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
-import com.iamsdt.shokherschool.utilities.Utility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,7 +62,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
      * @param date for querying data*/
     fun requestNewPost(date:String){
 
-        Utility.logger("Get post date: $date")
+        //Utility.logger("Get post date: $date")
 
         //don't put data to Mutable Live data
         //in main thread
@@ -73,11 +72,11 @@ class MainViewModel(application: Application):AndroidViewModel(application){
             val newData = wpRestInterface?.getFilterPostList(date)
 
             //for debug
-            Utility.logger("Url ${newData!!.request().url()}")
+            //Utility.logger("Url ${newData!!.request().url()}")
 
-            newData.enqueue(object :Callback<List<PostResponse>>{
+            newData?.enqueue(object :Callback<List<PostResponse>>{
                 override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
-                    Utility.logger(message = "Update failed",throwable = t)
+                    //Utility.logger(message = "Update failed",throwable = t)
                 }
 
                 override fun onResponse(call: Call<List<PostResponse>>?,
@@ -86,7 +85,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
                     if (response!!.isSuccessful){
                         val arrayList = joinData(allPost!!,response.body()!!)
                         allPost?.postValue(arrayList)
-                        Utility.logger("successful on new date request",allPost?.value?.size.toString())
+                        //Utility.logger("successful on new date request",allPost?.value?.size.toString())
                     }
                 }
 
@@ -130,7 +129,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
                 }
                 .forEach { list.add(it) }
 
-        Utility.logger("data join end")
+        //Utility.logger("data join end")
 
         return list
     }
@@ -160,7 +159,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
             val date3 = compareTwoDate(today,date2)
 
             //for debug
-            Utility.logger("Compare date: $compareDate and $date2 -> result:$date3")
+            //Utility.logger("Compare date: $compareDate and $date2 -> result:$date3")
             compareDate = date3
         }
 
@@ -180,12 +179,12 @@ class MainViewModel(application: Application):AndroidViewModel(application){
         if (actualDate != null){
             val spSave = dtf.format(actualDate)
             //Utility.setDateOnSp(context,spSave)
-            Utility.logger("date saved start: $spSave")
+            //Utility.logger("date saved start: $spSave")
         } else{
             //for debug
             val spSave = dateChecked!![dateChecked!!.size - 1]
             //Utility.setDateOnSp(context,spSave)
-            Utility.logger("date saved start: $spSave")
+            //Utility.logger("date saved start: $spSave")
         }
     }
 

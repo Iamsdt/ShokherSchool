@@ -18,6 +18,7 @@ import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
+import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.DataInsert
 import com.iamsdt.shokherschool.utilities.MyDateUtil
@@ -60,7 +61,7 @@ class MainActivity : BaseActivity(),
         mainRcv.itemAnimator = DefaultItemAnimator()
 
         viewModel.getAllPostList()?.observe(this,
-                Observer<List<MainPostModelClass>> { allPost ->
+                Observer<List<PostModel>> { allPost ->
                     if (allPost != null && !allPost.isEmpty()){
                         adapter.replaceList(allPost)
                         mainProgressBar.visibility = View.GONE
@@ -80,7 +81,6 @@ class MainActivity : BaseActivity(),
 
                 val endHasBeenReached = lastVisible + 5 >= totalItemCount
                 if (totalItemCount > 0 && endHasBeenReached) {
-                    //Toast.makeText(baseContext,"last",Toast.LENGTH_SHORT).show()
                     if (!request){
                         viewModel.requestNewPost(MyDateUtil.getDate(this@MainActivity))
                         request = true
