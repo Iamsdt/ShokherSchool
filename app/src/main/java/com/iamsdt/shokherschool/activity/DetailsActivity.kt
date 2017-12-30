@@ -1,4 +1,4 @@
-package com.iamsdt.shokherschool
+package com.iamsdt.shokherschool.activity
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -11,6 +11,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.DetailsViewModel

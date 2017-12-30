@@ -1,4 +1,4 @@
-package com.iamsdt.shokherschool
+package com.iamsdt.shokherschool.activity
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.utilities.ConstantUtil
@@ -133,7 +134,7 @@ class MainActivity : AppCompatActivity(),
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings ->{
-                startActivity(Intent(baseContext,SettingsActivity::class.java))
+                startActivity(Intent(baseContext, SettingsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -147,7 +148,7 @@ class MainActivity : AppCompatActivity(),
                 // Handle the camera action
             }
             R.id.nav_gallery -> {
-                startActivity(Intent(baseContext,DetailsActivity::class.java))
+                startActivity(Intent(baseContext, DetailsActivity::class.java))
             }
             R.id.nav_slideshow -> {
 
@@ -168,7 +169,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onPostItemClick(post: MainPostModelClass) {
-        val intent = Intent(baseContext,DetailsActivity::class.java)
+        val intent = Intent(baseContext, DetailsActivity::class.java)
         intent.putExtra(ConstantUtil.intentPostID,post.id)
         intent.putExtra(ConstantUtil.intentPostDate,post.date)
         intent.putExtra(ConstantUtil.intentPostAuthor,post.author)

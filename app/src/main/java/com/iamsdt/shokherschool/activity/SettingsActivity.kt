@@ -1,7 +1,8 @@
-package com.iamsdt.shokherschool
+package com.iamsdt.shokherschool.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.iamsdt.shokherschool.R
 
 class SettingsActivity : AppCompatActivity() {
 
