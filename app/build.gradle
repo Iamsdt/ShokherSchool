@@ -88,7 +88,8 @@ android {
         implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
         //ok Http
-        compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+        implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+        implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
         //jsoup
         implementation 'org.jsoup:jsoup:1.9.1'

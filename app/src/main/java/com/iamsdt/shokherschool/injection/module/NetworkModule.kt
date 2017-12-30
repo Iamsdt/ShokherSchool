@@ -6,8 +6,10 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import java.util.concurrent.TimeUnit
+
 
 /**
  * Created by Shudipto Trafder on 12/29/2017.
@@ -19,11 +21,17 @@ class NetworkModule {
 
     @Provides
     @ApplicationScope
-    fun getClient(cache: Cache): OkHttpClient
-            = OkHttpClient.Builder()
-            .cache(cache)
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(1, TimeUnit.MINUTES).build()
+    fun getClient(cache: Cache): OkHttpClient {
+
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
+        return OkHttpClient.Builder()
+                .cache(cache)
+                .addInterceptor(logging)
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES).build()
+    }
 
     @Provides
     @ApplicationScope
