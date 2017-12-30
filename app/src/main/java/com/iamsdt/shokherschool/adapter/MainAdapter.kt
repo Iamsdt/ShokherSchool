@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,10 +15,11 @@ import kotlinx.android.synthetic.main.item_row_main.view.*
 * Created by Shudipto Trafder on 11/14/2017.
 * at 12:12 AM
 */
-class MainAdapter(val clickListener: ClickListener,val context:Context) :
+class MainAdapter(val picasso: Picasso,activityContext:Activity) :
         RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     private var list: List<MainPostModelClass>? = null
+    private val context:Context = activityContext.baseContext
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         val post = list!![position]
@@ -61,13 +63,13 @@ class MainAdapter(val clickListener: ClickListener,val context:Context) :
             date.text = post.date
             val link = post.mediaLink
 
-            Picasso.with(context).load(link).fit().into(image)
+            picasso.load(link).fit().into(image)
 
             postResponse = post
         }
 
         override fun onClick(v: View?) {
-            clickListener.onPostItemClick(postResponse)
+            //clickListener.onPostItemClick(postResponse)
         }
     }
 
