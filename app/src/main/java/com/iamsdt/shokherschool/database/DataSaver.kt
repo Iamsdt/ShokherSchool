@@ -6,7 +6,6 @@ import com.iamsdt.shokherschool.retrofit.RetrofitData
 import com.iamsdt.shokherschool.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
-import com.iamsdt.shokherschool.utilities.Utility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +35,7 @@ class DataSaver(private val database: MyDatabase) {
                 .enqueue(object : Callback<List<PostResponse>> {
                     override fun onFailure(call: Call<List<PostResponse>>?,
                                            t: Throwable?) {
-                        Utility.logger("default post not found","Main request",t)
+                        //Utility.logger("default post not found","Main request",t)
                     }
 
                     override fun onResponse(call: Call<List<PostResponse>>?,
@@ -87,7 +86,7 @@ class DataSaver(private val database: MyDatabase) {
 //            insertList.add(insert)
         }
 
-        Utility.logger("Post inserted: ${insertList.size}", "Post Inserted")
+        //Utility.logger("Post inserted: ${insertList.size}", "Post Inserted")
 
 
         saveAuthorAndMedia()
