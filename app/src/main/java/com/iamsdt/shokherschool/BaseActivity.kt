@@ -15,6 +15,7 @@ import com.iamsdt.shokherschool.injection.module.ActivityModule
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
 
+    @Suppress("DEPRECATION")
     @UiThread
     fun getComponent(): ActivityComponent =
             DaggerActivityComponent.builder()

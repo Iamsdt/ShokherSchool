@@ -21,11 +21,6 @@ import kotlinx.android.synthetic.main.post_head.*
 
 class DetailsActivity : AppCompatActivity() {
 
-    private var postID: Int? = null
-    private var postDate: String? = null
-    private var postTitle: String? = null
-    private var postAuthor: String? = null
-
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(DetailsViewModel::class.java)
     }
@@ -40,12 +35,12 @@ class DetailsActivity : AppCompatActivity() {
 
 
         //getting intent data
-        postID = intent.getIntExtra(ConstantUtil.intentPostID, 0)
-        postDate = intent.getStringExtra(ConstantUtil.intentPostDate)
-        postAuthor = intent.getStringExtra(ConstantUtil.intentPostAuthor)
-        postTitle = intent.getStringExtra(ConstantUtil.intentPostTitle)
+        val postID = intent.getIntExtra(ConstantUtil.intentPostID, 0)
+        val postDate = intent.getStringExtra(ConstantUtil.intentPostDate)
+        val postAuthor = intent.getStringExtra(ConstantUtil.intentPostAuthor)
+        val postTitle = intent.getStringExtra(ConstantUtil.intentPostTitle)
 
-        viewModel.id = postID!!
+        viewModel.id = postID
 
         //initialize web view
         //debug only 11/27/2017 remove later
@@ -59,6 +54,7 @@ class DetailsActivity : AppCompatActivity() {
 
             //using deprecated method
             //don't find possible solution
+            @Suppress("OverridingDeprecatedMember")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Utility.customTab(this@DetailsActivity, url!!)
                 return true

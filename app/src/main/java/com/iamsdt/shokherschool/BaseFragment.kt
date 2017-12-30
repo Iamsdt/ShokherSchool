@@ -12,6 +12,7 @@ import com.iamsdt.shokherschool.injection.module.ActivityModule
  */
 open class BaseFragment : Fragment() {
 
+    @Suppress("DEPRECATION")
     @UiThread
     fun getComponent(): ActivityComponent =
             DaggerActivityComponent.builder()

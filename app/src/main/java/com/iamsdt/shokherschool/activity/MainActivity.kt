@@ -8,31 +8,32 @@ import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.DataInsert
 import com.iamsdt.shokherschool.utilities.MyDateUtil
-import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.MainPostModelClass
 import com.iamsdt.shokherschool.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import timber.log.Timber
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(),
+class MainActivity : BaseActivity(),
         NavigationView.OnNavigationItemSelectedListener,ClickListener{
 
     //main adapter for recyclerView
-    private var adapter:MainAdapter ?= null
+    @Inject lateinit var adapter:MainAdapter
 
     //request to prevent duplicate request for getting new data
     //on view model class
@@ -44,11 +45,12 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //dagger inject
+        getComponent().inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        //adapter = MainAdapter(this,this)
 
         val manager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL,false)
@@ -60,9 +62,9 @@ class MainActivity : AppCompatActivity(),
         viewModel.getAllPostList()?.observe(this,
                 Observer<List<MainPostModelClass>> { allPost ->
                     if (allPost != null && !allPost.isEmpty()){
-                        adapter?.replaceList(allPost)
+                        adapter.replaceList(allPost)
                         mainProgressBar.visibility = View.GONE
-                        Utility.logger(allPost.size.toString(),"Item Size")
+                        Timber.i("Item Size of adapter:${allPost.size}")
                         request = false
                         saveDate()
                     }
@@ -82,7 +84,7 @@ class MainActivity : AppCompatActivity(),
                     if (!request){
                         viewModel.requestNewPost(MyDateUtil.getDate(this@MainActivity))
                         request = true
-                        Utility.logger("New request start")
+                        Timber.i("New request start")
                     }
                 }
 
@@ -111,7 +113,7 @@ class MainActivity : AppCompatActivity(),
     private fun saveDate(){
         Thread(Runnable {
             viewModel.saveDate(baseContext)
-            Utility.logger("thread finished")
+            Timber.i("thread finished")
         }).start()
     }
 
