@@ -2,10 +2,11 @@ package com.iamsdt.shokherschool.injection.module
 
 import android.content.Context
 import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
-import com.squareup.picasso.OkHttpDownloader
+import com.jakewharton.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 
 /**
  * Created by Shudipto Trafder on 12/29/2017.
@@ -16,8 +17,8 @@ import dagger.Provides
 class PicassoModule{
     @Provides
     @ApplicationScope
-    fun getPicasso(context: Context,downloader: OkHttpDownloader): Picasso
+    fun getPicasso(context: Context,client: OkHttpClient): Picasso
             = Picasso.Builder(context)
-            .downloader(downloader)
+            .downloader(OkHttp3Downloader(client))
             .build()
 }

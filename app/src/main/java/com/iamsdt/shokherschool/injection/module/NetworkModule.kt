@@ -2,7 +2,6 @@ package com.iamsdt.shokherschool.injection.module
 
 import android.content.Context
 import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
-import com.squareup.picasso.OkHttpDownloader
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -17,12 +16,6 @@ import java.util.concurrent.TimeUnit
 
 @Module(includes = [ContextModule::class])
 class NetworkModule {
-
-    @Provides
-    @ApplicationScope
-    fun getDownloader():OkHttpDownloader{
-        return null!!
-    }
 
     @Provides
     @ApplicationScope
