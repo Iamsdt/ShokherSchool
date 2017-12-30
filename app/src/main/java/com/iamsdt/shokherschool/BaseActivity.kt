@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.support.annotation.UiThread
 import android.support.v7.app.AppCompatActivity
 import com.iamsdt.shokherschool.injection.ActivityComponent
+import com.iamsdt.shokherschool.injection.DaggerActivityComponent
+import com.iamsdt.shokherschool.injection.module.ActivityModule
 
 /**
  * Created by Shudipto Trafder on 12/29/2017.
@@ -11,9 +13,13 @@ import com.iamsdt.shokherschool.injection.ActivityComponent
  */
 
 @SuppressLint("Registered")
-class BaseActivity:AppCompatActivity(){
+open class BaseActivity : AppCompatActivity() {
 
     @UiThread
-    fun getComponent():ActivityComponent? = null
+    fun getComponent(): ActivityComponent =
+            DaggerActivityComponent.builder()
+                    .activityModule(ActivityModule(this))
+                    .myApplicationComponent(MyApplication().get(this).getComponent())
+                    .build()
 
 }

@@ -14,7 +14,7 @@ import dagger.Provides
  */
 
 @Module
-class ActivityModule(private var activity: Activity) {
+class ActivityModule(private val activity: Activity) {
 
     @Provides
     @ActivityScope
