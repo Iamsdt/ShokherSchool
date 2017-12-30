@@ -1,7 +1,5 @@
 package com.iamsdt.shokherschool.database
 
-import com.iamsdt.shokherschool.database.table.AuthorTable
-import com.iamsdt.shokherschool.database.table.MediaTable
 import com.iamsdt.shokherschool.retrofit.RetrofitData
 import com.iamsdt.shokherschool.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
@@ -99,14 +97,14 @@ class DataSaver(private val database: MyDatabase) {
             val id = liveData!!.id
             val mediaDetails = liveData.mediaDetails?.sizes
             //fixme 12/8/2017 this create a  problem that is it will never update later
-            if (database.mediaTableDao.getMediaID(id) != media) {
-                val mediaTable = MediaTable(id, liveData.title?.rendered,
-                        mediaDetails?.thumbnail?.sourceUrl,
-                        mediaDetails?.medium?.sourceUrl,
-                        mediaDetails?.full?.sourceUrl)
-
-                database.mediaTableDao.insert(mediaTable)
-            }
+//            if (database.mediaTableDao.getMediaID(id) != media) {
+//                val mediaTable = MediaTable(id, liveData.title?.rendered,
+//                        mediaDetails?.thumbnail?.sourceUrl,
+//                        mediaDetails?.medium?.sourceUrl,
+//                        mediaDetails?.full?.sourceUrl)
+//
+//                database.mediaTableDao.insert(mediaTable)
+//            }
 
         }
 
@@ -114,13 +112,13 @@ class DataSaver(private val database: MyDatabase) {
             val liveData = retHandler?.getAuthorByID(author)?.value
             val id = liveData!!.id
             //fixme 12/8/2017 this create a  problem that is it will never update later
-            if (database.authorTableDao.getAuthorID(id) != author) {
-                val authorTable = AuthorTable(liveData.avatarUrls?.avatar24,
-                        liveData.avatarUrls?.avatar48, liveData.avatarUrls?.avatar96,
-                        liveData.name, liveData.link, liveData.description, id)
-
-                database.authorTableDao.insert(authorTable)
-            }
+//            if (database.authorTableDao.getAuthorID(id) != author) {
+//                val authorTable = AuthorTable(liveData.avatarUrls?.avatar24,
+//                        liveData.avatarUrls?.avatar48, liveData.avatarUrls?.avatar96,
+//                        liveData.name, liveData.link, liveData.description, id)
+//
+//                database.authorTableDao.insert(authorTable)
+//            }
         }
     }
 }

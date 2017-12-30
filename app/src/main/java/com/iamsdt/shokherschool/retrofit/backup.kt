@@ -13,6 +13,9 @@ import retrofit2.http.Query
  * Created by Shudipto Trafder on 12/8/2017.
  * at 8:37 PM
  */
+
+//Just a collection of wp rest api code
+
 interface backup{
     //get post data
     @GET("posts/")
