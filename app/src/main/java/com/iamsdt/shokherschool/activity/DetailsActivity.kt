@@ -1,5 +1,7 @@
 package com.iamsdt.shokherschool.activity
 
+import am.appwise.components.ni.NoInternetDialog
+import am.appwise.components.ni.NoInternetUtils
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -18,8 +20,11 @@ import com.iamsdt.shokherschool.viewModel.DetailsViewModel
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
 import kotlinx.android.synthetic.main.post_head.*
+import javax.inject.Inject
 
 class DetailsActivity : AppCompatActivity() {
+
+    @Inject lateinit var dialog: NoInternetDialog
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(DetailsViewModel::class.java)
@@ -33,7 +38,6 @@ class DetailsActivity : AppCompatActivity() {
         //set comment option disable
         d_comment_form.visibility = View.GONE
 
-
         //getting intent data
         val postID = intent.getIntExtra(ConstantUtil.intentPostID, 0)
         val postDate = intent.getStringExtra(ConstantUtil.intentPostDate)
@@ -41,6 +45,14 @@ class DetailsActivity : AppCompatActivity() {
         val postTitle = intent.getStringExtra(ConstantUtil.intentPostTitle)
 
         viewModel.id = postID
+
+        if (!NoInternetUtils.isConnectedToInternet(this)) {
+            if (dialog.isShowing) {
+                dialog.showDialog()
+            }
+        } else{
+
+        }
 
         //initialize web view
         //debug only 11/27/2017 remove later
@@ -81,7 +93,7 @@ class DetailsActivity : AppCompatActivity() {
         //initialize viewModel
         viewModel.getHtmlData()?.observe(this, Observer<String> { htmlData ->
             if (htmlData != null && !htmlData.isEmpty()) {
-                webView.loadData(htmlData,"text/html","UTF-8")
+                webView.loadData(htmlData, "text/html", "UTF-8")
             }
         })
 
