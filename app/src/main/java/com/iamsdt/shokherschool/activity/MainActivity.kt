@@ -18,7 +18,11 @@ import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
+import com.iamsdt.shokherschool.database.dao.AuthorTableDao
+import com.iamsdt.shokherschool.database.dao.MediaTableDao
+import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.model.PostModel
+import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.DataInsert
 import com.iamsdt.shokherschool.utilities.MyDateUtil
@@ -35,6 +39,15 @@ class MainActivity : BaseActivity(),
 
     //main adapter for recyclerView
     @Inject lateinit var adapter:MainAdapter
+
+    //dao to access database
+    @Inject lateinit var postTableDao:PostTableDao
+    @Inject lateinit var mediaTableDao:MediaTableDao
+    @Inject lateinit var authorTableDao:AuthorTableDao
+
+    //rest interface to get data from server
+    @Inject lateinit var wpRestInterface:WPRestInterface
+
 
     //request to prevent duplicate request for getting new data
     //on view model class
@@ -60,7 +73,10 @@ class MainActivity : BaseActivity(),
         mainRcv.adapter = adapter
         mainRcv.itemAnimator = DefaultItemAnimator()
 
-        viewModel.getAllPostList()?.observe(this,
+        viewModel.getAllPostList(postTableDao,
+                mediaTableDao,
+                authorTableDao,
+                wpRestInterface)?.observe(this,
                 Observer<List<PostModel>> { allPost ->
                     if (allPost != null && !allPost.isEmpty()){
                         adapter.replaceList(allPost)
@@ -82,7 +98,11 @@ class MainActivity : BaseActivity(),
                 val endHasBeenReached = lastVisible + 5 >= totalItemCount
                 if (totalItemCount > 0 && endHasBeenReached) {
                     if (!request){
-                        viewModel.requestNewPost(MyDateUtil.getDate(this@MainActivity))
+                        viewModel.requestNewPost(postTableDao,
+                                mediaTableDao,
+                                authorTableDao,
+                                wpRestInterface,
+                                MyDateUtil.getDate(this@MainActivity))
                         request = true
                         Timber.i("New request start")
                     }
