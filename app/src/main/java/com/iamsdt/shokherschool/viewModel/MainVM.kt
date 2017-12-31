@@ -5,11 +5,13 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.os.AsyncTask
-import com.iamsdt.shokherschool.database.MyDatabase
+import com.iamsdt.shokherschool.database.dao.AuthorTableDao
+import com.iamsdt.shokherschool.database.dao.MediaTableDao
+import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.database.table.AuthorTable
 import com.iamsdt.shokherschool.database.table.MediaTable
 import com.iamsdt.shokherschool.database.table.PostTable
-import com.iamsdt.shokherschool.retrofit.RetrofitData
+import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.utilities.MyDateUtil
@@ -28,51 +30,53 @@ import java.util.concurrent.Executors
  */
 class MainVM(application: Application) : AndroidViewModel(application) {
 
-    private var allPost: MutableLiveData<List<MainPostModelClass>>? = null
-
-    private var myDatabase: MyDatabase? = null
+    private var allPost: MutableLiveData<List<PostModel>>? = null
 
     private var authorIdArray = ArrayList<Int>()
     private var mediaIdArray = ArrayList<Int>()
 
-    private var wpResponse:WPRestInterface ?= null
-
     private var dateList = ArrayList<String>()
     private var dateCheckedList = ArrayList<String>()
 
-    init {
-        myDatabase = MyDatabase.getInstance(application.baseContext)
-        wpResponse = RetrofitData().wpRestInterface
 
-        checkForData()
-    }
-
-    private fun checkForData(){
-        val ser = Executors.newSingleThreadExecutor()
-        ser.submit({
-            val data = myDatabase?.postTableDao?.getAllDataList
-            if (data == null || data.isEmpty()) {
-                addRemoteData()
-            }
-        })
-    }
-
-
-    fun getAllPostList(): MutableLiveData<List<MainPostModelClass>>?{
+    fun getAllPostList(postTableDao:PostTableDao,
+                       mediaTableDao: MediaTableDao,
+                       authorTableDao: AuthorTableDao,
+                       wpRestInterface: WPRestInterface)
+            : MutableLiveData<List<PostModel>>?{
 
         if (allPost == null){
-            fillData()
+            val service = Executors.newSingleThreadExecutor()
+            service.submit({
+                val data = postTableDao.getAllDataList
+                if (data.isEmpty()) {
+                    addRemoteData(postTableDao,
+                            mediaTableDao,
+                            authorTableDao,
+                            wpRestInterface)
+                }else{
+                    fillData(postTableDao,mediaTableDao,authorTableDao)
+                }
+            })
         }
 
         return allPost
     }
 
-    private fun addRemoteData() {
-        val postResponse = wpResponse?.getAllPostList()
-        remoteToDatabase(postResponse!!)
+    private fun addRemoteData(postTableDao:PostTableDao,
+                              mediaTableDao: MediaTableDao,
+                              authorTableDao: AuthorTableDao,
+                              wpRestInterface: WPRestInterface) {
+        val postResponse = wpRestInterface.getAllPostList()
+
+        remoteToDatabase(postTableDao,mediaTableDao,authorTableDao,wpRestInterface,postResponse)
     }
 
-    private fun remoteToDatabase(call: Call<List<PostResponse>>) {
+    private fun remoteToDatabase(postTableDao:PostTableDao,
+                                 mediaTableDao: MediaTableDao,
+                                 authorTableDao: AuthorTableDao,
+                                 wpRestInterface: WPRestInterface,
+                                 call: Call<List<PostResponse>>) {
 
         call.enqueue(object : Callback<List<PostResponse>> {
             override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
@@ -111,13 +115,13 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             val table = PostTable(id, date, author, title, media)
 
                             //insert data
-                            myDatabase!!.postTableDao.insert(table)
+                            postTableDao.insert(table)
                         }
 
-                        saveMediaAndAuthor()
+                        saveMediaAndAuthor(mediaTableDao,authorTableDao,wpRestInterface)
 
                         //now data saved
-                        fillData()
+                        fillData(postTableDao,mediaTableDao,authorTableDao)
                     })
                 }
 
@@ -145,7 +149,10 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         Timber.i("date saved start: $spSave")
     }
 
-    private fun fillData() {
+    //get data from database and add data to the mutable live data list
+    private fun fillData(postTableDao: PostTableDao,
+                         mediaTableDao: MediaTableDao,
+                         authorTableDao: AuthorTableDao) {
 
         if (allPost == null){
             allPost = MutableLiveData()
@@ -153,21 +160,21 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
         AsyncTask.execute({
 
-            val arrayList = ArrayList<MainPostModelClass>()
+            val arrayList = ArrayList<PostModel>()
 
-            val postData = myDatabase!!.postTableDao.getAllDataList
+            val postData = postTableDao.getAllDataList
 
             if (!postData.isEmpty()){
 
                 for (post in postData) {
 
-                    val authorName = myDatabase?.authorTableDao?.
+                    val authorName = authorTableDao.
                             getAuthorName(post.author!!)
 
-                    val mediaLink = myDatabase?.mediaTableDao?.
+                    val mediaLink = mediaTableDao.
                             getMediaThumbnail(post.featuredMedia!!)
 
-                    val newModel = MainPostModelClass(
+                    val newModel = PostModel(
                             post.id,
                             getReadableDate(post.date!!),
                             post.title,
@@ -183,21 +190,23 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         })
     }
 
-    private fun saveMediaAndAuthor() {
+    private fun saveMediaAndAuthor(mediaTableDao: MediaTableDao,
+                                   authorTableDao: AuthorTableDao,
+                                   wpRestInterface: WPRestInterface) {
 
         if (mediaIdArray.isEmpty() && authorIdArray.isEmpty()){
             return
 
         } else if (!mediaIdArray.isEmpty()){
 
-            val ids = myDatabase?.mediaTableDao?.getMediaIds()
+            val ids = mediaTableDao.getMediaIds()
 
             for (media in mediaIdArray) {
                 //fixme 12/8/2017 this create a  problem that is it will never update later
 
-                if (ids!!.contains(media))continue
+                if (ids.contains(media))continue
 
-                val response = wpResponse?.getMediaByID(media)?.execute()
+                val response = wpRestInterface.getMediaByID(media).execute()
 
                 if (!response!!.isSuccessful){
                     continue
@@ -211,20 +220,20 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                         mediaDetails?.medium?.sourceUrl,
                         mediaDetails?.full?.sourceUrl)
 
-                myDatabase?.mediaTableDao?.insert(mediaTable)
+                mediaTableDao.insert(mediaTable)
             }
 
         } else if (!authorIdArray.isEmpty()){
 
-            val ids = myDatabase?.authorTableDao?.getAuthorIds()
+            val ids = authorTableDao.getAuthorIds()
 
             for (author in authorIdArray) {
                 //fixme 12/8/2017 this create a  problem that is it will never update later
-                if (ids!!.contains(author)) {
+                if (ids.contains(author)) {
                     continue
                 }
 
-                val response = wpResponse?.getAuthorByID(author)?.execute()
+                val response = wpRestInterface.getAuthorByID(author).execute()
 
                 if (!response!!.isSuccessful){
                     continue
@@ -238,13 +247,17 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                         authorResponse?.name,authorResponse?.link,
                         authorResponse?.description,authorResponse?.id)
 
-                myDatabase?.authorTableDao?.insert(authorTable)
+                authorTableDao.insert(authorTable)
             }
         }
     }
 
-    fun requestNewPost(date: String) {
-        val call = wpResponse?.getFilterPostList(date)
-        remoteToDatabase(call!!)
+    fun requestNewPost(postTableDao:PostTableDao,
+                       mediaTableDao: MediaTableDao,
+                       authorTableDao: AuthorTableDao,
+                       wpRestInterface: WPRestInterface,
+                       date: String) {
+        val call = wpRestInterface.getFilterPostList(date)
+        remoteToDatabase(postTableDao,mediaTableDao,authorTableDao,wpRestInterface,call)
     }
 }
