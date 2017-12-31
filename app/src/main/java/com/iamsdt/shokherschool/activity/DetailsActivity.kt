@@ -44,8 +44,6 @@ class DetailsActivity : AppCompatActivity() {
         val postAuthor = intent.getStringExtra(ConstantUtil.intentPostAuthor)
         val postTitle = intent.getStringExtra(ConstantUtil.intentPostTitle)
 
-        viewModel.id = postID
-
         if (!NoInternetUtils.isConnectedToInternet(this)) {
             if (dialog.isShowing) {
                 dialog.showDialog()
@@ -91,7 +89,7 @@ class DetailsActivity : AppCompatActivity() {
         d_author.text = postAuthor
 
         //initialize viewModel
-        viewModel.getHtmlData()?.observe(this, Observer<String> { htmlData ->
+        viewModel.getHtmlData(postID)?.observe(this, Observer<String> { htmlData ->
             if (htmlData != null && !htmlData.isEmpty()) {
                 webView.loadData(htmlData, "text/html", "UTF-8")
             }

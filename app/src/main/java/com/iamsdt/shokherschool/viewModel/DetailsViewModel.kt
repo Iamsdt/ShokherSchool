@@ -13,25 +13,23 @@ import java.util.concurrent.Executors
 class DetailsViewModel(application: Application):
         AndroidViewModel(application) {
 
-    var id:Int = 0
-
     private var htmlData:MutableLiveData<String> ?= null
 
     init {
         htmlData = MutableLiveData()
     }
 
-    fun getHtmlData():MutableLiveData<String>?{
+    fun getHtmlData(postID:Int):MutableLiveData<String>?{
 
         if (htmlData == null || htmlData!!.value.isNullOrEmpty()){
-            initializeData()
+            initializeData(postID)
         }
 
         return htmlData
     }
 
 
-    private fun initializeData(){
+    private fun initializeData(id:Int){
         val execute = Executors.newSingleThreadExecutor()
         execute.submit({
             val postLink = "https://shokherschool.com/?p=$id"
