@@ -9,13 +9,11 @@ import com.iamsdt.shokherschool.database.MyDatabase
 import com.iamsdt.shokherschool.database.table.AuthorTable
 import com.iamsdt.shokherschool.database.table.MediaTable
 import com.iamsdt.shokherschool.database.table.PostTable
-import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.retrofit.RetrofitData
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.utilities.MyDateUtil
 import com.iamsdt.shokherschool.utilities.MyDateUtil.Companion.getReadableDate
-import com.iamsdt.shokherschool.utilities.Utility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,7 +76,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
         call.enqueue(object : Callback<List<PostResponse>> {
             override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
-                Utility.logger(message = "post data failed", throwable = t)
+                Timber.e(t,"post data failed")
             }
 
             override fun onResponse(call: Call<List<PostResponse>>?, response: Response<List<PostResponse>>?) {
@@ -144,7 +142,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         }
         val spSave = dtf.format(today)
         MyDateUtil.setDateOnSp(context, spSave)
-        Utility.logger("date saved start: $spSave")
+        Timber.i("date saved start: $spSave")
     }
 
     private fun fillData() {
@@ -251,7 +249,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
         call?.enqueue(object : Callback<List<PostResponse>> {
             override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
-                Utility.logger(message = "post data failed", throwable = t)
+                Timber.e(t,"post data failed")
             }
 
             override fun onResponse(call: Call<List<PostResponse>>?, response: Response<List<PostResponse>>?) {
