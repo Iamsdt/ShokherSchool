@@ -6,7 +6,6 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-apply plugin: 'io.objectbox'
 
 android {
     compileSdkVersion 26
@@ -23,7 +22,7 @@ android {
         buildTypes {
 
             debug {
-                //ext.alwaysUpdateBuildId = false
+                ext.alwaysUpdateBuildId = false
                 minifyEnabled false
                 shrinkResources false
                 proguardFiles getDefaultProguardFile('proguard-android.txt'),
@@ -107,11 +106,5 @@ android {
         implementation 'com.google.dagger:dagger:2.11'
         kapt 'com.google.dagger:dagger-compiler:2.11'
         provided 'org.glassfish:javax.annotation:10.0-b28'
-
-        //object box
-        implementation "io.objectbox:objectbox-android:$objectboxVersion"
-        // some useful Kotlin extension functions
-        implementation "io.objectbox:objectbox-kotlin:$objectboxVersion"
-        kapt "io.objectbox:objectbox-processor:$objectboxVersion"
     }
 }
