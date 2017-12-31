@@ -1,5 +1,9 @@
 package com.iamsdt.shokherschool.injection
 
+import com.iamsdt.shokherschool.database.dao.AuthorTableDao
+import com.iamsdt.shokherschool.database.dao.MediaTableDao
+import com.iamsdt.shokherschool.database.dao.PostTableDao
+import com.iamsdt.shokherschool.injection.module.DBModule
 import com.iamsdt.shokherschool.injection.module.PicassoModule
 import com.iamsdt.shokherschool.injection.module.RetrofitModule
 import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
@@ -13,7 +17,8 @@ import dagger.Component
  * at 9:22 PM
  */
 @ApplicationScope
-@Component(modules = [PicassoModule::class,RetrofitModule::class])
+@Component(modules = [PicassoModule::class,RetrofitModule::class,
+    DBModule::class])
 interface MyApplicationComponent{
 
     //picasso
@@ -23,4 +28,8 @@ interface MyApplicationComponent{
     val retrofitHandler:RetrofitHandler
     val wpRestInterface:WPRestInterface
 
+    //database
+    val postTableDao:PostTableDao
+    val mediaTableDao:MediaTableDao
+    val authorTableDao:AuthorTableDao
 }
