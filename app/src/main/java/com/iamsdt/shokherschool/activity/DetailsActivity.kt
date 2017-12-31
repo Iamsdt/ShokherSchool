@@ -6,13 +6,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.Utility
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.content_details.*
 import kotlinx.android.synthetic.main.post_head.*
 import javax.inject.Inject
 
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : BaseActivity() {
 
     @Inject lateinit var dialog: NoInternetDialog
 
@@ -31,6 +31,10 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //inject
+        getComponent().inject(this@DetailsActivity)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
