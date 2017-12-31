@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.activity.DetailsActivity
 import com.iamsdt.shokherschool.model.PostModel
+import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
 
@@ -32,7 +33,9 @@ class MainAdapter(val picasso: Picasso,activityContext:Activity) :
         holder?.bindTo(post)
 
         holder!!.cardView.setOnClickListener {
-            context.startActivity(Intent(context,DetailsActivity::class.java))
+            context.startActivity(
+                    Intent(context,DetailsActivity::class.java)
+                    .putExtra(ConstantUtil.intentPostID,post.id))
         }
     }
 

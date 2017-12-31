@@ -16,17 +16,14 @@ import android.view.MenuItem
 import android.view.View
 import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
-import com.iamsdt.shokherschool.adapter.ClickListener
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.DataInsert
 import com.iamsdt.shokherschool.utilities.MyDateUtil
-import com.iamsdt.shokherschool.viewModel.MainPostModelClass
 import com.iamsdt.shokherschool.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -35,7 +32,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(),
-        NavigationView.OnNavigationItemSelectedListener,ClickListener{
+        NavigationView.OnNavigationItemSelectedListener{
 
     //main adapter for recyclerView
     @Inject lateinit var adapter:MainAdapter
@@ -188,14 +185,5 @@ class MainActivity : BaseActivity(),
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    override fun onPostItemClick(post: MainPostModelClass) {
-        val intent = Intent(baseContext, DetailsActivity::class.java)
-        intent.putExtra(ConstantUtil.intentPostID,post.id)
-        intent.putExtra(ConstantUtil.intentPostDate,post.date)
-        intent.putExtra(ConstantUtil.intentPostAuthor,post.author)
-        intent.putExtra(ConstantUtil.intentPostTitle,post.title)
-        startActivity(intent)
     }
 }
