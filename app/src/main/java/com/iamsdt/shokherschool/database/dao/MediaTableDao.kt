@@ -17,28 +17,28 @@ interface MediaTableDao{
     @get:Query("Select * From MediaTable")
     val getAllMedia: List<MediaTable>
 
-    @Query("Select id From MediaTable")
+    @Query("Select media_id From MediaTable")
     fun getMediaIds():List<Int>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select id From MediaTable where id = :arg0")
+    @Query("Select media_id From MediaTable where MediaTable.media_id = :arg0")
     fun getMediaID(arg0:Int):Int
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select title From MediaTable where id = :arg0")
+    @Query("Select media_title From MediaTable where MediaTable.media_id = :arg0")
     fun getMediaTitle(arg0:Int):String
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select full From MediaTable where id = :arg0")
+    @Query("Select media_full_pic From MediaTable where MediaTable.media_id = :arg0")
     fun getMediaFull(arg0:Int):String
 
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select thumbnail From MediaTable where id = :arg0")
+    @Query("Select media_thumbnail_pic From MediaTable where MediaTable.media_id = :arg0")
     fun getMediaThumbnail(arg0:Int):String
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select medium From MediaTable where id = :arg0")
+    @Query("Select media_medium_pic From MediaTable where MediaTable.media_id = :arg0")
     fun getMediaMedium(arg0:Int):String
 
     @Delete

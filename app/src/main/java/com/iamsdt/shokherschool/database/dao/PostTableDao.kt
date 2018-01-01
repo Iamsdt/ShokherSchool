@@ -17,19 +17,19 @@ interface PostTableDao {
     @get:Query("Select * From PostTable order by date DESC")
     val getAllDataList:List<PostTable>
 
-    @Query("Select * From PostTable where id = :arg0")
+    @Query("Select * From PostTable where PostTable.post_id = :arg0")
     fun getSinglePost(arg0:Int):List<PostTable>
 
-    @Query("Select id From PostTable where id = :arg0")
+    @Query("Select post_id From PostTable where PostTable.post_id = :arg0")
     fun getPostID(arg0:Int):Int
 
-    @Query("Select date From PostTable where id = :arg0")
+    @Query("Select post_date From PostTable where PostTable.post_id = :arg0")
     fun getPostDate(arg0:Int):String
 
-    @Query("Select author From PostTable where id = :arg0")
+    @Query("Select post_authorID From PostTable where PostTable.post_id = :arg0")
     fun getPostAuthor(arg0:Int):Int
 
-    @Query("Select featuredMedia From PostTable where id = :arg0")
+    @Query("Select post_featuredMediaID From PostTable where PostTable.post_id = :arg0")
     fun getPostMediaId(arg0:Int):Int
 
     @Delete

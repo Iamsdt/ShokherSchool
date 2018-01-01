@@ -11,33 +11,33 @@ import com.iamsdt.shokherschool.database.table.AuthorTable
 interface AuthorTableDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(AuthorTable: AuthorTable):Long
+    fun insert(authorTable: AuthorTable):Long
 
-    @Query("Select * From AuthorTable where AuthorTable.id = :arg0")
+    @Query("Select * From AuthorTable where AuthorTable.author_id = :arg0")
     fun getAuthorDetails(arg0:Int):List<AuthorTable>
 
-    @Query("Select id From AuthorTable")
+    @Query("Select author_id From AuthorTable")
     fun getAuthorIds():List<Int>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select avatarUrl24 From AuthorTable where AuthorTable.id = :arg0")
+    @Query("Select author_avatarUrl24 From AuthorTable where AuthorTable.author_id = :arg0")
     fun getAvatarUrl24(arg0:Int):String
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select avatarUrl48 From AuthorTable where AuthorTable.id = :arg0")
+    @Query("Select author_avatarUrl48 From AuthorTable where AuthorTable.author_id = :arg0")
     fun getAvatarUrl48(arg0:Int):String
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select avatarUrl96 From AuthorTable where AuthorTable.id = :arg0")
+    @Query("Select author_avatarUrl96 From AuthorTable where AuthorTable.author_id = :arg0")
     fun getAvatarUrl96(arg0:Int):String
 
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select name From AuthorTable where AuthorTable.id = :arg0")
+    @Query("Select author_name From AuthorTable where AuthorTable.author_id = :arg0")
     fun getAuthorName(arg0:Int):String
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select id From MediaTable where id = :arg0")
+    @Query("Select author_id From MediaTable where AuthorTable.author_id = :arg0")
     fun getAuthorID(arg0:Int):Int
 
     @Delete

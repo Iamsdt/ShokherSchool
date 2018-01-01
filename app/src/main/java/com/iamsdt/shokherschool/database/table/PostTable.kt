@@ -10,8 +10,10 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity
 class PostTable(@PrimaryKey
-                var id: Int = 0,
-                var date: String? = "",
-                var author: Int? = 0,
-                var title: String? = "",
-                var featuredMedia: Int? = 0)
+                var post_id: Int = 0,
+                var post_date: String? = "",
+                var post_authorID: Int? = 0,
+                var post_author_Name:String ?= "",
+                var post_title: String? = "",
+                var post_featuredMediaID: Int? = 0,
+                var post_featuredMedia_link:String ?= "")
