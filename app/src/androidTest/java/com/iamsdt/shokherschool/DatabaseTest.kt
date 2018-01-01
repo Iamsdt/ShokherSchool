@@ -5,7 +5,6 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.iamsdt.shokherschool.database.MyDatabase
 import com.iamsdt.shokherschool.database.dao.PostTableDao
-import com.iamsdt.shokherschool.database.table.PostTable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,17 +29,21 @@ class DatabaseTest {
 
     @Test
     fun insertData() {
-        val author1 = PostTable(id = 1)
-        val author2 = PostTable(id = 2)
-        val author3 = PostTable(id = 3)
-        val author4 = PostTable(id = 4)
 
-        val list:ArrayList<Long> = ArrayList()
+        //change the database design so that
+        // comment out this code
 
-        list.add(postDao!!.insert(author1))
-        list.add(postDao!!.insert(author2))
-        list.add(postDao!!.insert(author3))
-        list.add(postDao!!.insert(author4))
+//        val author1 = PostTable(id = 1)
+//        val author2 = PostTable(id = 2)
+//        val author3 = PostTable(id = 3)
+//        val author4 = PostTable(id = 4)
+//
+//        val list:ArrayList<Long> = ArrayList()
+//
+//        list.add(postDao!!.insert(author1))
+//        list.add(postDao!!.insert(author2))
+//        list.add(postDao!!.insert(author3))
+//        list.add(postDao!!.insert(author4))
 
 
         val data = postDao!!.getAllDataList

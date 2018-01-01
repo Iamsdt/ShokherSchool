@@ -56,14 +56,16 @@ public class DatabaseTestJava {
 
         ArrayList<String> name = new ArrayList<>();
 
+        //change the database design so that
+        // comment out this code
         for (PostTable postTable: listLiveData){
-            String date = postTable.getDate();
-            name.add(date);
+            //String date = postTable.getDate();
+            //name.add(date);
 
-            if (postTable.getId() != null){
-                int id = postTable.getId();
-                int id2 = id;
-            }
+//            if (postTable.getId() != null){
+//                int id = postTable.getId();
+//                int id2 = id;
+//            }
         }
 
         System.out.print(name.size());
