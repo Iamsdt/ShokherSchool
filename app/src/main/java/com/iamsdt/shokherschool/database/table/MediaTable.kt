@@ -1,18 +1,16 @@
 package com.iamsdt.shokherschool.database.table
 
 import android.arch.persistence.room.Entity
-import android.arch.persistence.room.ForeignKey
+import android.arch.persistence.room.PrimaryKey
 
 /**
  * Created by Shudipto Trafder on 12/8/2017.
  * at 7:23 PM
  */
 
-@Entity(primaryKeys = ["media_id"])
+@Entity
 class MediaTable(
-        @ForeignKey(entity = PostTable::class,
-                parentColumns = ["PostTable.post_featuredMediaID"],
-                childColumns = ["MediaTable.media_id"])
+        @PrimaryKey
         var media_id: Int ?= 0,
         var media_title: String ?= "",
         var media_thumbnail_pic: String?= "",

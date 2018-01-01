@@ -1,6 +1,7 @@
 package com.iamsdt.shokherschool.database.table
 
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.PrimaryKey
 
 /**
@@ -12,8 +13,12 @@ import android.arch.persistence.room.PrimaryKey
 class PostTable(@PrimaryKey
                 var post_id: Int = 0,
                 var post_date: String? = "",
+                @ForeignKey(entity = AuthorTable::class,
+                        parentColumns = ["AuthorTable.author_id"],
+                        childColumns = ["PostTable.post_authorID"])
                 var post_authorID: Int? = 0,
-                var post_author_Name:String ?= "",
                 var post_title: String? = "",
-                var post_featuredMediaID: Int? = 0,
-                var post_featuredMedia_link:String ?= "")
+                @ForeignKey(entity = MediaTable::class,
+                        parentColumns = ["MediaTable.media_id"],
+                        childColumns = ["PostTable.post_featuredMediaID"])
+                var post_featuredMediaID: Int? = 0)

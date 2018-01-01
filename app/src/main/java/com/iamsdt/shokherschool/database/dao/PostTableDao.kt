@@ -1,7 +1,9 @@
 package com.iamsdt.shokherschool.database.dao
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.*
 import com.iamsdt.shokherschool.database.table.PostTable
+import com.iamsdt.shokherschool.model.PostModel
 
 /**
  * Created by Shudipto Trafder on 11/23/2017.
@@ -16,6 +18,17 @@ interface PostTableDao {
 
     @get:Query("Select * From PostTable order by PostTable.post_date DESC")
     val getAllDataList:List<PostTable>
+
+    @Query("SELECT PostTable.post_id AS id," +
+            " PostTable.post_date AS date," +
+            " PostTable.post_title AS title," +
+            " AuthorTable.author_name AS author," +
+            " MediaTable.media_thumbnail_pic AS mediaLink" +
+            " FROM PostTable, AuthorTable, MediaTable" +
+            " WHERE PostTable.post_id = AuthorTable.author_id " +
+            " and PostTable.post_id = MediaTable.media_id" +
+            " order by PostTable.post_date DESC")
+    fun getPostData():MutableLiveData<List<PostModel>>
 
     @Query("Select * From PostTable where PostTable.post_id = :arg0")
     fun getSinglePost(arg0:Int):List<PostTable>
