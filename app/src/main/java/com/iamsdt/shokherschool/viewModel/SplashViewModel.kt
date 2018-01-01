@@ -106,7 +106,8 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                                 mediaIdArray.add(media)
                             }
 
-                            val table = PostTable(id, date, author, title, media)
+                            val table = PostTable(id, date, author,"",
+                                    title, media)
 
                             //insert data
                             postTableDao.insert(table)

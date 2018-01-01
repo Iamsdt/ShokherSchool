@@ -115,7 +115,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                 mediaIdArray.add(media)
                             }
 
-                            val table = PostTable(id, date, author, title, media)
+                            val table = PostTable(id, date, author,"", title, media)
 
                             //insert data
                             postTableDao.insert(table)
@@ -168,15 +168,15 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                 for (post in postData) {
 
                     val authorName = authorTableDao.
-                            getAuthorName(post.author!!)
+                            getAuthorName(post.post_authorID!!)
 
                     val mediaLink = mediaTableDao.
-                            getMediaThumbnail(post.featuredMedia!!)
+                            getMediaThumbnail(post.post_featuredMediaID!!)
 
                     val newModel = PostModel(
-                            post.id,
-                            getReadableDate(post.date!!),
-                            post.title,
+                            post.post_id,
+                            getReadableDate(post.post_date!!),
+                            post.post_title,
                             authorName,
                             mediaLink)
 
