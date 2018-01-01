@@ -37,7 +37,7 @@ interface AuthorTableDao {
     fun getAuthorName(arg0:Int):String
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("Select author_id From MediaTable where AuthorTable.author_id = :arg0")
+    @Query("Select author_id From AuthorTable where AuthorTable.author_id = :arg0")
     fun getAuthorID(arg0:Int):Int
 
     @Delete
