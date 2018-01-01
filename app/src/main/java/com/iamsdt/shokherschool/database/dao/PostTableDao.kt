@@ -1,6 +1,6 @@
 package com.iamsdt.shokherschool.database.dao
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.iamsdt.shokherschool.database.table.PostTable
 import com.iamsdt.shokherschool.model.PostModel
@@ -28,7 +28,7 @@ interface PostTableDao {
             " WHERE PostTable.post_id = AuthorTable.author_id " +
             " and PostTable.post_id = MediaTable.media_id" +
             " order by PostTable.post_date DESC")
-    fun getPostData():MutableLiveData<List<PostModel>>
+    fun getPostData():LiveData<List<PostModel>>
 
     @Query("Select * From PostTable where PostTable.post_id = :arg0")
     fun getSinglePost(arg0:Int):List<PostTable>
