@@ -13,5 +13,5 @@ class CategoriesTable(var count: Int? = 0,
                  var link: String? = "",
                  var name: String? = "",
                  var description: String? = "",
-                 @PrimaryKey()
+                 @PrimaryKey
                  var id: Int? = 0)

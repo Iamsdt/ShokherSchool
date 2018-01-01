@@ -16,5 +16,5 @@ class AuthorTable(
         var name: String? = "",
         var link: String? = "",
         var description: String? = "",
-        @PrimaryKey()
+        @PrimaryKey
         var id: Int? = 0)

@@ -16,7 +16,7 @@ class PageTable(var date: String? = "",
            var type: String? = "",
            var title: String? = "",
            var modified: String? = "",
-           @PrimaryKey()
+           @PrimaryKey
            var id: Int? = 0,
            var slug: String? = "",
            var status: String? = "")
