@@ -19,21 +19,28 @@ import kotlinx.android.synthetic.main.item_row_main.view.*
 * Created by Shudipto Trafder on 11/14/2017.
 * at 12:12 AM
 */
-class MainAdapter(val picasso: Picasso,activityContext:Activity) :
+class MainAdapter(val picasso: Picasso,val activity: Activity) :
         RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     //list
     private var list: List<PostModel>? = null
+    private var context:Context ?= null
 
-    //context
-    private val context:Context = activityContext.baseContext
+    init {
+        context = activity.applicationContext
+    }
+
+    //change context according to activity
+    fun changeContext(newContext: Context){
+        context = newContext
+    }
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         val post = list!![position]
         holder?.bindTo(post)
 
         holder!!.cardView.setOnClickListener {
-            context.startActivity(
+            context?.startActivity(
                     Intent(context,DetailsActivity::class.java)
                             .putExtra(ConstantUtil.intentParcelable,post))
         }

@@ -70,6 +70,8 @@ class MainActivity : BaseActivity(),
         mainRcv.adapter = adapter
         mainRcv.itemAnimator = DefaultItemAnimator()
 
+        adapter.changeContext(this@MainActivity)
+
         viewModel.getAllPostList(postTableDao,
                 mediaTableDao,
                 authorTableDao,
