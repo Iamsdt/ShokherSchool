@@ -12,8 +12,9 @@ import com.iamsdt.shokherschool.database.table.MediaTable
 import com.iamsdt.shokherschool.database.table.PostTable
 
 /**
- * Created by Shudipto Trafder on 11/15/2017.
- */
+* Created by Shudipto Trafder Trafder on 11/15/2017.
+* at 10:42 PM
+*/
 
 @Database(entities = [(PostTable::class), (AuthorTable::class), (MediaTable::class)],
         version = 2, exportSchema = false)
