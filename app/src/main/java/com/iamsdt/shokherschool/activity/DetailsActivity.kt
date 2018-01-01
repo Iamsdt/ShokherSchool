@@ -14,6 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
+import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.DetailsViewModel
@@ -43,18 +44,7 @@ class DetailsActivity : BaseActivity() {
         d_comment_form.visibility = View.GONE
 
         //getting intent data
-        val postID = intent.getIntExtra(ConstantUtil.intentPostID, 0)
-        val postDate = intent.getStringExtra(ConstantUtil.intentPostDate)
-        val postAuthor = intent.getStringExtra(ConstantUtil.intentPostAuthor)
-        val postTitle = intent.getStringExtra(ConstantUtil.intentPostTitle)
-
-        if (!NoInternetUtils.isConnectedToInternet(this)) {
-            if (dialog.isShowing) {
-                dialog.showDialog()
-            }
-        } else{
-
-        }
+        val post: PostModel = intent.getParcelableExtra(ConstantUtil.intentParcelable) as PostModel
 
         //initialize web view
         //debug only 11/27/2017 remove later
@@ -88,16 +78,24 @@ class DetailsActivity : BaseActivity() {
         settings.loadWithOverviewMode = true
 
         //set all the text
-        d_title.text = postTitle
-        d_date.text = postDate
-        d_author.text = postAuthor
+        d_title.text = post.title ?: "no title found"
+        d_date.text = post.date ?: "no post date found"
+        d_author.text = post.author ?: "no author found"
 
         //initialize viewModel
-        viewModel.getHtmlData(postID)?.observe(this, Observer<String> { htmlData ->
-            if (htmlData != null && !htmlData.isEmpty()) {
-                webView.loadData(htmlData, "text/html", "UTF-8")
+
+        if (!NoInternetUtils.isConnectedToInternet(this)) {
+            if (dialog.isShowing) {
+                dialog.showDialog()
             }
-        })
+        } else {
+            //internet is connected
+            viewModel.getHtmlData(post.id!!)?.observe(this, Observer<String> { htmlData ->
+                if (htmlData != null && !htmlData.isEmpty()) {
+                    webView.loadData(htmlData, "text/html", "UTF-8")
+                }
+            })
+        }
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

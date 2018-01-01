@@ -35,7 +35,7 @@ class MainAdapter(val picasso: Picasso,activityContext:Activity) :
         holder!!.cardView.setOnClickListener {
             context.startActivity(
                     Intent(context,DetailsActivity::class.java)
-                    .putExtra(ConstantUtil.intentPostID,post.id))
+                            .putExtra(ConstantUtil.intentParcelable,post))
         }
     }
 

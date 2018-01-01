@@ -94,6 +94,7 @@ class MainActivity : BaseActivity(),
 
                 val endHasBeenReached = lastVisible + 5 >= totalItemCount
                 if (totalItemCount > 0 && endHasBeenReached) {
+                    //fixme 1/1/2018 prevent multiple request
                     if (!request){
                         viewModel.requestNewPost(postTableDao,
                                 mediaTableDao,
