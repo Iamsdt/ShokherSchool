@@ -46,6 +46,9 @@ class MainVM(application: Application) : AndroidViewModel(application) {
             : MutableLiveData<List<PostModel>>?{
 
         if (allPost == null){
+
+            allPost = MutableLiveData()
+
             val service = Executors.newSingleThreadExecutor()
             service.submit({
                 val data = postTableDao.getAllDataList
@@ -153,10 +156,6 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     private fun fillData(postTableDao: PostTableDao,
                          mediaTableDao: MediaTableDao,
                          authorTableDao: AuthorTableDao) {
-
-        if (allPost == null){
-            allPost = MutableLiveData()
-        }
 
         AsyncTask.execute({
 
