@@ -43,12 +43,15 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
             AsyncTask.execute({
                 val data = postTableDao.getFirst10DataList
                 if (data.isEmpty()) {
+
+                    Timber.i("No data in database")
                     addRemoteData(postTableDao,
                             mediaTableDao,
                             authorTableDao,
                             wpRestInterface)
 
                 } else {
+                    Timber.i("Database has data")
                     addMockData()
                 }
             })
@@ -76,6 +79,8 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                 val mediaInserted = ArrayList<Int>()
 
                 if (response!!.isSuccessful) {
+
+                    Timber.i("Response found from server")
 
                     AsyncTask.execute({
 
@@ -142,6 +147,8 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                             postTableDao.insert(table)
                         }
 
+                        Timber.i("data save to database")
+
                         //now add mock data
                         addMockData()
                     })
@@ -158,5 +165,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         // this data is not needed
         list.add(PostModel())
         allPost!!.postValue(list)
+
+        Timber.i("Mock data added")
     }
 }

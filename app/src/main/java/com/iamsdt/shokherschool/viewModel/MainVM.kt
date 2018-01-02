@@ -50,6 +50,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         this.authorTableDao = authorTableDao
         this.wpRestInterface = wpRestInterface
 
+        Timber.i("setup method called")
+
     }
 
     fun getAllPostList(): MutableLiveData<List<PostModel>>? {
@@ -68,6 +70,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     }
 
     private fun addRemoteData(callback: Call<List<PostResponse>>?) {
+
+        Timber.i("call start for Remote data")
 
         var call = callback
 
@@ -88,6 +92,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                 val mediaInserted = ArrayList<Int>()
 
                 if (response!!.isSuccessful) {
+
+                    Timber.i("Response come from server")
 
                     AsyncTask.execute({
 
@@ -157,6 +163,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             postTableDao?.insert(table)
                         }
 
+                        Timber.i("Data insert complete")
+
                         //all data saved
                         //now call fill data
                         fillData()
@@ -191,27 +199,28 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     //get data from database and add data to the mutable live data list
     private fun fillData() {
 
-        val arrayList = ArrayList<PostModel>()
-
         val postData = postTableDao?.getPostData
 
         if (postData != null && postData.isNotEmpty()) {
+
+            Timber.i("Data found on database. Size: ${postData.size}")
+
             for (post in postData) {
                 val date = post.date ?: ConstantUtil.dateSpDefaultValue
                 if (dateList.contains(date)) {
                     dateList.add(date)
                 }
-                arrayList.add(post)
             }
 
             //put the data
-            allPost!!.postValue(arrayList)
+            allPost!!.postValue(postData)
 
             //now request for more data
             MainActivity.request = false
 
         } else {
             //id data is empty
+            Timber.i("Database has no data")
             addRemoteData(null)
         }
     }
@@ -221,6 +230,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
         AsyncTask.execute({
             val call = wpRestInterface.getFilterPostList(date)
+            Timber.i("Request for new query data")
+            Timber.i("Date before: $date")
             addRemoteData(call)
         })
 
