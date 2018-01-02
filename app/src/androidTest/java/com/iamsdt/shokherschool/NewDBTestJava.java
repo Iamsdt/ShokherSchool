@@ -12,14 +12,12 @@ import com.iamsdt.shokherschool.database.dao.PostTableDao;
 import com.iamsdt.shokherschool.database.table.AuthorTable;
 import com.iamsdt.shokherschool.database.table.MediaTable;
 import com.iamsdt.shokherschool.database.table.PostTable;
-import com.iamsdt.shokherschool.model.PostModel;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Shudipto Trafder on 1/2/2018.
@@ -83,20 +81,20 @@ public class NewDBTestJava {
         int a = au.size();
 
 
-        List<PostModel> postData = postTableDao.getPostData();
-
-        List<PostModel> list = postData;
-
-        if (list != null && !list.isEmpty()){
-            for (PostModel post : list) {
-                if (post != null){
-                    String data = post.getAuthor();
-                    String author = post.getAuthor();
-                    String media = post.getMediaLink();
-                    String title = post.getTitle();
-                }
-            }
-        }
+//        List<PostModel> postData = postTableDao.getPostData();
+//
+//        List<PostModel> list = postData;
+//
+//        if (list != null && !list.isEmpty()){
+//            for (PostModel post : list) {
+//                if (post != null){
+//                    String data = post.getAuthor();
+//                    String author = post.getAuthor();
+//                    String media = post.getMediaLink();
+//                    String title = post.getTitle();
+//                }
+//            }
+//        }
 
     }
 }

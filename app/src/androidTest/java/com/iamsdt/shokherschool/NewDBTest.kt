@@ -73,7 +73,7 @@ class NewDBTest{
         val aS = au.size
 
         //now access
-        val post = postDao!!.getPostData()
+        //val post = postDao!!.getPostData()
 
 //        val size = post.value?.size
 //
