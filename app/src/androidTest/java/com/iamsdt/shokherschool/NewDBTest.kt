@@ -75,13 +75,13 @@ class NewDBTest{
         //now access
         val post = postDao!!.getPostData()
 
-        val size = post.value?.size
-
-        for (n in post.value!!){
-            val p = n.date
-            val i = n.id
-            val data = n.mediaLink
-        }
+//        val size = post.value?.size
+//
+//        for (n in post.value!!){
+//            val p = n.date
+//            val i = n.id
+//            val data = n.mediaLink
+//        }
 
     }
 }
