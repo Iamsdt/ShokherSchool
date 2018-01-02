@@ -22,7 +22,6 @@ import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.utilities.DataInsert
 import com.iamsdt.shokherschool.utilities.MyDateUtil
 import com.iamsdt.shokherschool.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,11 +43,6 @@ class MainActivity : BaseActivity(),
 
     //rest interface to get data from server
     @Inject lateinit var wpRestInterface:WPRestInterface
-
-
-    //request to prevent duplicate request for getting new data
-    //on view model class
-    private var request:Boolean = false
 
     //view model
     private val viewModel by lazy {
@@ -81,7 +75,6 @@ class MainActivity : BaseActivity(),
                         adapter.replaceList(allPost)
                         mainProgressBar.visibility = View.GONE
                         Timber.i("Item Size of adapter:${allPost.size}")
-                        request = false
                         saveDate()
                     }
                 })
@@ -96,7 +89,7 @@ class MainActivity : BaseActivity(),
 
                 val endHasBeenReached = lastVisible + 5 >= totalItemCount
                 if (totalItemCount > 0 && endHasBeenReached) {
-                    //fixme 1/1/2018 prevent multiple request
+                    //completed 1/1/2018 prevent multiple request
                     if (!request){
                         viewModel.requestNewPost(postTableDao,
                                 mediaTableDao,
@@ -125,15 +118,10 @@ class MainActivity : BaseActivity(),
         nav_view.setNavigationItemSelectedListener(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        DataInsert.dataInsertStart(this)
-    }
-
     private fun saveDate(){
         Thread(Runnable {
             viewModel.saveDate(baseContext)
-            Timber.i("thread finished")
+            Timber.i("Date saver thread finished")
         }).start()
     }
 
@@ -188,5 +176,11 @@ class MainActivity : BaseActivity(),
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    companion object {
+        //request to prevent duplicate request for getting new data
+        //on view model class
+        var request:Boolean = false
     }
 }

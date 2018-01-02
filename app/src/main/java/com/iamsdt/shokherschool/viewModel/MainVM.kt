@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.os.AsyncTask
+import com.iamsdt.shokherschool.activity.MainActivity
 import com.iamsdt.shokherschool.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
@@ -114,7 +115,13 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                        authorTableDao: AuthorTableDao,
                        wpRestInterface: WPRestInterface,
                        date: String) {
-        val call = wpRestInterface.getFilterPostList(date)
-        addRemoteData(postTableDao, mediaTableDao, authorTableDao,wpRestInterface, call)
+
+        AsyncTask.execute({
+            val call = wpRestInterface.getFilterPostList(date)
+            addRemoteData(postTableDao, mediaTableDao, authorTableDao,wpRestInterface, call)
+            fillData(postTableDao)
+            MainActivity.request = false
+        })
+
     }
 }
