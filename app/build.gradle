@@ -6,10 +6,6 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -25,7 +21,7 @@ android {
         buildTypes {
 
             debug {
-                ext.alwaysUpdateBuildId = false
+                //ext.alwaysUpdateBuildId = false
                 minifyEnabled false
                 shrinkResources false
                 proguardFiles getDefaultProguardFile('proguard-android.txt'),
@@ -42,10 +38,6 @@ android {
 
     kapt {
         generateStubs = true
-
-        arguments {
-            arg("objectbox.debug", true)
-        }
     }
 
     dependencies {
