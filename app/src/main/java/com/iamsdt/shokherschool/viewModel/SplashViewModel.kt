@@ -40,7 +40,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                     addRemoteData(postTableDao,
                             mediaTableDao,
                             authorTableDao,
-                            wpRestInterface)
+                            wpRestInterface,null)
 
                     addMockData()
 

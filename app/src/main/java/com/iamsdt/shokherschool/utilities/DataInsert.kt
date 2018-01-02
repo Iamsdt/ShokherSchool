@@ -25,11 +25,16 @@ class DataInsert {
         fun addRemoteData(postTableDao: PostTableDao,
                           mediaTableDao: MediaTableDao,
                           authorTableDao: AuthorTableDao,
-                          wpRestInterface: WPRestInterface) {
-            //response form server
-            val postResponse = wpRestInterface.getAllPostList()
+                          wpRestInterface:WPRestInterface,
+                          callback: Call<List<PostResponse>>?) {
 
-            postResponse.enqueue(object : Callback<List<PostResponse>> {
+            var call = callback
+
+            if (call == null){
+                call = wpRestInterface.getAllPostList()
+            }
+
+            call.enqueue(object : Callback<List<PostResponse>> {
                 override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
                     Timber.e(t, "post data failed")
                 }
