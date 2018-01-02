@@ -46,6 +46,6 @@ class DatabaseTest {
 //        list.add(postDao!!.insert(author4))
 
 
-        val data = postDao!!.getAllDataList
+        val data = postDao!!.getFirst10DataList
     }
 }

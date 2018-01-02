@@ -52,7 +52,7 @@ public class DatabaseTestJava {
         postDao.insert(post3);
 
 
-        List<PostTable> listLiveData = postDao.getGetAllDataList();
+        List<PostTable> listLiveData = postDao.getGetFirst10DataList();
 
         ArrayList<String> name = new ArrayList<>();
 

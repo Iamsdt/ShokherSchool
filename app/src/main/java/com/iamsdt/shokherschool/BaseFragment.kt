@@ -16,7 +16,7 @@ open class BaseFragment : Fragment() {
     @UiThread
     fun getComponent(): ActivityComponent =
             DaggerActivityComponent.builder()
-                    .activityModule(ActivityModule(activity))
-                    .myApplicationComponent(MyApplication().get(activity).getComponent())
+                    .activityModule(ActivityModule(activity!!.parent))
+                    .myApplicationComponent(MyApplication().get(activity!!.parent).getComponent())
                     .build()
 }
