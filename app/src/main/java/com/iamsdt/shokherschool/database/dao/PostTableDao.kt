@@ -18,16 +18,25 @@ interface PostTableDao {
     @get:Query("Select * From PostTable order by PostTable.post_date DESC LIMIT 10")
     val getFirst10DataList:List<PostTable>
 
-    @Query("SELECT PostTable.post_id AS id," +
+    /**
+     * This sql command also can be done by using inner join
+     * here is code
+     *
+    SELECT PostTable.post_id AS id, PostTable.post_title as title, PostTable.post_date as date, AuthorTable.author_name as name, MediaTable.media_thumbnail_pic as thumb
+    FROM ((PostTable inner join AuthorTable on PostTable.post_authorID = AuthorTable.author_id)
+    inner join MediaTable on PostTable.post_featuredMediaID = MediaTable.media_id) order by PostTable.post_date desc
+     */
+
+    @get:Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +
             " PostTable.post_title AS title," +
             " AuthorTable.author_name AS author," +
             " MediaTable.media_thumbnail_pic AS mediaLink" +
             " FROM PostTable, AuthorTable, MediaTable" +
-            " WHERE PostTable.post_id = AuthorTable.author_id " +
-            " and PostTable.post_id = MediaTable.media_id" +
+            " WHERE PostTable.post_authorID = AuthorTable.author_id" +
+            " and PostTable.post_featuredMediaID = MediaTable.media_id" +
             " order by PostTable.post_date DESC")
-    fun getPostData():List<PostModel>
+    val getPostData:List<PostModel>
 
     @Query("Select * From PostTable where PostTable.post_id = :arg0")
     fun getSinglePost(arg0:Int):List<PostTable>

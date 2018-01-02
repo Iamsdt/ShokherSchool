@@ -41,6 +41,7 @@ class SplashActivity : BaseActivity() {
         viewModel.getAllPostList(postTableDao,
                 mediaTableDao, authorTableDao, wpRestInterface)?.observe(this, Observer { allData ->
             if (allData != null && allData.isNotEmpty()) {
+                //todo 1/2/2018 add some wait time to wast some user and developer time
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 finish()
             }

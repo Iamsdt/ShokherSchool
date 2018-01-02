@@ -66,10 +66,8 @@ class MainActivity : BaseActivity(),
 
         adapter.changeContext(this@MainActivity)
 
-        viewModel.getAllPostList(postTableDao,
-                mediaTableDao,
-                authorTableDao,
-                wpRestInterface)?.observe(this,
+        viewModel.setup(postTableDao,mediaTableDao,authorTableDao,wpRestInterface)
+        viewModel.getAllPostList()?.observe(this,
                 Observer<List<PostModel>> { allPost ->
                     if (allPost != null && !allPost.isEmpty()){
                         adapter.replaceList(allPost)
@@ -91,10 +89,7 @@ class MainActivity : BaseActivity(),
                 if (totalItemCount > 0 && endHasBeenReached) {
                     //completed 1/1/2018 prevent multiple request
                     if (!request){
-                        viewModel.requestNewPost(postTableDao,
-                                mediaTableDao,
-                                authorTableDao,
-                                wpRestInterface,
+                        viewModel.requestNewPost(wpRestInterface,
                                 MyDateUtil.getDate(this@MainActivity))
                         request = true
                         Timber.i("New request start")

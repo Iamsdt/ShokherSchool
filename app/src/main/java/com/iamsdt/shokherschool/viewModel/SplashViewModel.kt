@@ -17,7 +17,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
-import java.util.concurrent.Executors
 
 /**
  * Created by Shudipto Trafder on 1/1/2018.
@@ -41,8 +40,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
 
             allPost = MutableLiveData()
 
-            val service = Executors.newSingleThreadExecutor()
-            service.submit({
+            AsyncTask.execute({
                 val data = postTableDao.getFirst10DataList
                 if (data.isEmpty()) {
                     addRemoteData(postTableDao,

@@ -15,6 +15,7 @@ import com.iamsdt.shokherschool.database.table.PostTable
 import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
+import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.MyDateUtil
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,7 +23,6 @@ import retrofit2.Response
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executors
 
 /**
  * Created by Shudipto Trafder on 12/8/2017.
@@ -35,59 +35,49 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     private var dateList = ArrayList<String>()
     private var dateCheckedList = ArrayList<String>()
 
+    private var postTableDao: PostTableDao? = null
+    private var mediaTableDao: MediaTableDao? = null
+    private var authorTableDao: AuthorTableDao? = null
+    private var wpRestInterface: WPRestInterface? = null
 
-    fun getAllPostList(postTableDao: PostTableDao,
-                       mediaTableDao: MediaTableDao,
-                       authorTableDao: AuthorTableDao,
-                       wpRestInterface: WPRestInterface)
-            : MutableLiveData<List<PostModel>>? {
+    fun setup(postTableDao: PostTableDao,
+              mediaTableDao: MediaTableDao,
+              authorTableDao: AuthorTableDao,
+              wpRestInterface: WPRestInterface) {
+
+        this.postTableDao = postTableDao
+        this.mediaTableDao = mediaTableDao
+        this.authorTableDao = authorTableDao
+        this.wpRestInterface = wpRestInterface
+
+    }
+
+    fun getAllPostList(): MutableLiveData<List<PostModel>>? {
 
         if (allPost == null) {
-
             allPost = MutableLiveData()
 
-            val service = Executors.newSingleThreadExecutor()
-            service.submit({
-                val data = postTableDao.getFirst10DataList
+            val runable = Runnable {
+                fillData()
+            }
 
-                /**but in real, data must be added to database
-                 * data request, from splash activity
-                 * if data found then come to main activity
-                 * until any exception happen this list will filled
-                 * **/
-                if (data.isEmpty()) {
-
-                    //add remote data to database
-                    addRemoteData(postTableDao,
-                            mediaTableDao,
-                            authorTableDao,wpRestInterface,
-                            null)
-                } else {
-                    //data is present
-                    // saved data to all post
-                    fillData(postTableDao)
-                }
-            })
+            Thread(runable).start()
         }
 
         return allPost
     }
 
-    private fun addRemoteData(postTableDao: PostTableDao,
-                              mediaTableDao: MediaTableDao,
-                              authorTableDao: AuthorTableDao,
-                              wpRestInterface: WPRestInterface,
-                              callback: Call<List<PostResponse>>?) {
+    private fun addRemoteData(callback: Call<List<PostResponse>>?) {
 
         var call = callback
 
         //if call is null make default request
-        if (call == null){
+        if (call == null) {
             //make request to database
-            call = wpRestInterface.getAllPostList()
+            call = wpRestInterface?.getAllPostList()
         }
 
-        call.enqueue(object : Callback<List<PostResponse>> {
+        call?.enqueue(object : Callback<List<PostResponse>> {
             override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
                 Timber.e(t, "post data failed")
             }
@@ -117,9 +107,9 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             val author = post.author
                             if (!authorInserted.contains(author)) {
                                 //request data from server
-                                val authorResponse = wpRestInterface.getAuthorByID(author).execute()
+                                val authorResponse = wpRestInterface?.getAuthorByID(author)?.execute()
 
-                                if (authorResponse.isSuccessful) {
+                                if (authorResponse!!.isSuccessful) {
                                     val authorData = authorResponse.body()
                                     val authorTable = AuthorTable(
                                             authorData?.avatarUrls?.avatar24,
@@ -128,7 +118,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                             authorData?.name, authorData?.link,
                                             authorData?.description, authorData?.id)
 
-                                    authorTableDao.insert(authorTable)
+                                    authorTableDao?.insert(authorTable)
 
                                     authorInserted.add(author)
                                 }
@@ -138,9 +128,9 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             val media = post.featuredMedia
                             if (!mediaInserted.contains(media)) {
                                 //request to server
-                                val mediaResponse = wpRestInterface.getMediaByID(media).execute()
+                                val mediaResponse = wpRestInterface?.getMediaByID(media)?.execute()
 
-                                if (mediaResponse.isSuccessful) {
+                                if (mediaResponse!!.isSuccessful) {
                                     //data from server
                                     val mediaData = mediaResponse.body()
                                     //media image size
@@ -152,7 +142,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                             mediaDetails?.medium?.sourceUrl,
                                             mediaDetails?.full?.sourceUrl)
 
-                                    mediaTableDao.insert(mediaTable)
+                                    mediaTableDao?.insert(mediaTable)
 
                                     //now save this id to array list
                                     mediaInserted.add(media)
@@ -164,12 +154,12 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                     title, media)
 
                             //insert data
-                            postTableDao.insert(table)
+                            postTableDao?.insert(table)
                         }
 
                         //all data saved
                         //now call fill data
-                        fillData(postTableDao)
+                        fillData()
                     })
                 }
 
@@ -199,35 +189,39 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     }
 
     //get data from database and add data to the mutable live data list
-    private fun fillData(postTableDao: PostTableDao) {
+    private fun fillData() {
 
-        AsyncTask.execute({
+        val arrayList = ArrayList<PostModel>()
 
-            val arrayList = ArrayList<PostModel>()
+        val postData = postTableDao?.getPostData
 
-            val postData = postTableDao.getPostData()
-
+        if (postData != null && postData.isNotEmpty()) {
             for (post in postData) {
+                val date = post.date ?: ConstantUtil.dateSpDefaultValue
+                if (dateList.contains(date)) {
+                    dateList.add(date)
+                }
                 arrayList.add(post)
             }
 
             //put the data
             allPost!!.postValue(arrayList)
 
-        })
+            //now request for more data
+            MainActivity.request = false
+
+        } else {
+            //id data is empty
+            addRemoteData(null)
+        }
     }
 
-    fun requestNewPost(postTableDao: PostTableDao,
-                       mediaTableDao: MediaTableDao,
-                       authorTableDao: AuthorTableDao,
-                       wpRestInterface: WPRestInterface,
+    fun requestNewPost(wpRestInterface: WPRestInterface,
                        date: String) {
 
         AsyncTask.execute({
             val call = wpRestInterface.getFilterPostList(date)
-            addRemoteData(postTableDao, mediaTableDao, authorTableDao,wpRestInterface, call)
-            fillData(postTableDao)
-            MainActivity.request = false
+            addRemoteData(call)
         })
 
     }
