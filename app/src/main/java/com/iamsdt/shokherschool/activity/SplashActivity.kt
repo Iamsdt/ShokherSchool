@@ -42,6 +42,7 @@ class SplashActivity : BaseActivity() {
                 mediaTableDao, authorTableDao, wpRestInterface)?.observe(this, Observer { allData ->
             if (allData != null && allData.isNotEmpty()) {
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
             }
         })
 

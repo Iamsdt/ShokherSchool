@@ -26,7 +26,6 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
     private var allPost: MutableLiveData<List<PostModel>>? = null
 
-
     private var dateList = ArrayList<String>()
     private var dateCheckedList = ArrayList<String>()
 
@@ -55,11 +54,13 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                     addRemoteData(postTableDao,
                             mediaTableDao,
                             authorTableDao,
-                            wpRestInterface,null)
+                            wpRestInterface,null,false)
 
                     // data is saved to database
                     //now fill the data to all post
-                    fillData(postTableDao)
+                    if (reQueryData) {
+                        fillData(postTableDao)
+                    }
                 } else {
                     //data is present
                     // saved data to all post
@@ -118,10 +119,14 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
         AsyncTask.execute({
             val call = wpRestInterface.getFilterPostList(date)
-            addRemoteData(postTableDao, mediaTableDao, authorTableDao,wpRestInterface, call)
+            addRemoteData(postTableDao, mediaTableDao, authorTableDao,wpRestInterface, call,false)
             fillData(postTableDao)
             MainActivity.request = false
         })
 
+    }
+
+    companion object {
+        var reQueryData = false
     }
 }

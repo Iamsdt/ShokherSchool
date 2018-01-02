@@ -40,9 +40,11 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                     addRemoteData(postTableDao,
                             mediaTableDao,
                             authorTableDao,
-                            wpRestInterface,null)
+                            wpRestInterface,null,true)
 
-                    addMockData()
+                    if (requestComplete){
+                        addMockData()
+                    }
 
                 } else {
                     addMockData()
@@ -59,5 +61,9 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         // this data is not needed
         list.add(PostModel())
         allPost!!.postValue(list)
+    }
+
+    companion object {
+        var requestComplete = false
     }
 }

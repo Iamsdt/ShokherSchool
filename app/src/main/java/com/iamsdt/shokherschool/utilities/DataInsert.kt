@@ -9,6 +9,8 @@ import com.iamsdt.shokherschool.database.table.MediaTable
 import com.iamsdt.shokherschool.database.table.PostTable
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
+import com.iamsdt.shokherschool.viewModel.MainVM
+import com.iamsdt.shokherschool.viewModel.SplashViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +28,8 @@ class DataInsert {
                           mediaTableDao: MediaTableDao,
                           authorTableDao: AuthorTableDao,
                           wpRestInterface:WPRestInterface,
-                          callback: Call<List<PostResponse>>?) {
+                          callback: Call<List<PostResponse>>?,
+                          referenceFromSplash:Boolean) {
 
             var call = callback
 
@@ -107,6 +110,13 @@ class DataInsert {
 
                                 //insert data
                                 postTableDao.insert(table)
+                            }
+
+                            //make request to splash
+                            if (referenceFromSplash) {
+                                SplashViewModel.requestComplete = true
+                            } else{
+                                MainVM.reQueryData = true
                             }
                         })
                     }
