@@ -15,8 +15,8 @@ interface PostTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(post: PostTable):Long
 
-    @get:Query("Select * From PostTable order by PostTable.post_date DESC")
-    val getAllDataList:List<PostTable>
+    @get:Query("Select * From PostTable order by PostTable.post_date DESC LIMIT 10")
+    val getFirst10DataList:List<PostTable>
 
     @Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +
