@@ -13,6 +13,8 @@ import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.viewModel.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
+import timber.log.Timber
+import java.lang.Thread.sleep
 import javax.inject.Inject
 
 class SplashActivity : BaseActivity() {
@@ -41,9 +43,22 @@ class SplashActivity : BaseActivity() {
         viewModel.getAllPostList(postTableDao,
                 mediaTableDao, authorTableDao, wpRestInterface)?.observe(this, Observer { allData ->
             if (allData != null && allData.isNotEmpty()) {
-                //todo 1/2/2018 add some wait time to wast some user and developer time
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
+                //complete 1/2/2018 add some wait time to wast some user and developer time
+
+                Thread({
+                    try {
+                        sleep(1000)
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Timber.e(e,"Error on Splash Activity Thread")
+                    } finally {
+                        startActivity(Intent(this@SplashActivity,
+                                MainActivity::class.java))
+                        finish()
+                    }
+                }).start()
+
             }
         })
 
