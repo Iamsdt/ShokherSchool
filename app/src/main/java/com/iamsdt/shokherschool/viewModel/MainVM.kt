@@ -32,6 +32,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
     private var allPost: MutableLiveData<List<PostModel>>? = null
 
+    private val authorInserted = ArrayList<Int>()
+
     private var dateList = ArrayList<String>()
     private var dateCheckedList = ArrayList<String>()
 
@@ -88,9 +90,6 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
             override fun onResponse(call: Call<List<PostResponse>>?, response: Response<List<PostResponse>>?) {
 
-                val authorInserted = ArrayList<Int>()
-                val mediaInserted = ArrayList<Int>()
-
                 if (response!!.isSuccessful) {
 
                     Timber.i("Response come from server")
@@ -130,34 +129,28 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                 }
                             }
 
-                            //media id
                             val media = post.featuredMedia
-                            if (!mediaInserted.contains(media)) {
-                                //request to server
+                            var mediaTable:MediaTable ?= null
+
+                            if (media != 0){
+
                                 val mediaResponse = wpRestInterface?.getMediaByID(media)?.execute()
 
                                 if (mediaResponse!!.isSuccessful) {
-                                    //data from server
                                     val mediaData = mediaResponse.body()
                                     //media image size
                                     val mediaDetails = mediaData?.mediaDetails?.sizes
 
-                                    val mediaTable = MediaTable(mediaData?.id,
+                                    mediaTable = MediaTable(mediaData?.id,
                                             mediaData?.title?.rendered,
                                             mediaDetails?.thumbnail?.sourceUrl,
                                             mediaDetails?.medium?.sourceUrl,
                                             mediaDetails?.full?.sourceUrl)
-
-                                    mediaTableDao?.insert(mediaTable)
-
-                                    //now save this id to array list
-                                    mediaInserted.add(media)
                                 }
-
                             }
 
                             val table = PostTable(id, date, author,
-                                    title, media)
+                                    title, media,mediaTable)
 
                             //insert data
                             postTableDao?.insert(table)
@@ -191,12 +184,16 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         for (n in dateList) {
             if (dateCheckedList.contains(n)) return
             val date2 = dtf.parse(n)
-            today = MyDateUtil.compareTwoDate(today, date2)
+            val date3 = MyDateUtil.compareTwoDate(today, date2)
+
+            Timber.i("Date:$date2 and $today -> $date3")
+
+            today = date3
             dateCheckedList.add(n)
         }
         val spSave = dtf.format(today)
         MyDateUtil.setDateOnSp(context, spSave)
-        Timber.i("date saved start: $spSave")
+        Timber.i("date saved: $spSave")
     }
 
     //get data from database and add data to the mutable live data list

@@ -75,7 +75,9 @@ class MainAdapter(val picasso: Picasso,val activity: Activity) :
             date.text = post.date
             val link = post.mediaLink
 
-            picasso.load(link).fit().into(image)
+            if (!link.isNullOrEmpty()) {
+                picasso.load(link).fit().into(image)
+            }
         }
     }
 

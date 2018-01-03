@@ -31,10 +31,9 @@ interface PostTableDao {
             " PostTable.post_date AS date," +
             " PostTable.post_title AS title," +
             " AuthorTable.author_name AS author," +
-            " MediaTable.media_thumbnail_pic AS mediaLink" +
-            " FROM PostTable, AuthorTable, MediaTable" +
+            " PostTable.media_thumbnail_pic AS mediaLink" +
+            " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
-            " and PostTable.post_featuredMediaID = MediaTable.media_id" +
             " order by PostTable.post_date DESC")
     val getPostData:List<PostModel>
 

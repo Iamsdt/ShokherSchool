@@ -113,35 +113,28 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                                 }
                             }
 
-                            //media id
                             val media = post.featuredMedia
-                            if (!mediaInserted.contains(media)) {
-                                //request to server
-                                val mediaResponse =
-                                        wpRestInterface.getMediaByID(media).execute()
+                            var mediaTable:MediaTable ?= null
 
-                                if (mediaResponse.isSuccessful) {
-                                    //data from server
+                            if (media != 0){
+
+                                val mediaResponse = wpRestInterface.getMediaByID(media).execute()
+
+                                if (mediaResponse!!.isSuccessful) {
                                     val mediaData = mediaResponse.body()
                                     //media image size
                                     val mediaDetails = mediaData?.mediaDetails?.sizes
 
-                                    val mediaTable = MediaTable(mediaData?.id,
+                                    mediaTable = MediaTable(mediaData?.id,
                                             mediaData?.title?.rendered,
                                             mediaDetails?.thumbnail?.sourceUrl,
                                             mediaDetails?.medium?.sourceUrl,
                                             mediaDetails?.full?.sourceUrl)
-
-                                    mediaTableDao.insert(mediaTable)
-
-                                    //now save this id to array list
-                                    mediaInserted.add(media)
                                 }
-
                             }
 
                             val table = PostTable(id, date, author,
-                                    title, media)
+                                    title, media,mediaTable)
 
                             //insert data
                             postTableDao.insert(table)
