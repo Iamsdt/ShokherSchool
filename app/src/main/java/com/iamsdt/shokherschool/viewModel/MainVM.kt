@@ -201,13 +201,15 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
         val postData = postTableDao?.getPostData
 
+        //todo 1/3/2018 Use paging library to prevent load all data at once
+
         if (postData != null && postData.isNotEmpty()) {
 
             Timber.i("Data found on database. Size: ${postData.size}")
 
             for (post in postData) {
                 val date = post.date ?: ConstantUtil.dateSpDefaultValue
-                if (dateList.contains(date)) {
+                if (!dateList.contains(date)) {
                     dateList.add(date)
                 }
             }
