@@ -161,6 +161,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
                             //insert data
                             postTableDao?.insert(table)
+                            Timber.i("Table${table.post_id} insert: ${table.post_title}")
                         }
 
                         Timber.i("Data insert complete")
@@ -168,6 +169,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                         //all data saved
                         //now call fill data
                         fillData()
+                        //now request for more data is open
+                        MainActivity.request = false
                     })
                 }
 
@@ -217,9 +220,6 @@ class MainVM(application: Application) : AndroidViewModel(application) {
             //put the data
             allPost!!.postValue(postData)
 
-            //now request for more data
-            MainActivity.request = false
-
         } else {
             //id data is empty
             Timber.i("Database has no data")
@@ -235,6 +235,9 @@ class MainVM(application: Application) : AndroidViewModel(application) {
             Timber.i("Request for new query data")
             Timber.i("Date before: $date")
             addRemoteData(call)
+            //show toast message
+            MainActivity.showNewDataToast = true
+            Timber.i("new request finished")
         })
 
     }

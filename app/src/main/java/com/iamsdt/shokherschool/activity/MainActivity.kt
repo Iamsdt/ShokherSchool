@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.activity
 
+import am.appwise.components.ni.NoInternetUtils
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -48,7 +49,6 @@ class MainActivity : BaseActivity(),
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainVM::class.java)
     }
-    private var sizeOfOldList:Int = 10 //by default size is 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //dagger inject
@@ -76,14 +76,18 @@ class MainActivity : BaseActivity(),
                         Timber.i("Item Size of adapter:${allPost.size}")
                         saveDate()
 
-                        if (allPost.size > sizeOfOldList){
-                                Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT)
-                                        .show()
-
+                        //if internet is not present show a message
+                        if (!NoInternetUtils.isConnectedToInternet(this@MainActivity)){
+                            Snackbar.make(mainLayout, "No Internet available", Snackbar.LENGTH_LONG)
+                                    .show()
                         }
 
-                        //now save data list
-                        sizeOfOldList = allPost.size
+                        if (showNewDataToast){
+                                Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT)
+                                        .show()
+                            showNewDataToast = false
+
+                        }
                     }
                 })
 
@@ -187,5 +191,6 @@ class MainActivity : BaseActivity(),
         //request to prevent duplicate request for getting new data
         //on view model class
         var request:Boolean = false
+        var showNewDataToast:Boolean = false
     }
 }
