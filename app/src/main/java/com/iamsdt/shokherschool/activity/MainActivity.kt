@@ -48,6 +48,7 @@ class MainActivity : BaseActivity(),
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainVM::class.java)
     }
+    private var sizeOfOldList:Int = 10 //by default size is 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //dagger inject
@@ -74,6 +75,15 @@ class MainActivity : BaseActivity(),
                         mainProgressBar.visibility = View.GONE
                         Timber.i("Item Size of adapter:${allPost.size}")
                         saveDate()
+
+                        if (allPost.size > sizeOfOldList){
+                                Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT)
+                                        .show()
+
+                        }
+
+                        //now save data list
+                        sizeOfOldList = allPost.size
                     }
                 })
 

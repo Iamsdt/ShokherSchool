@@ -32,7 +32,6 @@ class DetailsActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         //inject
         getComponent().inject(this@DetailsActivity)
 
@@ -42,6 +41,8 @@ class DetailsActivity : BaseActivity() {
 
         //set comment option disable
         d_comment_form.visibility = View.GONE
+
+        if (!NoInternetUtils.isConnectedToInternet(this)) dialog.showDialog()
 
         //getting intent data
         val post: PostModel = intent.getParcelableExtra(ConstantUtil.intentParcelable) as PostModel
@@ -83,19 +84,16 @@ class DetailsActivity : BaseActivity() {
         d_author.text = post.author ?: "no author found"
 
         //initialize viewModel
+        //internet is connected
+        viewModel.getHtmlData(post.id!!)?.observe(this, Observer<String> { htmlData ->
+            if (htmlData != null && !htmlData.isEmpty()) {
 
-        if (!NoInternetUtils.isConnectedToInternet(this)) {
-            if (dialog.isShowing) {
-                dialog.showDialog()
+                //if dialog is showing
+                if (dialog.isShowing) dialog.dismiss()
+
+                webView.loadData(htmlData, "text/html", "UTF-8")
             }
-        } else {
-            //internet is connected
-            viewModel.getHtmlData(post.id!!)?.observe(this, Observer<String> { htmlData ->
-                if (htmlData != null && !htmlData.isEmpty()) {
-                    webView.loadData(htmlData, "text/html", "UTF-8")
-                }
-            })
-        }
+        })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
