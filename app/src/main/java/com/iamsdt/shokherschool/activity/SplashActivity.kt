@@ -47,7 +47,7 @@ class SplashActivity : BaseActivity() {
 
                 Thread({
                     try {
-                        sleep(1000)
+                        sleep(1500)
 
                     } catch (e: Exception) {
                         e.printStackTrace()

@@ -1,6 +1,5 @@
 package com.iamsdt.shokherschool.injection.module
 
-import am.appwise.components.ni.NoInternetDialog
 import android.app.Activity
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.injection.scopes.ActivityScope
@@ -20,9 +19,4 @@ class ActivityModule(private val activity: Activity) {
     @ActivityScope
     fun getAdapter(picasso: Picasso): MainAdapter
             = MainAdapter(picasso, activity)
-
-    @Provides
-    @ActivityScope
-    fun getNoInternetDialog(): NoInternetDialog
-            = NoInternetDialog.Builder(activity.baseContext).build()
 }
