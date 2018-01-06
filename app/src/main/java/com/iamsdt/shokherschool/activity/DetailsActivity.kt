@@ -1,18 +1,16 @@
 package com.iamsdt.shokherschool.activity
 
-import am.appwise.components.ni.NoInternetDialog
-import am.appwise.components.ni.NoInternetUtils
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.utilities.ConstantUtil
@@ -21,31 +19,23 @@ import com.iamsdt.shokherschool.viewModel.DetailsViewModel
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
 import kotlinx.android.synthetic.main.post_head.*
-import javax.inject.Inject
 
-class DetailsActivity : BaseActivity() {
-
-    @Inject lateinit var dialog: NoInternetDialog
-
-    private val viewModel by lazy {
-        ViewModelProviders.of(this).get(DetailsViewModel::class.java)
-    }
+class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //inject
-        getComponent().inject(this@DetailsActivity)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
 
         //set comment option disable
-        d_comment_form.visibility = View.GONE
+        //d_comment_form.visibility = View.GONE
 
-        if (!NoInternetUtils.isConnectedToInternet(this)) dialog.showDialog()
+        val viewModel = ViewModelProviders.of(this)
+                .get(DetailsViewModel::class.java)
 
         //getting intent data
-        val post: PostModel = intent.getParcelableExtra(ConstantUtil.intentParcelable) as PostModel
+        val post: PostModel = intent
+                .getParcelableExtra(ConstantUtil.intentParcelable) as PostModel
 
         //initialize web view
         //debug only 11/27/2017 remove later
@@ -64,34 +54,25 @@ class DetailsActivity : BaseActivity() {
                 Utility.customTab(this@DetailsActivity, url!!)
                 return true
             }
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                details_mockLayout.visibility = View.GONE
-            }
-
         }
 
         val settings = webView!!.settings
         settings.setAppCacheEnabled(false)
         settings.cacheMode = WebSettings.LOAD_NO_CACHE
         settings.allowContentAccess = false
-        settings.loadWithOverviewMode = true
-
-        //set all the text
-        d_title.text = post.title ?: "no title found"
-        d_date.text = post.date ?: "no post date found"
-        d_author.text = post.author ?: "no author found"
+        settings.loadWithOverviewMode = false
 
         //initialize viewModel
         //internet is connected
-        viewModel.getHtmlData(post.id!!)?.observe(this, Observer<String> { htmlData ->
+        val status = Utility.isNetworkAvailable(this@DetailsActivity)
+        viewModel.getHtmlData(status,post.id!!)?.observe(this, Observer<String> { htmlData ->
             if (htmlData != null && !htmlData.isEmpty()) {
-
-                //if dialog is showing
-                if (dialog.isShowing) dialog.dismiss()
-
                 webView.loadData(htmlData, "text/html", "UTF-8")
+                details_mockLayout.visibility = View.GONE
+                //set all the text
+                d_title.text = post.title ?: "no title found"
+                d_date.text = post.date ?: "no post date found"
+                d_author.text = post.author ?: "no author found"
             }
         })
 

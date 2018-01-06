@@ -39,11 +39,12 @@
                 android:layout_height="5dp"
                 android:background="@color/amber_800"/>
 
+            <!--
             <include layout="@layout/comment_form"
                 android:id="@+id/d_comment_form"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"/> -->
 
         </LinearLayout>
 

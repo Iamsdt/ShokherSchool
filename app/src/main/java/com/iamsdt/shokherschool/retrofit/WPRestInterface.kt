@@ -23,7 +23,6 @@ interface WPRestInterface {
     @GET("posts/")
     fun getFilterPostList(@Query("before") filter: String): Call<List<PostResponse>>
 
-
     @GET("users/{id}")
     fun getAuthorByID(@Path("id") authorId: Int): Call<AuthorResponse>
 
