@@ -1,9 +1,9 @@
 package com.iamsdt.shokherschool.injection.module
 
 import android.content.Context
-import com.iamsdt.shokherschool.database.MyDatabase
-import com.iamsdt.shokherschool.database.dao.AuthorTableDao
-import com.iamsdt.shokherschool.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.database.MyDatabase
+import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
+import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides

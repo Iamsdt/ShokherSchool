@@ -1,9 +1,9 @@
 package com.iamsdt.shokherschool.injection
 
-import com.iamsdt.shokherschool.activity.DetailsActivity
-import com.iamsdt.shokherschool.activity.MainActivity
-import com.iamsdt.shokherschool.activity.SettingsActivity
-import com.iamsdt.shokherschool.activity.SplashActivity
+import com.iamsdt.shokherschool.ui.activity.DetailsActivity
+import com.iamsdt.shokherschool.ui.activity.MainActivity
+import com.iamsdt.shokherschool.ui.activity.SettingsActivity
+import com.iamsdt.shokherschool.ui.activity.SplashActivity
 import com.iamsdt.shokherschool.injection.module.ActivityModule
 import com.iamsdt.shokherschool.injection.scopes.ActivityScope
 import dagger.Component

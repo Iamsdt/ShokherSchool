@@ -3,9 +3,9 @@ package com.iamsdt.shokherschool.injection.module
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
-import com.iamsdt.shokherschool.retrofit.RetrofitHandler
-import com.iamsdt.shokherschool.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.utilities.ConstantUtil
+import com.iamsdt.shokherschool.data.retrofit.RetrofitHandler
+import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

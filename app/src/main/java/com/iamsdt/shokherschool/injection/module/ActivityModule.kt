@@ -1,7 +1,7 @@
 package com.iamsdt.shokherschool.injection.module
 
 import android.app.Activity
-import com.iamsdt.shokherschool.adapter.MainAdapter
+import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.injection.scopes.ActivityScope
 import com.squareup.picasso.Picasso
 import dagger.Module

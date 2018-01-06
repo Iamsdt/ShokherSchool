@@ -5,13 +5,13 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.iamsdt.shokherschool.database.MyDatabase;
-import com.iamsdt.shokherschool.database.dao.AuthorTableDao;
-import com.iamsdt.shokherschool.database.dao.MediaTableDao;
-import com.iamsdt.shokherschool.database.dao.PostTableDao;
-import com.iamsdt.shokherschool.database.table.AuthorTable;
-import com.iamsdt.shokherschool.database.table.MediaTable;
-import com.iamsdt.shokherschool.database.table.PostTable;
+import com.iamsdt.shokherschool.data.database.MyDatabase;
+import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao;
+import com.iamsdt.shokherschool.data.database.dao.MediaTableDao;
+import com.iamsdt.shokherschool.data.database.dao.PostTableDao;
+import com.iamsdt.shokherschool.data.database.table.AuthorTable;
+import com.iamsdt.shokherschool.data.database.table.MediaTable;
+import com.iamsdt.shokherschool.data.database.table.PostTable;
 
 import org.junit.Before;
 import org.junit.Test;

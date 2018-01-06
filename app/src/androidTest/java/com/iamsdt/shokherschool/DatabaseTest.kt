@@ -3,8 +3,8 @@ package com.iamsdt.shokherschool
 import android.arch.persistence.room.Room
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import com.iamsdt.shokherschool.database.MyDatabase
-import com.iamsdt.shokherschool.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.database.MyDatabase
+import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
