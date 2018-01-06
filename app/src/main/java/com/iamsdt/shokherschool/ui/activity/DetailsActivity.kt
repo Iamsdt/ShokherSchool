@@ -10,13 +10,13 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.DetailsPostModel
-import com.iamsdt.shokherschool.ui.viewModel.DetailsViewModel
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.data.utilities.Utility
+import com.iamsdt.shokherschool.ui.base.BaseActivity
+import com.iamsdt.shokherschool.ui.viewModel.DetailsViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
@@ -75,6 +75,13 @@ class DetailsActivity : BaseActivity() {
 
         viewModel.getData(postID,postTableDao)?.observe(this, Observer<DetailsPostModel> { allData ->
             if (allData != null) {
+
+                //if internet is not present show a message
+                if (!Utility.isNetworkAvailable(this@DetailsActivity)){
+                    Snackbar.make(detailsLayout, "No Internet available\nShowing a catch version", Snackbar.LENGTH_LONG)
+                            .show()
+                }
+
                 val content =allData.content
                 webView.loadData(content, "text/html", "UTF-8")
                 details_mockLayout.visibility = View.GONE

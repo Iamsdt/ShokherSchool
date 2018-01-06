@@ -1,6 +1,5 @@
 package com.iamsdt.shokherschool.ui.activity
 
-import am.appwise.components.ni.NoInternetUtils
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -15,14 +14,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.R
-import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.utilities.MyDateUtil
+import com.iamsdt.shokherschool.data.utilities.Utility
+import com.iamsdt.shokherschool.ui.adapter.MainAdapter
+import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -75,7 +75,7 @@ class MainActivity : BaseActivity(),
                         saveDate()
 
                         //if internet is not present show a message
-                        if (!NoInternetUtils.isConnectedToInternet(this@MainActivity)){
+                        if (!Utility.isNetworkAvailable(this@MainActivity)){
                             Snackbar.make(mainLayout, "No Internet available", Snackbar.LENGTH_LONG)
                                     .show()
                         }

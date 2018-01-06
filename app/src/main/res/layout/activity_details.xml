@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/detailsLayout"
     tools:context="com.iamsdt.shokherschool.ui.activity.DetailsActivity">
 
     <android.support.design.widget.AppBarLayout
