@@ -4,25 +4,40 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
-import com.iamsdt.shokherschool.model.PostModel
+import com.iamsdt.shokherschool.database.dao.PostTableDao
+import com.iamsdt.shokherschool.model.DetailsPostModel
 import com.iamsdt.shokherschool.utilities.ConstantUtil
 import com.iamsdt.shokherschool.utilities.Utility
 import com.iamsdt.shokherschool.viewModel.DetailsViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
 import kotlinx.android.synthetic.main.post_head.*
+import javax.inject.Inject
 
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : BaseActivity() {
+
+    @Inject lateinit var postTableDao:PostTableDao
+    @Inject lateinit var picasso:Picasso
+
+    //view model
+    private val viewModel by lazy {
+        ViewModelProviders.of(this)
+                .get(DetailsViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //inject
+        getComponent().inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
@@ -30,12 +45,8 @@ class DetailsActivity : AppCompatActivity() {
         //set comment option disable
         //d_comment_form.visibility = View.GONE
 
-        val viewModel = ViewModelProviders.of(this)
-                .get(DetailsViewModel::class.java)
-
         //getting intent data
-        val post: PostModel = intent
-                .getParcelableExtra(ConstantUtil.intentParcelable) as PostModel
+        val postID = intent.getIntExtra(ConstantUtil.intentDetails,0)
 
         //initialize web view
         //debug only 11/27/2017 remove later
@@ -62,17 +73,14 @@ class DetailsActivity : AppCompatActivity() {
         settings.allowContentAccess = false
         settings.loadWithOverviewMode = false
 
-        //initialize viewModel
-        //internet is connected
-        val status = Utility.isNetworkAvailable(this@DetailsActivity)
-        viewModel.getHtmlData(status,post.id!!)?.observe(this, Observer<String> { htmlData ->
-            if (htmlData != null && !htmlData.isEmpty()) {
-                webView.loadData(htmlData, "text/html", "UTF-8")
+        viewModel.getData(postID,postTableDao)?.observe(this, Observer<DetailsPostModel> { allData ->
+            if (allData != null) {
+                webView.loadData(allData.content, "text/html", "UTF-8")
                 details_mockLayout.visibility = View.GONE
                 //set all the text
-                d_title.text = post.title ?: "no title found"
-                d_date.text = post.date ?: "no post date found"
-                d_author.text = post.author ?: "no author found"
+                d_title.text = allData.title ?: "no title found"
+                d_date.text = allData.date ?: "no post date found"
+                d_author.text = allData.authorName ?: "no author found"
             }
         })
 

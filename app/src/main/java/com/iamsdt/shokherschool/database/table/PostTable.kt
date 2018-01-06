@@ -19,7 +19,7 @@ class PostTable(@PrimaryKey
                         childColumns = ["PostTable.post_authorID"])
                 var post_authorID: Int? = 0,
                 var post_title: String? = "",
-
+                var postContent:String ?= "",
                 var post_featuredMediaID: Int? = 0,
                 @Embedded
                 var mediaTable:MediaTable ?= MediaTable())

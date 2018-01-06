@@ -101,6 +101,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                         for (post in postData!!) {
                             val id = post.id
                             val title = post.title?.rendered
+                            val content = post.content?.rendered
                             val date = post.date
 
                             //add date to date list
@@ -150,7 +151,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             }
 
                             val table = PostTable(id, date, author,
-                                    title, media,mediaTable)
+                                    title,content, media,mediaTable)
 
                             //insert data
                             postTableDao?.insert(table)

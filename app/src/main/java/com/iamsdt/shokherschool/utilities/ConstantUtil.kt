@@ -15,6 +15,6 @@ class ConstantUtil{
 
 
         //intent parse to main activity to details activity
-        val intentParcelable = "Parcelable"
+        val intentDetails = "IntentDetails"
     }
 }

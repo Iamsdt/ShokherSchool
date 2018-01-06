@@ -3,6 +3,7 @@ package com.iamsdt.shokherschool.database
 import com.iamsdt.shokherschool.retrofit.RetrofitData
 import com.iamsdt.shokherschool.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

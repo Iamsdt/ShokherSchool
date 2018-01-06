@@ -2,6 +2,7 @@ package com.iamsdt.shokherschool.database.dao
 
 import android.arch.persistence.room.*
 import com.iamsdt.shokherschool.database.table.PostTable
+import com.iamsdt.shokherschool.model.DetailsPostModel
 import com.iamsdt.shokherschool.model.PostModel
 
 /**
@@ -36,6 +37,19 @@ interface PostTableDao {
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
             " order by PostTable.post_date DESC")
     val getPostData:List<PostModel>
+
+    @Query("SELECT PostTable.post_id AS id," +
+            " PostTable.post_date AS date," +
+            " PostTable.post_title AS title," +
+            " AuthorTable.author_name AS authorName," +
+            " AuthorTable.author_description AS authorDetails," +
+            " AuthorTable.author_avatarUrl24 AS authorImg," +
+            " PostTable.media_thumbnail_pic AS mediaLink" +
+            " FROM PostTable, AuthorTable" +
+            " WHERE PostTable.post_authorID = AuthorTable.author_id" +
+            " And PostTable.post_id = :arg0 "+
+            " order by PostTable.post_date DESC")
+    fun getSinglePostDetails(arg0:Int):DetailsPostModel
 
     @Query("Select * From PostTable where PostTable.post_id = :arg0")
     fun getSinglePost(arg0:Int):List<PostTable>

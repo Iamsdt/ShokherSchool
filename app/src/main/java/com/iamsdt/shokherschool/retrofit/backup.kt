@@ -3,6 +3,7 @@ package com.iamsdt.shokherschool.retrofit
 import com.iamsdt.shokherschool.retrofit.pojo.author.AuthorResponse
 import com.iamsdt.shokherschool.retrofit.pojo.categories.CategoriesResponse
 import com.iamsdt.shokherschool.retrofit.pojo.page.PageResponse
+import com.iamsdt.shokherschool.retrofit.pojo.post.PostResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

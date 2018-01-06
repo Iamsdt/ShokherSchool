@@ -4,40 +4,35 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.os.AsyncTask
-import timber.log.Timber
+import com.iamsdt.shokherschool.database.dao.PostTableDao
+import com.iamsdt.shokherschool.model.DetailsPostModel
 
 /**
-* Created by Shudipto Trafder on 11/21/2017.
-* at 11:20 PM
-*/
-class DetailsViewModel(application: Application):
+ * Created by Shudipto Trafder on 11/21/2017.
+ * at 11:20 PM
+ */
+class DetailsViewModel(application: Application) :
         AndroidViewModel(application) {
 
-    private var htmlData:MutableLiveData<String> ?= null
+    private var htmlData: MutableLiveData<DetailsPostModel>? = null
 
-    fun getHtmlData(boolean: Boolean,postID:Int):MutableLiveData<String>?{
+    fun getData(postID: Int,postTableDao: PostTableDao): MutableLiveData<DetailsPostModel>? {
 
-        if (htmlData == null || htmlData!!.value.isNullOrEmpty()){
-
+        if (htmlData == null) {
             htmlData = MutableLiveData()
 
-            if (boolean){
-                initializeData(postID)
-            }
+            initializeData(postID,postTableDao)
         }
 
         return htmlData
     }
 
 
-    private fun initializeData(id:Int){
+    private fun initializeData(id: Int,postTableDao: PostTableDao) {
 
         AsyncTask.execute({
-            val postLink = "https://shokherschool.com/?p=$id"
-
-            Timber.i(postLink)
-
-            htmlData!!.postValue("")
+            val model = postTableDao.getSinglePostDetails(id)
+            htmlData!!.postValue(model)
         })
     }
 }
