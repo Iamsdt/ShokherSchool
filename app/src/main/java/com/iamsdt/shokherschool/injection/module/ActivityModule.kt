@@ -1,8 +1,8 @@
 package com.iamsdt.shokherschool.injection.module
 
-import android.app.Activity
-import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.injection.scopes.ActivityScope
+import com.iamsdt.shokherschool.ui.adapter.MainAdapter
+import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
@@ -13,7 +13,7 @@ import dagger.Provides
  */
 
 @Module
-class ActivityModule(private val activity: Activity) {
+class ActivityModule(private val activity: BaseActivity) {
 
     @Provides
     @ActivityScope
