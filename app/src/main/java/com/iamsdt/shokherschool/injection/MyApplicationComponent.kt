@@ -1,7 +1,6 @@
 package com.iamsdt.shokherschool.injection
 
 import com.iamsdt.shokherschool.database.dao.AuthorTableDao
-import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.injection.module.DBModule
 import com.iamsdt.shokherschool.injection.module.PicassoModule
@@ -30,6 +29,5 @@ interface MyApplicationComponent{
 
     //database
     val postTableDao:PostTableDao
-    val mediaTableDao:MediaTableDao
     val authorTableDao:AuthorTableDao
 }

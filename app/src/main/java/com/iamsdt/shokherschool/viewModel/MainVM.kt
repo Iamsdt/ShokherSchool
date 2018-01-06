@@ -7,7 +7,6 @@ import android.content.Context
 import android.os.AsyncTask
 import com.iamsdt.shokherschool.activity.MainActivity
 import com.iamsdt.shokherschool.database.dao.AuthorTableDao
-import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.database.table.AuthorTable
 import com.iamsdt.shokherschool.database.table.MediaTable
@@ -38,17 +37,14 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     private var dateCheckedList = ArrayList<String>()
 
     private var postTableDao: PostTableDao? = null
-    private var mediaTableDao: MediaTableDao? = null
     private var authorTableDao: AuthorTableDao? = null
     private var wpRestInterface: WPRestInterface? = null
 
     fun setup(postTableDao: PostTableDao,
-              mediaTableDao: MediaTableDao,
               authorTableDao: AuthorTableDao,
               wpRestInterface: WPRestInterface) {
 
         this.postTableDao = postTableDao
-        this.mediaTableDao = mediaTableDao
         this.authorTableDao = authorTableDao
         this.wpRestInterface = wpRestInterface
 

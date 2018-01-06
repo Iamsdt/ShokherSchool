@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.os.AsyncTask
 import com.iamsdt.shokherschool.database.dao.AuthorTableDao
-import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.database.table.AuthorTable
 import com.iamsdt.shokherschool.database.table.MediaTable
@@ -31,7 +30,6 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
     private val list = ArrayList<PostModel>()
 
     fun getAllPostList(postTableDao: PostTableDao,
-                       mediaTableDao: MediaTableDao,
                        authorTableDao: AuthorTableDao,
                        wpRestInterface: WPRestInterface)
             : MutableLiveData<List<PostModel>>? {
@@ -46,7 +44,6 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
 
                     Timber.i("No data in database")
                     addRemoteData(postTableDao,
-                            mediaTableDao,
                             authorTableDao,
                             wpRestInterface)
 
@@ -61,7 +58,6 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun addRemoteData(postTableDao: PostTableDao,
-                              mediaTableDao: MediaTableDao,
                               authorTableDao: AuthorTableDao,
                               wpRestInterface: WPRestInterface) {
 
@@ -76,7 +72,6 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
             override fun onResponse(call: Call<List<PostResponse>>?, response: Response<List<PostResponse>>?) {
 
                 val authorInserted = ArrayList<Int>()
-                val mediaInserted = ArrayList<Int>()
 
                 if (response!!.isSuccessful) {
 

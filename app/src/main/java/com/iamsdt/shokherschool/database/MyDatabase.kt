@@ -5,10 +5,8 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.iamsdt.shokherschool.database.dao.AuthorTableDao
-import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.database.table.AuthorTable
-import com.iamsdt.shokherschool.database.table.MediaTable
 import com.iamsdt.shokherschool.database.table.PostTable
 
 /**
@@ -17,15 +15,13 @@ import com.iamsdt.shokherschool.database.table.PostTable
  */
 
 @Database(entities = [PostTable::class,
-    AuthorTable::class,
-    MediaTable::class],
+    AuthorTable::class],
         version = 1, exportSchema = false)
 abstract class MyDatabase : RoomDatabase() {
 
 
     //dao
     abstract val postTableDao: PostTableDao
-    abstract val mediaTableDao: MediaTableDao
     abstract val authorTableDao: AuthorTableDao
 
 

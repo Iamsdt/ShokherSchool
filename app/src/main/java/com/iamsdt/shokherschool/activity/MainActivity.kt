@@ -19,7 +19,6 @@ import com.iamsdt.shokherschool.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.adapter.MainAdapter
 import com.iamsdt.shokherschool.database.dao.AuthorTableDao
-import com.iamsdt.shokherschool.database.dao.MediaTableDao
 import com.iamsdt.shokherschool.database.dao.PostTableDao
 import com.iamsdt.shokherschool.model.PostModel
 import com.iamsdt.shokherschool.retrofit.WPRestInterface
@@ -39,7 +38,6 @@ class MainActivity : BaseActivity(),
 
     //dao to access database
     @Inject lateinit var postTableDao:PostTableDao
-    @Inject lateinit var mediaTableDao:MediaTableDao
     @Inject lateinit var authorTableDao:AuthorTableDao
 
     //rest interface to get data from server
@@ -67,7 +65,7 @@ class MainActivity : BaseActivity(),
 
         adapter.changeContext(this@MainActivity)
 
-        viewModel.setup(postTableDao,mediaTableDao,authorTableDao,wpRestInterface)
+        viewModel.setup(postTableDao,authorTableDao,wpRestInterface)
         viewModel.getAllPostList()?.observe(this,
                 Observer<List<PostModel>> { allPost ->
                     if (allPost != null && !allPost.isEmpty()){

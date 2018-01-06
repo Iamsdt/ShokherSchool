@@ -41,6 +41,7 @@ interface PostTableDao {
     @Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +
             " PostTable.post_title AS title," +
+            " PostTable.postContent AS content," +
             " AuthorTable.author_name AS authorName," +
             " AuthorTable.author_description AS authorDetails," +
             " AuthorTable.author_avatarUrl24 AS authorImg," +

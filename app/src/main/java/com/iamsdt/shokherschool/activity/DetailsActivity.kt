@@ -75,7 +75,8 @@ class DetailsActivity : BaseActivity() {
 
         viewModel.getData(postID,postTableDao)?.observe(this, Observer<DetailsPostModel> { allData ->
             if (allData != null) {
-                webView.loadData(allData.content, "text/html", "UTF-8")
+                val content =allData.content
+                webView.loadData(content, "text/html", "UTF-8")
                 details_mockLayout.visibility = View.GONE
                 //set all the text
                 d_title.text = allData.title ?: "no title found"
