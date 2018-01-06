@@ -14,6 +14,6 @@ class FragmentModule(private val baseFragment: BaseFragment){
 
     @Provides
     @ServicesScope
-    fun provideFargment(): BaseFragment
+    fun provideFragment(): BaseFragment
             = baseFragment
 }
