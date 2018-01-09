@@ -8,6 +8,7 @@ import com.iamsdt.shokherschool.data.database.table.MediaTable
  * at 7:27 PM
  */
 
+//no use any more
 @Dao
 interface MediaTableDao{
 

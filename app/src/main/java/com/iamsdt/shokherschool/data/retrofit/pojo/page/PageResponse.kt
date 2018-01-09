@@ -1,7 +1,6 @@
 package com.iamsdt.shokherschool.data.retrofit.pojo.page
 
 data class PageResponse(val date: String = "",
-                        val template: String = "",
                         val parent: Int = 0,
                         val author: Int = 0,
                         val link: String = "",
