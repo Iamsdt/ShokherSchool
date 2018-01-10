@@ -10,7 +10,6 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity
 class CategoriesTable(var categories_count: Int? = 0,
-                      var categories_link: String? = "",
                       var categories_name: String? = "",
                       var categories_description: String? = "",
                       @PrimaryKey

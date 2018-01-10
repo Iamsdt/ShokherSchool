@@ -33,10 +33,16 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name="com.iamsdt.shokherschool.ui.activity.DetailsActivity"
+            android:name=".ui.activity.DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.iamsdt.shokherschool.ui.activity.SettingsActivity" />
+
+        <activity android:name=".ui.activity.SettingsActivity" />
+
+        <!--Services -->
+        <service android:name=".ui.services.DataInsertService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

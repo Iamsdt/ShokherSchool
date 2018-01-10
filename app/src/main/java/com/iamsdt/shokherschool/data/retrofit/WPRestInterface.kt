@@ -1,7 +1,9 @@
 package com.iamsdt.shokherschool.data.retrofit
 
 import com.iamsdt.shokherschool.data.retrofit.pojo.author.AuthorResponse
+import com.iamsdt.shokherschool.data.retrofit.pojo.categories.CategoriesResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.media.MediaResponse
+import com.iamsdt.shokherschool.data.retrofit.pojo.page.PageResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -34,5 +36,14 @@ interface WPRestInterface {
      */
     @GET("media/{id}")
     fun getMediaByID(@Path("id") mediaId: Int): Call<MediaResponse>
+
+    @GET("pages")
+    fun getPages(): Call<List<PageResponse>>
+
+    @GET("categories/{id}")
+    fun getCategoryByID(@Path("id") id: Int): Call<CategoriesResponse>
+
+    @GET("categories?&per_page=100")
+    fun getCategories(): Call<List<CategoriesResponse>>
 
 }
