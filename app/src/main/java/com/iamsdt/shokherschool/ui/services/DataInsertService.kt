@@ -5,11 +5,14 @@ import android.os.AsyncTask
 import android.os.IBinder
 import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
 import com.iamsdt.shokherschool.data.database.dao.PageTableDao
+import com.iamsdt.shokherschool.data.database.dao.TagTableDao
 import com.iamsdt.shokherschool.data.database.table.CategoriesTable
 import com.iamsdt.shokherschool.data.database.table.PageTable
+import com.iamsdt.shokherschool.data.database.table.TagTable
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.retrofit.pojo.categories.CategoriesResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.page.PageResponse
+import com.iamsdt.shokherschool.data.retrofit.pojo.tags.TagResponse
 import com.iamsdt.shokherschool.ui.base.BaseServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +28,7 @@ class DataInsertService : BaseServices() {
 
     @Inject lateinit var pageTableDao: PageTableDao
     @Inject lateinit var categoriesTableDao: CategoriesTableDao
+    @Inject lateinit var tagTableDao: TagTableDao
     @Inject lateinit var wpRestInterface: WPRestInterface
 
     companion object {
@@ -33,7 +37,7 @@ class DataInsertService : BaseServices() {
         private var categoriesInsertComplete = false
         private var tagsInsertComplete = false
 
-        fun isServiceCompleted():Boolean{
+        fun isServiceCompleted(): Boolean {
             return pageInsertComplete && categoriesInsertComplete && tagsInsertComplete
         }
     }
@@ -53,6 +57,9 @@ class DataInsertService : BaseServices() {
 
             val categoriesCall = wpRestInterface.getCategories()
             categoriesData(categoriesCall)
+
+            val tagCall = wpRestInterface.getTags()
+            tagData(tagCall)
         })
 
         Timber.i("Service complete")
@@ -60,7 +67,35 @@ class DataInsertService : BaseServices() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    //insert tag data
+    private fun tagData(tagCall: Call<List<TagResponse>>) {
+        tagCall.enqueue(object : Callback<List<TagResponse>> {
+            override fun onResponse(call: Call<List<TagResponse>>?,
+                                    response: Response<List<TagResponse>>?) {
 
+                //if something wrong a empty list will crated
+                val tags = response?.body() ?: arrayListOf()
+
+                AsyncTask.execute({
+                    if (tags.isNotEmpty()) {
+                        tags.map { TagTable(it.count, it.name, it.id) }
+                                .forEach { tagTableDao.insert(it) }
+
+                        Timber.i("category insert finished")
+                        tagsInsertComplete = true
+                    }
+                })
+
+            }
+
+            override fun onFailure(call: Call<List<TagResponse>>?, t: Throwable?) {
+                Timber.i(t, "tag Response error")
+            }
+
+        })
+    }
+
+    //insert categories data
     private fun categoriesData(categoriesCall: Call<List<CategoriesResponse>>) {
         categoriesCall.enqueue(object : Callback<List<CategoriesResponse>> {
             override fun onResponse(call: Call<List<CategoriesResponse>>?,
@@ -70,10 +105,10 @@ class DataInsertService : BaseServices() {
                 val categories = response?.body() ?: arrayListOf()
 
                 AsyncTask.execute({
-                    if (categories.isNotEmpty()){
-                        for (category in categories){
-                            val table = CategoriesTable(category.count,category.name,
-                                    category.description,category.id)
+                    if (categories.isNotEmpty()) {
+                        for (category in categories) {
+                            val table = CategoriesTable(category.count, category.name,
+                                    category.description, category.id)
 
                             categoriesTableDao.insert(table)
                         }
@@ -92,6 +127,7 @@ class DataInsertService : BaseServices() {
         })
     }
 
+    //this methods for insert page data
     private fun pageData(pageCall: Call<List<PageResponse>>) {
         pageCall.enqueue(object : Callback<List<PageResponse>> {
             override fun onResponse(call: Call<List<PageResponse>>?,
@@ -100,8 +136,8 @@ class DataInsertService : BaseServices() {
                 val pages = response?.body() ?: arrayListOf()
 
                 AsyncTask.execute({
-                    if (pages.isNotEmpty()){
-                        for (page in pages){
+                    if (pages.isNotEmpty()) {
+                        for (page in pages) {
                             val table = PageTable(page.date, page.author, page.title?.rendered,
                                     page.content?.rendered,
                                     page.featuredMedia, page.id)
