@@ -1,13 +1,15 @@
 package com.iamsdt.shokherschool.injection
 
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
+import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
+import com.iamsdt.shokherschool.data.database.dao.PageTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.retrofit.RetrofitHandler
+import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.injection.module.DBModule
 import com.iamsdt.shokherschool.injection.module.PicassoModule
 import com.iamsdt.shokherschool.injection.module.RetrofitModule
 import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
-import com.iamsdt.shokherschool.data.retrofit.RetrofitHandler
-import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.squareup.picasso.Picasso
 import dagger.Component
 
@@ -30,4 +32,6 @@ interface MyApplicationComponent{
     //database
     val postTableDao:PostTableDao
     val authorTableDao:AuthorTableDao
+    val categoriesTableDao:CategoriesTableDao
+    val pageTableDao:PageTableDao
 }

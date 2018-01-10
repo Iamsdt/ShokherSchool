@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.os.AsyncTask
-import com.iamsdt.shokherschool.ui.activity.MainActivity
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.database.table.AuthorTable
@@ -16,6 +15,7 @@ import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.data.utilities.MyDateUtil
+import com.iamsdt.shokherschool.ui.activity.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -147,7 +147,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             }
 
                             val table = PostTable(id, date, author,
-                                    title,content, media,mediaTable)
+                                    title,content,null,null,null,mediaTable)
 
                             //insert data
                             postTableDao?.insert(table)
