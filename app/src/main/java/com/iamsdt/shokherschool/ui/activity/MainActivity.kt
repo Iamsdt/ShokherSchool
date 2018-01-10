@@ -23,6 +23,7 @@ import com.iamsdt.shokherschool.data.utilities.MyDateUtil
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
+import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -118,6 +119,19 @@ class MainActivity : BaseActivity(),
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (DataInsertService.isRunning){
+            Timber.w("Service is ruining on Main Activity")
+            //if all the task is done then
+            //stop the service
+            if (DataInsertService.isServiceCompleted()) {
+                val intent = Intent(this@MainActivity,DataInsertService::class.java)
+                stopService(intent)
+            }
+        }
     }
 
     private fun saveDate(){

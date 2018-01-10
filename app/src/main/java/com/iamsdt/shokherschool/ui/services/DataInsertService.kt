@@ -29,6 +29,13 @@ class DataInsertService : BaseServices() {
 
     companion object {
         var isRunning = false
+        private var pageInsertComplete = false
+        private var categoriesInsertComplete = false
+        private var tagsInsertComplete = false
+
+        fun isServiceCompleted():Boolean{
+            return pageInsertComplete && categoriesInsertComplete && tagsInsertComplete
+        }
     }
 
     override fun onCreate() {
@@ -48,6 +55,7 @@ class DataInsertService : BaseServices() {
             categoriesData(categoriesCall)
         })
 
+        Timber.i("Service complete")
 
         return super.onStartCommand(intent, flags, startId)
     }
@@ -69,6 +77,9 @@ class DataInsertService : BaseServices() {
 
                             categoriesTableDao.insert(table)
                         }
+
+                        Timber.i("category insert finished")
+                        categoriesInsertComplete = true
                     }
                 })
 
@@ -97,6 +108,9 @@ class DataInsertService : BaseServices() {
 
                             pageTableDao.insert(table)
                         }
+
+                        Timber.i("page insert finished")
+                        pageInsertComplete = true
                     }
                 })
             }
