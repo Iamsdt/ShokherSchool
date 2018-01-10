@@ -1,7 +1,6 @@
 package com.iamsdt.shokherschool.data.database.table
 
 import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 
 /**
  * Created by Shudipto Trafder on 12/8/2017.
@@ -10,7 +9,6 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity
 class MediaTable(
-        @PrimaryKey
         var media_id: Int ?= 0,
         var media_title: String ?= "",
         var media_thumbnail_pic: String?= "",
