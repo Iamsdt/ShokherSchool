@@ -4,7 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.IBinder
+import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
+import com.iamsdt.shokherschool.data.database.dao.PageTableDao
+import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.ui.base.BaseServices
+import javax.inject.Inject
 
 @SuppressLint("Registered")
 /**
@@ -12,6 +16,11 @@ import com.iamsdt.shokherschool.ui.base.BaseServices
  * at 12:10 AM
  */
 class DataInsertService:BaseServices(){
+
+    @Inject lateinit var pageTableDao:PageTableDao
+    @Inject lateinit var categoriesTableDao:CategoriesTableDao
+    @Inject lateinit var wpRestInterface:WPRestInterface
+
 
     override fun onCreate() {
         getComponent().inject(this)
