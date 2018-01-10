@@ -35,7 +35,7 @@ class NetworkModule {
 
     @Provides
     @ApplicationScope
-    fun getCache(file: File): Cache = Cache(file, 10 * 1024 * 1024)
+    fun getCache(file: File): Cache = Cache(file, 10 * 1024 * 1024) //10mb
 
     @Provides
     @ApplicationScope

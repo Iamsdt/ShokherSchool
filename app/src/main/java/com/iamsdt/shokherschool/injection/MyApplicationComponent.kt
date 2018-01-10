@@ -1,9 +1,6 @@
 package com.iamsdt.shokherschool.injection
 
-import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
-import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
-import com.iamsdt.shokherschool.data.database.dao.PageTableDao
-import com.iamsdt.shokherschool.data.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.database.dao.*
 import com.iamsdt.shokherschool.data.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.injection.module.DBModule
@@ -34,4 +31,5 @@ interface MyApplicationComponent{
     val authorTableDao:AuthorTableDao
     val categoriesTableDao:CategoriesTableDao
     val pageTableDao:PageTableDao
+    val tagTableDao:TagTableDao
 }
