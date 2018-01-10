@@ -1,12 +1,11 @@
 package com.iamsdt.shokherschool.data.retrofit.pojo.page
 
+import com.google.gson.annotations.SerializedName
+
 data class PageResponse(val date: String = "",
-                        val parent: Int = 0,
                         val author: Int = 0,
-                        val link: String = "",
-                        val type: String = "",
-                        val title: Title? = null,
-                        val modified: String = "",
-                        val id: Int = 0,
-                        val slug: String = "",
-                        val status: String = "")
+                        val title: Title?,
+                        val content: Content?,
+                        @SerializedName("featured_media")
+                        val featuredMedia: Int = 0,
+                        val id: Int = 0)

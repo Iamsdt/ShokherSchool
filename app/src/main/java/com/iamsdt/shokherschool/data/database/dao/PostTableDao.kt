@@ -64,11 +64,8 @@ interface PostTableDao {
     @Query("Select post_authorID From PostTable where PostTable.post_id = :arg0")
     fun getPostAuthor(arg0:Int):Int
 
-    @Query("Select post_featuredMediaID From PostTable where PostTable.post_id = :arg0")
-    fun getPostMediaId(arg0:Int):Int
-
     @Delete
-    fun deleteAllData(post: PostTable):Int
+    fun delete(post: PostTable):Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(post: PostTable):Int
