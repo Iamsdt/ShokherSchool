@@ -57,11 +57,11 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         if (allPost == null) {
             allPost = MutableLiveData()
 
-            val runable = Runnable {
+            val runnable = Runnable {
                 fillData()
             }
 
-            Thread(runable).start()
+            Thread(runnable).start()
         }
 
         return allPost
@@ -146,8 +146,12 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                 }
                             }
 
+                            val categories:String = post.categories.toString()
+                            val tags:String = post.tags.toString()
+                            val commentStatus:String = post.commentStatus
+
                             val table = PostTable(id, date, author,
-                                    title,content,null,null,null,mediaTable)
+                                    title,content,categories,tags,commentStatus,mediaTable)
 
                             //insert data
                             postTableDao?.insert(table)

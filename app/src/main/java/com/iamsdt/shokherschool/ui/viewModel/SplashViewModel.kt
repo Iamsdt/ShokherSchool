@@ -129,8 +129,12 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                                 }
                             }
 
+                            val categories:String = post.categories.toString()
+                            val tags:String = post.tags.toString()
+                            val commentStatus:String = post.commentStatus
+
                             val table = PostTable(id, date, author,
-                                    title,content, media,mediaTable)
+                                    title,content,categories,tags,commentStatus,mediaTable)
 
                             //insert data
                             postTableDao.insert(table)
