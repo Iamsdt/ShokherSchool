@@ -58,6 +58,7 @@ class DataInsertService : BaseServices() {
             override fun onResponse(call: Call<List<CategoriesResponse>>?,
                                     response: Response<List<CategoriesResponse>>?) {
 
+                //if something wrong a empty list will crated
                 val categories = response?.body() ?: arrayListOf()
 
                 if (categories.isNotEmpty()){
