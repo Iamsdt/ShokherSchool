@@ -5,6 +5,7 @@ import com.iamsdt.shokherschool.data.retrofit.pojo.categories.CategoriesResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.media.MediaResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.page.PageResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
+import com.iamsdt.shokherschool.data.retrofit.pojo.tags.TagResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -45,5 +46,9 @@ interface WPRestInterface {
 
     @GET("categories?&per_page=100")
     fun getCategories(): Call<List<CategoriesResponse>>
+
+    @GET("tags?&per_page=100")
+    fun getTags(): Call<List<TagResponse>>
+
 
 }
