@@ -61,14 +61,16 @@ class DataInsertService : BaseServices() {
                 //if something wrong a empty list will crated
                 val categories = response?.body() ?: arrayListOf()
 
-                if (categories.isNotEmpty()){
-                    for (category in categories){
-                        val table = CategoriesTable(category.count,category.name,
-                                category.description,category.id)
+                AsyncTask.execute({
+                    if (categories.isNotEmpty()){
+                        for (category in categories){
+                            val table = CategoriesTable(category.count,category.name,
+                                    category.description,category.id)
 
-                        categoriesTableDao.insert(table)
+                            categoriesTableDao.insert(table)
+                        }
                     }
-                }
+                })
 
             }
 
@@ -85,20 +87,18 @@ class DataInsertService : BaseServices() {
                                     response: Response<List<PageResponse>>?) {
 
                 val pages = response?.body() ?: arrayListOf()
-                if (pages.isNotEmpty()){
-                    for (page in pages){
 
-                        if (page.id == 0){
-                            continue
+                AsyncTask.execute({
+                    if (pages.isNotEmpty()){
+                        for (page in pages){
+                            val table = PageTable(page.date, page.author, page.title?.rendered,
+                                    page.content?.rendered,
+                                    page.featuredMedia, page.id)
+
+                            pageTableDao.insert(table)
                         }
-
-                        val table = PageTable(page.date, page.author, page.title?.rendered,
-                                page.content?.rendered,
-                                page.featuredMedia, page.id)
-
-                        pageTableDao.insert(table)
                     }
-                }
+                })
             }
 
             override fun onFailure(call: Call<List<PageResponse>>?, t: Throwable?) {

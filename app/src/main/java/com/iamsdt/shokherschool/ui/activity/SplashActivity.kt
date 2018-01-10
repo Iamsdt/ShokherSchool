@@ -5,11 +5,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.ui.base.BaseActivity
+import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.viewModel.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import timber.log.Timber
@@ -28,6 +29,14 @@ class SplashActivity : BaseActivity() {
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(SplashViewModel::class.java)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!DataInsertService.isRunning){
+            val intent = Intent(this@SplashActivity,DataInsertService::class.java)
+            startService(intent)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
