@@ -20,6 +20,8 @@ class PostTable(@PrimaryKey
                 var post_authorID: Int? = 0,
                 var post_title: String? = "",
                 var postContent:String ?= "",
-                var post_featuredMediaID: Int? = 0,
+                var postCatagories:String ?= "",
+                var tags:String ?= "",
+                var commentStatus:String ?= "",
                 @Embedded
                 var mediaTable:MediaTable ?= MediaTable())

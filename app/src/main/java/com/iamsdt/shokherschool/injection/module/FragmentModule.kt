@@ -1,6 +1,6 @@
 package com.iamsdt.shokherschool.injection.module
 
-import com.iamsdt.shokherschool.injection.scopes.ServicesScope
+import com.iamsdt.shokherschool.injection.scopes.FragmentScope
 import com.iamsdt.shokherschool.ui.base.BaseFragment
 import dagger.Module
 import dagger.Provides
@@ -13,7 +13,7 @@ import dagger.Provides
 class FragmentModule(private val baseFragment: BaseFragment){
 
     @Provides
-    @ServicesScope
+    @FragmentScope
     fun provideFragment(): BaseFragment
             = baseFragment
 }
