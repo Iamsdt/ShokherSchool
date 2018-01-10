@@ -1,6 +1,9 @@
 package com.iamsdt.shokherschool.data.utilities
 
 import android.content.Context
+import org.joda.time.DateTime
+import org.joda.time.Days
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +48,7 @@ class MyDateUtil{
          * to find out which date is older
          * @param first is consider as a first date
          * @param second is consider as a second date
-         * @return the date older date
+         * @return older date
          * */
         fun compareTwoDate(first: Date, second: Date): Date
                 = if (first.before(second)) {
@@ -58,13 +61,14 @@ class MyDateUtil{
             val sp = context.getSharedPreferences(ConstantUtil.ServiceSp,
                     Context.MODE_PRIVATE)
             //default value is empty
+            //complete 1/10/2018 change default value to empty
             return sp.getString(ConstantUtil.ServiceRunningDate,
                     "")
         }
 
 
-        fun saveServiceRunningDateOnSp(context: Context){
-            val sdf = SimpleDateFormat("dd-MMM-yyyy",Locale.US)
+        fun saveServiceDateOnSp(context: Context){
+            val sdf = SimpleDateFormat("dd-MM-yyyy",Locale.US)
             val todayDate = sdf.format(Date())
 
             val sp = context.getSharedPreferences(ConstantUtil.ServiceSp,
@@ -73,6 +77,19 @@ class MyDateUtil{
             val editor = sp.edit()
             editor.putString(ConstantUtil.ServiceRunningDate,todayDate)
             editor.apply()
+        }
+
+        fun compareDateIntervals(spDate:String):Int{
+            val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+            val previousDate = sdf.parse(spDate)
+
+            val today = DateTime(Date())
+            val preDate = DateTime(previousDate)
+
+            val day = Days.daysBetween(preDate,today).days
+            Timber.i(day.toString())
+
+            return day
         }
     }
 }

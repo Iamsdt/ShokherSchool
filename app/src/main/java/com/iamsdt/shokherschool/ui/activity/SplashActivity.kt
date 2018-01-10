@@ -33,24 +33,6 @@ class SplashActivity : BaseActivity() {
         ViewModelProviders.of(this).get(SplashViewModel::class.java)
     }
 
-    override fun onStart() {
-        super.onStart()
-        //check first that this day is older than 7 days
-        //because, want to run service on 7 days interval
-
-        //todo 1/10/2018 add user choice option to sync date interval
-
-        if (Utility.isTimeForRunService(this@SplashActivity)) {
-            if (!DataInsertService.isRunning) {
-                val intent = Intent(this@SplashActivity, DataInsertService::class.java)
-                startService(intent)
-
-                //save date
-                MyDateUtil.saveServiceRunningDateOnSp(this@SplashActivity)
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         //inject
         getComponent().inject(this)
@@ -83,6 +65,24 @@ class SplashActivity : BaseActivity() {
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        //check first that this day is older than 7 days
+        //because, want to run service on 7 days interval
+
+        //todo 1/10/2018 add user choice option to sync date interval
+
+        if (Utility.isTimeForRunService(this@SplashActivity)) {
+            if (!DataInsertService.isRunning) {
+                val intent = Intent(this@SplashActivity, DataInsertService::class.java)
+                startService(intent)
+
+                //save date
+                MyDateUtil.saveServiceDateOnSp(this@SplashActivity)
+            }
         }
     }
 

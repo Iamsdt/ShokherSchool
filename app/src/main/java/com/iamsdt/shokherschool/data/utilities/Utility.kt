@@ -7,8 +7,6 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.support.customtabs.CustomTabsIntent
 import com.iamsdt.shokherschool.R
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 /**
@@ -34,23 +32,21 @@ class Utility {
         }
 
         fun isTimeForRunService(context: Context): Boolean {
+
             val spDate = MyDateUtil.getDateForService(context)
 
             // if previous date is empty
             // then time for running service
             if (spDate.isEmpty()) {
-                return true
+                return isNetworkAvailable(context)
             }
-
-            val sdf = SimpleDateFormat("dd-MMM-yyyy", Locale.US)
-            val previousDate = sdf.parse(spDate)
 
             //fixme 1/10/2018 add setting for sync interval
             val interval = 7
 
-            val s = previousDate.before(previousDate)
+            val intervalDay = MyDateUtil.compareDateIntervals(spDate)
 
-            return false
+            return (intervalDay >= interval) && isNetworkAvailable(context)
         }
 
         /**
