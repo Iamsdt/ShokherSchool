@@ -3,6 +3,8 @@ package com.iamsdt.shokherschool.injection.module
 import android.content.Context
 import com.iamsdt.shokherschool.data.database.MyDatabase
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
+import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
+import com.iamsdt.shokherschool.data.database.dao.PageTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
 import dagger.Module
@@ -15,6 +17,16 @@ import dagger.Provides
  */
 @Module(includes = [ContextModule::class])
 class DBModule{
+
+    @Provides
+    @ApplicationScope
+    fun getPageTableDao(myDatabase: MyDatabase):PageTableDao
+            = myDatabase.pageTableDao
+
+    @Provides
+    @ApplicationScope
+    fun getCategoriesTableDao(myDatabase: MyDatabase):CategoriesTableDao
+            = myDatabase.categoriesTableDao
 
     @Provides
     @ApplicationScope
