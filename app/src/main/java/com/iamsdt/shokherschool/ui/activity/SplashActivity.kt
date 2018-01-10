@@ -9,6 +9,8 @@ import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.data.utilities.MyDateUtil
+import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.viewModel.SplashViewModel
@@ -33,9 +35,19 @@ class SplashActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (!DataInsertService.isRunning){
-            val intent = Intent(this@SplashActivity,DataInsertService::class.java)
-            startService(intent)
+        //check first that this day is older than 7 days
+        //because, want to run service on 7 days interval
+
+        //todo 1/10/2018 add user choice option to sync date interval
+
+        if (Utility.isTimeForRunService(this@SplashActivity)) {
+            if (!DataInsertService.isRunning) {
+                val intent = Intent(this@SplashActivity, DataInsertService::class.java)
+                startService(intent)
+
+                //save date
+                MyDateUtil.saveServiceRunningDateOnSp(this@SplashActivity)
+            }
         }
     }
 
@@ -57,7 +69,7 @@ class SplashActivity : BaseActivity() {
 
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        Timber.e(e,"Error on Splash Activity Thread")
+                        Timber.e(e, "Error on Splash Activity Thread")
                     } finally {
                         startActivity(Intent(this@SplashActivity,
                                 MainActivity::class.java))

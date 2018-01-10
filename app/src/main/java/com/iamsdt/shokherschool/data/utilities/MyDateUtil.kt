@@ -12,7 +12,6 @@ class MyDateUtil{
     companion object {
 
         fun getReadableDate(string: String): String {
-
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.US)
             val output = SimpleDateFormat("dd-MMM-yyyy",Locale.US)
             val postDate = sdf.parse(string)
@@ -53,6 +52,27 @@ class MyDateUtil{
             first
         } else {
             second
+        }
+
+        fun getDateForService(context: Context):String{
+            val sp = context.getSharedPreferences(ConstantUtil.ServiceSp,
+                    Context.MODE_PRIVATE)
+            //default value is empty
+            return sp.getString(ConstantUtil.ServiceRunningDate,
+                    "")
+        }
+
+
+        fun saveServiceRunningDateOnSp(context: Context){
+            val sdf = SimpleDateFormat("dd-MMM-yyyy",Locale.US)
+            val todayDate = sdf.format(Date())
+
+            val sp = context.getSharedPreferences(ConstantUtil.ServiceSp,
+                    Context.MODE_PRIVATE)
+
+            val editor = sp.edit()
+            editor.putString(ConstantUtil.ServiceRunningDate,todayDate)
+            editor.apply()
         }
     }
 }

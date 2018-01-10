@@ -13,6 +13,8 @@ class ConstantUtil{
         val dateSpName = "DateSp"
         val dateSpDefaultValue = "2017-01-26T23:32:00"
 
+        val ServiceRunningDate = "ServiceRunningDate"
+        val ServiceSp = "ServiceSp"
 
         //intent parse to main activity to details activity
         val intentDetails = "IntentDetails"
