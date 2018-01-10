@@ -146,8 +146,19 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                 }
                             }
 
-                            val categories:String = post.categories.toString()
-                            val tags:String = post.tags.toString()
+                            var categories:String = post.categories.toString()
+                            var tags:String = post.tags.toString()
+
+                            //categories list will be [1,2,3,4,5]
+                            // so remove '[' and ']'
+                            val array = charArrayOf('[',']')
+                            //to convert array to vararg use *
+                            categories = categories.trim(*array)
+
+                            //same for tags
+                            tags = tags.trim(*array)
+
+
                             val commentStatus:String = post.commentStatus
 
                             val table = PostTable(id, date, author,
