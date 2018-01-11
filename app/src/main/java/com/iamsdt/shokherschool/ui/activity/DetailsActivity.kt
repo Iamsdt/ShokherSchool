@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.widget.NestedScrollView
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebResourceRequest
@@ -23,6 +24,10 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
 import javax.inject.Inject
+
+
+
+
 
 class DetailsActivity : BaseActivity() {
 
@@ -106,6 +111,14 @@ class DetailsActivity : BaseActivity() {
             }
         })
 
+        //detailsScrollView.isSmoothScrollingEnabled = true
+        detailsScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                fab.hide()
+            } else if (scrollY < oldScrollY) {
+                fab.show()
+            }
+        })
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()

@@ -42,12 +42,14 @@ class DetailsViewModel(application: Application) :
             val categoriesList = model.categories?.split(",") ?: arrayListOf()
 
             var tags = ""
-            tagsList.map { it.trim().toInt() }
-                    .forEach { tags += tagTableDao.getTagName(it) + "," }
+            tagsList.filterNot { it.isEmpty() }
+                    .map { it.trim().toInt() }
+                    .forEach { tags += tagTableDao.getTagName(it) + ", " }
 
             var categories = ""
-            categoriesList.map { it.trim().toInt() }
-                    .forEach { categories += categoriesTableDao.getCategoriesName(it) + "," }
+            categoriesList.filterNot { it.isEmpty() }
+                    .map { it.trim().toInt() }
+                    .forEach { categories += categoriesTableDao.getCategoriesName(it) + ", " }
 
             //create new model and add tags and categories
             val detailsPostModel = DetailsPostModel(model.id,
