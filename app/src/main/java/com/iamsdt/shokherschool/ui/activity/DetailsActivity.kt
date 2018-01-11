@@ -11,7 +11,9 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.iamsdt.shokherschool.R
+import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.database.dao.TagTableDao
 import com.iamsdt.shokherschool.data.model.DetailsPostModel
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.data.utilities.Utility
@@ -26,6 +28,8 @@ class DetailsActivity : BaseActivity() {
 
     @Inject lateinit var postTableDao:PostTableDao
     @Inject lateinit var picasso:Picasso
+    @Inject lateinit var categoriesTableDao:CategoriesTableDao
+    @Inject lateinit var tagTableDao:TagTableDao
 
     //view model
     private val viewModel by lazy {

@@ -32,7 +32,30 @@ class DetailsViewModel(application: Application) :
 
         AsyncTask.execute({
             val model = postTableDao.getSinglePostDetails(id)
-            htmlData!!.postValue(model)
+            val tagsList = model.tags?.split(",") ?: arrayListOf()
+            val categoriesList = model.categories?.split(",") ?: arrayListOf()
+
+            var tags = ""
+            for (t in tagsList){
+                val id = t.trim()
+
+            }
+
+            var categories = ""
+            for (c in categoriesList){
+                val id = c.trim()
+            }
+
+            //create new model and add tags and categories
+            val detailsPostModel = DetailsPostModel(model.id,
+                    model.date,
+                    model.title,
+                    model.content,
+                    model.authorName,
+                    model.authorDetails,
+                    model.authorImg,
+                    model.mediaLink,tags,categories)
+            htmlData!!.postValue(detailsPostModel)
         })
     }
 }

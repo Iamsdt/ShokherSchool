@@ -11,4 +11,6 @@ class DetailsPostModel(var id: Int? = 0,
                        var authorName: String? = "",
                        var authorDetails: String? = "",
                        var authorImg:String ?= "",
-                       var mediaLink: String? = "")
+                       var mediaLink: String? = "",
+                       var tags:String ?= "",
+                       var categories: String ?= "")
