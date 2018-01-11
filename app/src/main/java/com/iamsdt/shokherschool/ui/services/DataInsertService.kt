@@ -63,7 +63,7 @@ class DataInsertService : BaseServices() {
 
         Timber.i("Service complete")
 
-        if (isServiceCompleted()){
+        if (isServiceCompleted()) {
             Timber.i("Service complete date saved")
             MyDateUtil.saveServiceDateOnSp(baseContext)
         }
@@ -81,13 +81,13 @@ class DataInsertService : BaseServices() {
                 val tags = response?.body() ?: arrayListOf()
 
                 AsyncTask.execute({
-                    if (tags.isNotEmpty()) {
-                        tags.map { TagTable(it.count, it.name, it.id) }
-                                .forEach { tagTableDao.insert(it) }
 
-                        Timber.i("category insert finished")
-                        tagsInsertComplete = true
-                    }
+                    tags.map { TagTable(it.count, it.name, it.id) }
+                            .forEach { tagTableDao.insert(it) }
+
+                    Timber.i("category insert finished")
+                    tagsInsertComplete = true
+
                 })
 
             }
@@ -109,17 +109,16 @@ class DataInsertService : BaseServices() {
                 val categories = response?.body() ?: arrayListOf()
 
                 AsyncTask.execute({
-                    if (categories.isNotEmpty()) {
-                        for (category in categories) {
-                            val table = CategoriesTable(category.count, category.name,
-                                    category.description, category.id)
 
-                            categoriesTableDao.insert(table)
-                        }
+                    for (category in categories) {
+                        val table = CategoriesTable(category.count, category.name,
+                                category.description, category.id)
 
-                        Timber.i("category insert finished")
-                        categoriesInsertComplete = true
+                        categoriesTableDao.insert(table)
                     }
+
+                    Timber.i("category insert finished")
+                    categoriesInsertComplete = true
                 })
 
             }
@@ -140,18 +139,18 @@ class DataInsertService : BaseServices() {
                 val pages = response?.body() ?: arrayListOf()
 
                 AsyncTask.execute({
-                    if (pages.isNotEmpty()) {
-                        for (page in pages) {
-                            val table = PageTable(page.date, page.author, page.title?.rendered,
-                                    page.content?.rendered,
-                                    page.featuredMedia, page.id)
 
-                            pageTableDao.insert(table)
-                        }
+                    for (page in pages) {
+                        val table = PageTable(page.date, page.author, page.title?.rendered,
+                                page.content?.rendered,
+                                page.featuredMedia, page.id)
 
-                        Timber.i("page insert finished")
-                        pageInsertComplete = true
+                        pageTableDao.insert(table)
                     }
+
+                    Timber.i("page insert finished")
+                    pageInsertComplete = true
+
                 })
             }
 
