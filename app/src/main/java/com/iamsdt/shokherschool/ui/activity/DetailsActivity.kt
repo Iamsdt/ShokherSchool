@@ -20,7 +20,6 @@ import com.iamsdt.shokherschool.ui.viewModel.DetailsViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
-import kotlinx.android.synthetic.main.post_head.*
 import javax.inject.Inject
 
 class DetailsActivity : BaseActivity() {
@@ -41,9 +40,6 @@ class DetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
-
-        //set comment option disable
-        //d_comment_form.visibility = View.GONE
 
         //getting intent data
         val postID = intent.getIntExtra(ConstantUtil.intentDetails,0)
@@ -82,13 +78,21 @@ class DetailsActivity : BaseActivity() {
                             .show()
                 }
 
+                if (!allData.mediaLink.isNullOrEmpty()){
+                    picasso.load(allData.mediaLink).fit().into(details_img)
+                }
                 val content =allData.content
                 webView.loadData(content, "text/html", "UTF-8")
                 details_mockLayout.visibility = View.GONE
+
+                if(!allData.authorImg.isNullOrEmpty()){
+                    picasso.load(allData.authorImg).fit().into(d_authorImg)
+                }
+
                 //set all the text
-                d_title.text = allData.title ?: "no title found"
-                d_date.text = allData.date ?: "no post date found"
-                d_author.text = allData.authorName ?: "no author found"
+                details_title.text = allData.title
+                d_authorName.text = allData.authorName
+                d_authorDetails.text = allData.authorDetails
             }
         })
 

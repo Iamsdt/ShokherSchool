@@ -5,47 +5,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/detailsScrollView"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.iamsdt.shokherschool.ui.activity.DetailsActivity"
     tools:showIn="@layout/activity_details">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/details_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="4">
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            tools:text="নেট ছাড়া গুগল ম্যাপ" />
 
-            <include layout="@layout/post_head"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/details_img"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:layout_weight="1"/>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/amber_800"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/amber_800" />
 
-            <WebView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/d_webview"
-                android:layout_marginStart="8dp"
+        <WebView
+            android:id="@+id/d_webview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="2"
+            android:padding="5dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/amber_800" />
+
+        <TextView
+            android:id="@+id/d_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            tools:text="TextView" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false">
+
+            <TextView
+                android:id="@+id/d_authorName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
                 android:padding="5dp"
-                android:layout_weight="2"/>
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/d_authorImg"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Shudipto" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/amber_800"/>
+            <ImageView
+                android:id="@+id/d_authorImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/ic_launcher" />
 
-            <!--
-            <include layout="@layout/comment_form"
-                android:id="@+id/d_comment_form"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/> -->
-
-        </LinearLayout>
+            <TextView
+                android:id="@+id/d_authorDetails"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/d_authorImg"
+                app:layout_constraintTop_toBottomOf="@+id/d_authorName"
+                tools:text="I am a very simple man,I am a very simple man," />
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
