@@ -45,6 +45,9 @@ class DetailsActivity : BaseActivity() {
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
 
+        //debug only 1/11/2018 remove later
+        details_mockLayout.visibility = View.VISIBLE
+
         //getting intent data
         val postID = intent.getIntExtra(ConstantUtil.intentDetails,0)
 
@@ -73,7 +76,7 @@ class DetailsActivity : BaseActivity() {
         settings.allowContentAccess = false
         settings.loadWithOverviewMode = false
 
-        viewModel.getData(postID,postTableDao)?.observe(this, Observer<DetailsPostModel> { allData ->
+        viewModel.getData(postID,postTableDao,categoriesTableDao,tagTableDao)?.observe(this, Observer<DetailsPostModel> { allData ->
             if (allData != null) {
 
                 //if internet is not present show a message
@@ -97,6 +100,9 @@ class DetailsActivity : BaseActivity() {
                 details_title.text = allData.title
                 d_authorName.text = allData.authorName
                 d_authorDetails.text = allData.authorDetails
+
+                val tag = "Categories: ${allData.categories}  Tags: ${allData.tags}"
+                d_tags.text = tag
             }
         })
 
