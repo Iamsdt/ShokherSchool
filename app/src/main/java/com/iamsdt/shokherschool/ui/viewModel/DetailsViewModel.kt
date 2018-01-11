@@ -4,7 +4,9 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.os.AsyncTask
+import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.database.dao.TagTableDao
 import com.iamsdt.shokherschool.data.model.DetailsPostModel
 
 /**
@@ -16,19 +18,23 @@ class DetailsViewModel(application: Application) :
 
     private var htmlData: MutableLiveData<DetailsPostModel>? = null
 
-    fun getData(postID: Int,postTableDao: PostTableDao): MutableLiveData<DetailsPostModel>? {
+    fun getData(postID: Int, postTableDao: PostTableDao,
+                categoriesTableDao: CategoriesTableDao,
+                tagTableDao: TagTableDao): MutableLiveData<DetailsPostModel>? {
 
         if (htmlData == null) {
             htmlData = MutableLiveData()
 
-            initializeData(postID,postTableDao)
+            initializeData(postID, postTableDao, categoriesTableDao, tagTableDao)
         }
 
         return htmlData
     }
 
 
-    private fun initializeData(id: Int,postTableDao: PostTableDao) {
+    private fun initializeData(id: Int, postTableDao: PostTableDao,
+                               categoriesTableDao: CategoriesTableDao,
+                               tagTableDao: TagTableDao) {
 
         AsyncTask.execute({
             val model = postTableDao.getSinglePostDetails(id)
@@ -36,15 +42,12 @@ class DetailsViewModel(application: Application) :
             val categoriesList = model.categories?.split(",") ?: arrayListOf()
 
             var tags = ""
-            for (t in tagsList){
-                val id = t.trim()
-
-            }
+            tagsList.map { it.trim().toInt() }
+                    .forEach { tags += tagTableDao.getTagName(it) + "," }
 
             var categories = ""
-            for (c in categoriesList){
-                val id = c.trim()
-            }
+            categoriesList.map { it.trim().toInt() }
+                    .forEach { categories += categoriesTableDao.getCategoriesName(it) + "," }
 
             //create new model and add tags and categories
             val detailsPostModel = DetailsPostModel(model.id,
@@ -54,7 +57,7 @@ class DetailsViewModel(application: Application) :
                     model.authorName,
                     model.authorDetails,
                     model.authorImg,
-                    model.mediaLink,tags,categories)
+                    model.mediaLink, tags, categories)
             htmlData!!.postValue(detailsPostModel)
         })
     }
