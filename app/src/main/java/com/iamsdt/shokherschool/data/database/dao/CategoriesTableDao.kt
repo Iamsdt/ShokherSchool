@@ -17,6 +17,9 @@ interface CategoriesTableDao {
     @get:Query("Select * From CategoriesTable")
     val getAllData: List<CategoriesTable>
 
+    @Query("Select CategoriesTable.categories_name From CategoriesTable where CategoriesTable.categories_id = :arg0")
+    fun getCategoriesName(arg0:Int):String
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(categories: CategoriesTable):Int
 
