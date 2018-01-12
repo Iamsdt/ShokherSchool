@@ -49,11 +49,16 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
                             .putExtra(ConstantUtil.intentDetails,post.id))
         }
 
-        holder.bookmarkImg.setOnClickListener({
-            AsyncTask.execute({
-                postTableDao.setBookmark(post.id)
+        if (post.id == 1){
+            //change image bcg
+            holder.bookmarkImg.background = context?.getDrawable(R.drawable.ic_bookmark)
+        } else{
+            holder.bookmarkImg.setOnClickListener({
+                AsyncTask.execute({
+                    postTableDao.setBookmark(post.id)
+                })
             })
-        })
+        }
     }
 
     fun replaceList(post: List<PostModel>) {
