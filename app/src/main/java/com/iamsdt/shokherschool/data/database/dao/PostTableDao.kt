@@ -32,7 +32,8 @@ interface PostTableDao {
             " PostTable.post_date AS date," +
             " PostTable.post_title AS title," +
             " AuthorTable.author_name AS author," +
-            " PostTable.media_thumbnail_pic AS mediaLink" +
+            " PostTable.media_medium_pic AS mediaLink," +
+            " PostTable.bookmark AS bookmark" +
             " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
             " order by PostTable.post_date DESC")
@@ -45,7 +46,7 @@ interface PostTableDao {
             " AuthorTable.author_name AS authorName," +
             " AuthorTable.author_description AS authorDetails," +
             " AuthorTable.author_avatarUrl24 AS authorImg," +
-            " PostTable.media_thumbnail_pic AS mediaLink," +
+            " PostTable.media_medium_pic AS mediaLink," +
             " PostTable.tags As tags," +
             " PostTable.postCategories as categories" +
             " FROM PostTable, AuthorTable" +
@@ -58,12 +59,16 @@ interface PostTableDao {
             " PostTable.post_date AS date," +
             " PostTable.post_title AS title," +
             " AuthorTable.author_name AS author," +
-            " PostTable.media_thumbnail_pic AS mediaLink" +
+            " PostTable.media_medium_pic AS mediaLink," +
+            " PostTable.bookmark AS bookmark" +
             " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
             " And PostTable.bookmark = :arg0 "+
             " order by PostTable.post_date DESC")
     fun getBookmarkData(arg0: Int):List<PostModel>
+
+    @Query("update PostTable set bookmark = 1 where PostTable.post_id = :arg0")
+    fun setBookmark(arg0: Int):Int
 
     @Delete
     fun delete(post: PostTable):Int

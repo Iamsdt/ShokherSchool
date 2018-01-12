@@ -23,6 +23,6 @@ class PostTable(@PrimaryKey
                 var postCategories:String ?= "",
                 var tags:String ?= "",
                 var commentStatus:String ?= "",
-                var bookmark:Int ?= 0, //0 for false
+                var bookmark:Int = 0, //0 for false
                 @Embedded
                 var mediaTable:MediaTable ?= MediaTable())

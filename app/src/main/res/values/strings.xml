@@ -15,4 +15,5 @@
     <string name="on">ON:</string>
     <string name="post_image">post image</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_bookmark">BookmarkActivity</string>
 </resources>
