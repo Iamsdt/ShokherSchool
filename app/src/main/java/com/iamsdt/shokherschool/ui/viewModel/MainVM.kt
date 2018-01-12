@@ -140,9 +140,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
                                     mediaTable = MediaTable(mediaData?.id,
                                             mediaData?.title?.rendered,
-                                            mediaDetails?.thumbnail?.sourceUrl,
-                                            mediaDetails?.medium?.sourceUrl,
-                                            mediaDetails?.full?.sourceUrl)
+                                            mediaDetails?.medium?.sourceUrl)
                                 }
                             }
 
