@@ -142,8 +142,9 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                             //same for tags
                             tags = tags.trim(*array)
 
+                            //0 for bookmark
                             val table = PostTable(id, date, author,
-                                    title,content,categories,tags,commentStatus,mediaTable)
+                                    title,content,categories,tags,commentStatus,0,mediaTable)
 
                             //insert data
                             postTableDao.insert(table)

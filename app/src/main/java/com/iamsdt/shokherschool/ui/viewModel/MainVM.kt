@@ -162,7 +162,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             val commentStatus:String = post.commentStatus
 
                             val table = PostTable(id, date, author,
-                                    title,content,categories,tags,commentStatus,mediaTable)
+                                    title,content,categories,tags,commentStatus,0, mediaTable)
 
                             //insert data
                             postTableDao?.insert(table)
