@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.iamsdt.shokherschool.data.database.MyDatabase;
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao;
-import com.iamsdt.shokherschool.data.database.dao.MediaTableDao;
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao;
 import com.iamsdt.shokherschool.data.database.table.AuthorTable;
 import com.iamsdt.shokherschool.data.database.table.MediaTable;
@@ -31,7 +30,7 @@ public class NewDBTestJava {
 
     //dao
     private PostTableDao postTableDao;
-    private MediaTableDao mediaTableDao;
+    //private MediaTableDao mediaTableDao;
     private AuthorTableDao authorTableDao;
 
     @Before
@@ -42,14 +41,14 @@ public class NewDBTestJava {
 
         authorTableDao = myDatabase.getAuthorTableDao();
         postTableDao = myDatabase.getPostTableDao();
-        mediaTableDao = myDatabase.getMediaTableDao();
+        //mediaTableDao = myDatabase.getMediaTableDao();
 
     }
 
     @Test
     public void insert() throws Exception {
-        PostTable post1 = new PostTable(1,"12/15/17",1,"New post",1);
-        PostTable post2 = new PostTable(2,"12/15/17",1,"New post",2);
+        PostTable post1 = new PostTable();
+        PostTable post2 = new PostTable();
 
 
         MediaTable media1 = new MediaTable(1,"profile","thumb","","");
@@ -68,8 +67,8 @@ public class NewDBTestJava {
         po.add(postTableDao.insert(post2));
 
         //media insert
-        me.add(mediaTableDao.insert(media1));
-        me.add(mediaTableDao.insert(media2));
+        //me.add(mediaTableDao.insert(media1));
+        //me.add(mediaTableDao.insert(media2));
 
         //author insert
         au.add(authorTableDao.insert(author1));

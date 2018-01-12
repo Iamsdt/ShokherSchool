@@ -40,11 +40,11 @@ public class DatabaseTestJava {
     @Test
     public void dataCheck() throws Exception {
 
-        PostTable post = new PostTable(1,"2017",1,"title1",1);
+        PostTable post = new PostTable();
 
-        PostTable post2 = new PostTable(2,"2018",1,"title2",1);
+        PostTable post2 = new PostTable();
 
-        PostTable post3 = new PostTable(3,"2019",1,"title3",1);
+        PostTable post3 = new PostTable();
 
 
         postDao.insert(post);
