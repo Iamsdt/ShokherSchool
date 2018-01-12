@@ -1,11 +1,8 @@
 package com.iamsdt.shokherschool.injection
 
-import com.iamsdt.shokherschool.ui.activity.DetailsActivity
-import com.iamsdt.shokherschool.ui.activity.MainActivity
-import com.iamsdt.shokherschool.ui.activity.SettingsActivity
-import com.iamsdt.shokherschool.ui.activity.SplashActivity
 import com.iamsdt.shokherschool.injection.module.ActivityModule
 import com.iamsdt.shokherschool.injection.scopes.ActivityScope
+import com.iamsdt.shokherschool.ui.activity.*
 import dagger.Component
 
 /**
@@ -22,4 +19,5 @@ interface ActivityComponent{
     fun inject(settingsActivity: SettingsActivity)
     fun inject(detailsActivity: DetailsActivity)
     fun inject(splashActivity: SplashActivity)
+    fun inject(bookmarkActivity: BookmarkActivity)
 }

@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.injection.module
 
+import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.injection.scopes.ActivityScope
 import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
@@ -17,6 +18,6 @@ class ActivityModule(private val activity: BaseActivity) {
 
     @Provides
     @ActivityScope
-    fun getAdapter(picasso: Picasso): MainAdapter
-            = MainAdapter(picasso, activity)
+    fun getAdapter(picasso: Picasso,postTableDao: PostTableDao): MainAdapter
+            = MainAdapter(picasso, activity,postTableDao)
 }
