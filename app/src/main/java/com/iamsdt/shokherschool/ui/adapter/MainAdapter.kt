@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
@@ -49,16 +50,23 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
                             .putExtra(ConstantUtil.intentDetails,post.id))
         }
 
-        if (post.id == 1){
+        val book = post.bookmark
+
+        if (book == 1){
             //change image bcg
-            holder.bookmarkImg.background = context?.getDrawable(R.drawable.ic_bookmark_done)
-        } else{
-            holder.bookmarkImg.setOnClickListener({
+            holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
+        }
+
+        holder.bookmarkImg.setOnClickListener({
+            if (post.bookmark == 1){
                 AsyncTask.execute({
                     postTableDao.setBookmark(post.id)
                 })
-            })
-        }
+                holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
+            } else{
+                Toast.makeText(context,"Already bookmarked",Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun replaceList(post: List<PostModel>) {
