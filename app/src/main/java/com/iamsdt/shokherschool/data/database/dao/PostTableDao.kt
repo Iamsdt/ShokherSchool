@@ -54,17 +54,16 @@ interface PostTableDao {
             " order by PostTable.post_date DESC")
     fun getSinglePostDetails(arg0:Int):DetailsPostModel
 
-    @Query("Select * From PostTable where PostTable.post_id = :arg0")
-    fun getSinglePost(arg0:Int):List<PostTable>
-
-    @Query("Select post_id From PostTable where PostTable.post_id = :arg0")
-    fun getPostID(arg0:Int):Int
-
-    @Query("Select post_date From PostTable where PostTable.post_id = :arg0")
-    fun getPostDate(arg0:Int):String
-
-    @Query("Select post_authorID From PostTable where PostTable.post_id = :arg0")
-    fun getPostAuthor(arg0:Int):Int
+    @Query("SELECT PostTable.post_id AS id," +
+            " PostTable.post_date AS date," +
+            " PostTable.post_title AS title," +
+            " AuthorTable.author_name AS author," +
+            " PostTable.media_thumbnail_pic AS mediaLink" +
+            " FROM PostTable, AuthorTable" +
+            " WHERE PostTable.post_authorID = AuthorTable.author_id" +
+            " And PostTable.bookmark = :arg0 "+
+            " order by PostTable.post_date DESC")
+    fun getBookmarkData(arg0: Int):List<PostModel>
 
     @Delete
     fun delete(post: PostTable):Int
