@@ -67,6 +67,7 @@ interface PostTableDao {
             " order by PostTable.post_date DESC")
     fun getBookmarkData(arg0: Int):List<PostModel>
 
+
     @Query("update PostTable set bookmark = 1 where PostTable.post_id = :arg0")
     fun setBookmark(arg0: Int):Int
 
