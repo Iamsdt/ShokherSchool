@@ -51,7 +51,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
 
         if (post.id == 1){
             //change image bcg
-            holder.bookmarkImg.background = context?.getDrawable(R.drawable.ic_bookmark)
+            holder.bookmarkImg.background = context?.getDrawable(R.drawable.ic_bookmark_done)
         } else{
             holder.bookmarkImg.setOnClickListener({
                 AsyncTask.execute({
@@ -92,7 +92,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
             val link = post.mediaLink
 
             if (!link.isNullOrEmpty()) {
-                picasso.load(link).centerInside().into(image)
+                picasso.load(link).fit().into(image)
             }
         }
     }
