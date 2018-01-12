@@ -14,7 +14,6 @@ import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.viewModel.BookmarkViewModel
 import kotlinx.android.synthetic.main.activity_bookmark.*
 import kotlinx.android.synthetic.main.content_bookmark.*
-import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
 class BookmarkActivity : BaseActivity() {
@@ -37,9 +36,9 @@ class BookmarkActivity : BaseActivity() {
         val manager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false)
 
-        mainRcv.layoutManager = manager
-        mainRcv.adapter = mAdapter
-        mainRcv.itemAnimator = DefaultItemAnimator()
+        bookmarkRcv.layoutManager = manager
+        bookmarkRcv.adapter = mAdapter
+        bookmarkRcv.itemAnimator = DefaultItemAnimator()
 
         mAdapter.changeContext(this@BookmarkActivity)
 

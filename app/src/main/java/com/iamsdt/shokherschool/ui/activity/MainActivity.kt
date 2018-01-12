@@ -170,23 +170,8 @@ class MainActivity : BaseActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-                startActivity(Intent(baseContext, DetailsActivity::class.java))
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
+            R.id.nav_bookmark -> {
+                startActivity(Intent(this@MainActivity,BookmarkActivity::class.java))
             }
         }
 
