@@ -3,15 +3,18 @@ package com.iamsdt.shokherschool.ui.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.iamsdt.shokherschool.R
-import com.iamsdt.shokherschool.ui.activity.DetailsActivity
+import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import com.iamsdt.shokherschool.ui.activity.DetailsActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
 
@@ -19,7 +22,8 @@ import kotlinx.android.synthetic.main.item_row_main.view.*
 * Created by Shudipto Trafder on 11/14/2017.
 * at 12:12 AM
 */
-class MainAdapter(val picasso: Picasso,val activity: Activity) :
+class MainAdapter(val picasso: Picasso,val activity: Activity,
+                  val postTableDao: PostTableDao) :
         RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     //list
@@ -44,6 +48,12 @@ class MainAdapter(val picasso: Picasso,val activity: Activity) :
                     Intent(context,DetailsActivity::class.java)
                             .putExtra(ConstantUtil.intentDetails,post.id))
         }
+
+        holder.bookmarkImg.setOnClickListener({
+            AsyncTask.execute({
+                postTableDao.setBookmark(post.id)
+            })
+        })
     }
 
     fun replaceList(post: List<PostModel>) {
@@ -63,6 +73,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity) :
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
         val cardView:CardView = view.main_card_view
+        val bookmarkImg:ImageView = view.main_bookmark
         private val title = view.main_post_title
         private val author = view.main_post_author
         private val date = view.main_post_date
@@ -76,7 +87,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity) :
             val link = post.mediaLink
 
             if (!link.isNullOrEmpty()) {
-                picasso.load(link).fit().into(image)
+                picasso.load(link).centerInside().into(image)
             }
         }
     }
