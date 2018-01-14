@@ -173,6 +173,28 @@ class MainActivity : BaseActivity(),
             R.id.nav_bookmark -> {
                 startActivity(Intent(this@MainActivity,BookmarkActivity::class.java))
             }
+
+            R.id.nav_categories -> {
+            }
+
+            R.id.nav_setting -> {
+                startActivity(Intent(this@MainActivity,SettingsActivity::class.java))
+            }
+
+            R.id.nav_choseColor -> {
+            }
+
+            R.id.nav_about -> {
+            }
+
+            R.id.nav_copyright -> {
+            }
+
+            R.id.nav_tms -> {
+            }
+
+            R.id.nav_developer -> {
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)

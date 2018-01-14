@@ -13,21 +13,46 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Bookmark" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_categories"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Categories" />
     </group>
 
     <item android:title="@string/action_settings">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/action_settings" />
+
+            <item
+                android:id="@+id/nav_choseColor"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/action_settings" />
+        </menu>
+    </item>
+
+    <item android:title="About">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_share"
+                android:title="About" />
+
+            <item
+                android:id="@+id/nav_copyright"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Copyright" />
+
+            <item
+                android:id="@+id/nav_tms"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Terms of uses" />
+
+            <item
+                android:id="@+id/nav_developer"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Developer" />
         </menu>
     </item>
 
