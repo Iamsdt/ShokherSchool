@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.ftinc.scoop.Scoop
+import com.ftinc.scoop.ui.ScoopSettingsActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
@@ -54,6 +56,10 @@ class MainActivity : BaseActivity(),
         getComponent().inject(this)
 
         super.onCreate(savedInstanceState)
+
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -182,6 +188,7 @@ class MainActivity : BaseActivity(),
             }
 
             R.id.nav_choseColor -> {
+                ScoopSettingsActivity.createIntent(this, "Choose a color")
             }
 
             R.id.nav_about -> {
