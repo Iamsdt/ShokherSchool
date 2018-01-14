@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.ui.activity
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -45,6 +46,9 @@ class MainActivity : BaseActivity(),
 
     //rest interface to get data from server
     @Inject lateinit var wpRestInterface:WPRestInterface
+
+    //theme request code
+    private val themeRequestCode = 121
 
     //view model
     private val viewModel by lazy {
@@ -188,7 +192,9 @@ class MainActivity : BaseActivity(),
             }
 
             R.id.nav_choseColor -> {
-                ScoopSettingsActivity.createIntent(this, "Choose a color")
+                startActivityForResult(
+                        ScoopSettingsActivity.createIntent(this, "Choose a color"),
+                        themeRequestCode)
             }
 
             R.id.nav_about -> {
@@ -206,6 +212,15 @@ class MainActivity : BaseActivity(),
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == themeRequestCode && resultCode == Activity.RESULT_OK){
+            //recreate this activity
+            recreate()
+        }
     }
 
     companion object {
