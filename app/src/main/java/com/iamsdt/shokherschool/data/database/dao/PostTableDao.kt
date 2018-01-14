@@ -71,6 +71,9 @@ interface PostTableDao {
     @Query("update PostTable set bookmark = 1 where PostTable.post_id = :arg0")
     fun setBookmark(arg0: Int):Int
 
+    @Query("update PostTable set bookmark = 0 where PostTable.post_id = :arg0")
+    fun deleteBookmark(arg0: Int):Int
+
     @Delete
     fun delete(post: PostTable):Int
 
