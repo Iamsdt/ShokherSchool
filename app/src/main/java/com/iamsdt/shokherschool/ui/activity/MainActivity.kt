@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.ftinc.scoop.Scoop
 import com.ftinc.scoop.ui.ScoopSettingsActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
@@ -62,7 +61,7 @@ class MainActivity : BaseActivity(),
         super.onCreate(savedInstanceState)
 
         // Apply Scoop to the activity
-        Scoop.getInstance().apply(this)
+        //Scoop.getInstance().apply(this)
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)

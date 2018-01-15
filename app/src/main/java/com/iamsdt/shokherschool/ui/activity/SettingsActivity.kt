@@ -3,7 +3,6 @@ package com.iamsdt.shokherschool.ui.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.ftinc.scoop.Scoop
 import com.iamsdt.shokherschool.R
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -13,7 +12,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Scoop.getInstance().apply(this)
+        //Scoop.getInstance().apply(this)
 
         setContentView(R.layout.activity_settings)
         setSupportActionBar(toolbar)

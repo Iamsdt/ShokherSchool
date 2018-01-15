@@ -1,8 +1,6 @@
 package com.iamsdt.shokherschool
 
 import android.app.Application
-import android.support.v7.preference.PreferenceManager
-import com.ftinc.scoop.Scoop
 import com.iamsdt.shokherschool.injection.DaggerMyApplicationComponent
 import com.iamsdt.shokherschool.injection.MyApplicationComponent
 import com.iamsdt.shokherschool.injection.module.ContextModule
@@ -34,14 +32,12 @@ class MyApplication : Application() {
 
 
         //todo 1/14/2018 add more themes
-
-        Scoop.waffleCone()
-                .addFlavor("Default", R.style.Theme_Scoop, true)
-                .addFlavor("Light", R.style.Theme_Scoop_Light)
-                .addDayNightFlavor("DayNight", R.style.Theme_Scoop_DayNight)
-                .addFlavor("Alternate 1", R.style.Theme_Scoop_Alt1)
-                .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
-                .initialize()
+//        Scoop.waffleCone()
+//                .addFlavor("Light", R.style.AppTheme_NoActionBar,true)
+//                .addDayNightFlavor("DayNight", R.style.Theme_Scoop_DayNight)
+//                .addFlavor("Alternate 1", R.style.Theme_Scoop_Alt1)
+//                .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
+//                .initialize()
 
     }
 
