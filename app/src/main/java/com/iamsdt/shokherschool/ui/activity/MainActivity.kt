@@ -144,6 +144,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun saveDate(){
+        //fixme 1/15/2018 remove thread
         Thread(Runnable {
             viewModel.saveDate(baseContext)
             Timber.i("Date saver thread finished")
