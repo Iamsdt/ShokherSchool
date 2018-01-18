@@ -16,7 +16,7 @@ import com.iamsdt.shokherschool.R
  * at 11:08 PM
  */
 class SettingsFragment: PreferenceFragmentCompat(),
-SharedPreferences.OnSharedPreferenceChangeListener{
+        SharedPreferences.OnSharedPreferenceChangeListener{
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         // Add 'general' preferences, defined in the XML file
