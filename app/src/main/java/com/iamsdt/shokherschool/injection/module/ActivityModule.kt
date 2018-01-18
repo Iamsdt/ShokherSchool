@@ -20,4 +20,9 @@ class ActivityModule(private val activity: BaseActivity) {
     @ActivityScope
     fun getAdapter(picasso: Picasso,postTableDao: PostTableDao): MainAdapter
             = MainAdapter(picasso, activity,postTableDao)
+
+    @Provides
+    @ActivityScope
+    fun getBookmarkAdapter(picasso: Picasso,postTableDao: PostTableDao): MainAdapter
+            = MainAdapter(picasso, activity,postTableDao)
 }
