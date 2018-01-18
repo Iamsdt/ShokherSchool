@@ -47,6 +47,7 @@ class SplashActivity : BaseActivity() {
 
                 Thread({
                     try {
+                        //fixme 1/18/2018 change time
                         sleep(100)
 
                     } catch (e: Exception) {
