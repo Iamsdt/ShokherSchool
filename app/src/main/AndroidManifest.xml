@@ -37,7 +37,7 @@
         <activity
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Services -->
         <service
@@ -49,6 +49,7 @@
             android:name=".ui.activity.BookmarkActivity"
             android:label="@string/title_activity_bookmark"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.ColorActivity"></activity>
     </application>
 
 </manifest>
