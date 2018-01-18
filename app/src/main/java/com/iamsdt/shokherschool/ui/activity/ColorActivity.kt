@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.model.ThemesContract
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.ui.adapter.ClickListener
 import com.iamsdt.shokherschool.ui.adapter.ColorAdapter
 import kotlinx.android.synthetic.main.activity_color.*
@@ -22,7 +23,10 @@ class ColorActivity : AppCompatActivity(),ClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //theme
+        ThemeUtils.initialize(this)
         setContentView(R.layout.activity_color)
+
         setSupportActionBar(color_toolbar)
 
         val manager = LinearLayoutManager(this,
