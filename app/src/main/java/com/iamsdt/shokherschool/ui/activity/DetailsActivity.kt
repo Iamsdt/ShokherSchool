@@ -132,8 +132,6 @@ class DetailsActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        //buy calling android.R.id.home
-
         when(item.itemId){
             //back to home
             android.R.id.home -> onBackPressed()

@@ -11,9 +11,6 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //Scoop.getInstance().apply(this)
-
         setContentView(R.layout.activity_settings)
         setSupportActionBar(toolbar)
 
