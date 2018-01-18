@@ -11,7 +11,7 @@ import com.iamsdt.shokherschool.R
  */
 class ThemeUtils {
 
-    companion object
+    companion object{
 
     /**
      * This methods for select theme from
