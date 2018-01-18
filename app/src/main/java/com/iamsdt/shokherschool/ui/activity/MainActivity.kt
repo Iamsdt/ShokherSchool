@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.ftinc.scoop.ui.ScoopSettingsActivity
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
@@ -193,7 +192,7 @@ class MainActivity : BaseActivity(),
 
             R.id.nav_choseColor -> {
                 startActivityForResult(
-                        ScoopSettingsActivity.createIntent(this, "Choose a color"),
+                        ColorActivity.createIntent(this),
                         themeRequestCode)
             }
 

@@ -40,10 +40,6 @@ class ColorActivity : AppCompatActivity(),ClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    fun createIntent(context: Context): Intent {
-        return Intent(context, ColorActivity::class.java)
-    }
-
     /**
      * This method is for add new theme in arrayList
      * array list contain theme name and it's id
@@ -83,6 +79,12 @@ class ColorActivity : AppCompatActivity(),ClickListener {
         finish()
         startActivity(restartIntent)
         overridePendingTransition(0, 0)
+    }
+
+    companion object {
+        fun createIntent(context: Context): Intent {
+            return Intent(context, ColorActivity::class.java)
+        }
     }
 
 }
