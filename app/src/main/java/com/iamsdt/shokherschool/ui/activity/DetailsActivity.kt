@@ -2,9 +2,11 @@ package com.iamsdt.shokherschool.ui.activity
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.NestedScrollView
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebResourceRequest
@@ -24,10 +26,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
 import javax.inject.Inject
-
-
-
-
 
 class DetailsActivity : BaseActivity() {
 
@@ -127,14 +125,25 @@ class DetailsActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.details_menu,menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         //buy calling android.R.id.home
 
-        val id = item.itemId
+        when(item.itemId){
+            //back to home
+            android.R.id.home -> onBackPressed()
 
-        if (id == android.R.id.home) {
-            onBackPressed()
+            R.id.action_settings -> startActivity(Intent(this@DetailsActivity,
+                    SettingsActivity::class.java))
+
+            R.id.action_share ->{
+                //share logic
+            }
         }
 
         return super.onOptionsItemSelected(item)
