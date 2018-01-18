@@ -113,7 +113,7 @@ android {
         implementation 'joda-time:joda-time:2.9.9'
 
         //scope for theme
-        implementation 'com.52inc:scoops:1.0.0'
+        //implementation 'com.52inc:scoops:1.0.0'
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/xml'] } }
 }
