@@ -18,5 +18,9 @@ class ConstantUtil{
 
         //intent parse to main activity to details activity
         val intentDetails = "IntentDetails"
+
+        //theme
+        val colorSp = "colorSp"
+        val themeKey = "themeKey"
     }
 }
