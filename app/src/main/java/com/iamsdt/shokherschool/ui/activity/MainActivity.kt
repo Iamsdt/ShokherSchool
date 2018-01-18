@@ -184,6 +184,7 @@ class MainActivity : BaseActivity(),
             }
 
             R.id.nav_categories -> {
+
             }
 
             R.id.nav_setting -> {

@@ -49,7 +49,10 @@
             android:name=".ui.activity.BookmarkActivity"
             android:label="@string/title_activity_bookmark"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.ColorActivity"></activity>
+        <activity
+            android:name=".ui.activity.ColorActivity"
+            android:label="@string/title_activity_chooseColor"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

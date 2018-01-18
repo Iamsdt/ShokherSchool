@@ -8,4 +8,6 @@
 
     <dimen name="main_row_item">250dp</dimen>
     <dimen name="main_row_item_horizontal">150dp</dimen>
+
+    <dimen name="ic_clear_margin">16dp</dimen>
 </resources>

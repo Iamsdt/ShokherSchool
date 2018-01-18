@@ -16,6 +16,7 @@
     <string name="post_image">post image</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_bookmark">BookmarkActivity</string>
+    <string name="title_activity_chooseColor">Choose Color</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
