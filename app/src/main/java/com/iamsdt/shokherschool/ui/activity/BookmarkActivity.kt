@@ -14,7 +14,6 @@ import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.utilities.SwipeUtil
 import com.iamsdt.shokherschool.ui.adapter.BookmarksAdapter
-import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.viewModel.BookmarkViewModel
 import kotlinx.android.synthetic.main.activity_bookmark.*
@@ -24,7 +23,7 @@ import javax.inject.Inject
 class BookmarkActivity : BaseActivity() {
 
     @Inject lateinit var postTableDao: PostTableDao
-    @Inject lateinit var mAdapter: MainAdapter
+    @Inject lateinit var mAdapter: BookmarksAdapter
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(BookmarkViewModel::class.java)
@@ -47,12 +46,13 @@ class BookmarkActivity : BaseActivity() {
 
         mAdapter.changeContext(this@BookmarkActivity)
 
-        setSwipeForRecyclerView()
+        setNoFavouriteMode()
 
         viewModel.getData(postTableDao)?.observe(this, Observer { data ->
             if (data != null && data.isNotEmpty()) {
-                bookmarkProgressBar.visibility = View.GONE
+                setFavouriteMode()
                 mAdapter.replaceList(data)
+                setSwipeForRecyclerView()
             }
         })
 
@@ -61,6 +61,16 @@ class BookmarkActivity : BaseActivity() {
                     .setAction("Action", null).show()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setNoFavouriteMode(){
+        no_favouriteLayout.visibility = View.VISIBLE
+        bookmarkRcv.visibility = View.GONE
+    }
+
+    private fun setFavouriteMode(){
+        no_favouriteLayout.visibility = View.GONE
+        bookmarkRcv.visibility = View.VISIBLE
     }
 
     private fun setSwipeForRecyclerView() {

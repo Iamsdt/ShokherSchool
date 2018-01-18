@@ -20,7 +20,8 @@ import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.ui.activity.DetailsActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
-
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -138,8 +139,9 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
         return itemsPendingRemoval.contains(data)
     }
 
-    fun replaceList(post: ArrayList<PostModel>) {
-        this.list = post
+    fun replaceList(post: List<PostModel>) {
+        val li = ArrayList<PostModel>(post)
+        this.list = li
         notifyDataSetChanged()
     }
 

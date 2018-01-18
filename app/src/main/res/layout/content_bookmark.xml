@@ -8,17 +8,8 @@
     tools:context="com.iamsdt.shokherschool.ui.activity.BookmarkActivity"
     tools:showIn="@layout/activity_bookmark">
 
-    <ProgressBar
-        android:id="@+id/bookmarkProgressBar"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include layout="@layout/no_favourite"
+        android:id="@+id/no_favouriteLayout"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/bookmarkRcv"
