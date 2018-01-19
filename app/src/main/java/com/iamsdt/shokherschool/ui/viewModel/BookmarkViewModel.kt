@@ -29,7 +29,7 @@ class BookmarkViewModel(application: Application):
     private fun fillData(postTableDao: PostTableDao){
         AsyncTask.execute({
             //1 for true
-            val data = postTableDao.getBookmarkData(1)
+            val data = postTableDao.getBookmarkData()
             postData?.postValue(data)
         })
     }

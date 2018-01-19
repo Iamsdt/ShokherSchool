@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Handler
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -120,17 +119,19 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
         }
         if (list!!.contains(list!![position])) {
             list?.remove(list!![position])
-            var update: Int
-
-            Handler().post({
-
-                update = postTableDao.deleteBookmark(postID)
-
-                if (update != -1) {
-                    notifyItemRemoved(position)
-                    Snackbar.make(view, "One favourite word removed", Snackbar.LENGTH_SHORT).show()
+            var update: Int = -1
+                AsyncTask.execute({
+                    update = postTableDao.deleteBookmark(postID)
+                }).also {
+                    if (update != -1) {
+                        notifyItemRemoved(position)
+                    }
+                }.apply {
+                    if (update != -1) {
+                        notifyItemRemoved(position)
+                    }
                 }
-            })
+
         }
     }
 

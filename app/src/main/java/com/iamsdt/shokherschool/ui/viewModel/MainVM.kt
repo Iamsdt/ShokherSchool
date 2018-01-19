@@ -127,9 +127,9 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             }
 
                             val media = post.featuredMedia
-                            var mediaTable:MediaTable ?= null
+                            var mediaTable: MediaTable? = null
 
-                            if (media != 0){
+                            if (media != 0) {
 
                                 val mediaResponse = wpRestInterface?.getMediaByID(media)?.execute()
 
@@ -144,12 +144,12 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                                 }
                             }
 
-                            var categories:String = post.categories.toString()
-                            var tags:String = post.tags.toString()
+                            var categories: String = post.categories.toString()
+                            var tags: String = post.tags.toString()
 
                             //categories list will be [1,2,3,4,5]
                             // so remove '[' and ']'
-                            val array = charArrayOf('[',']')
+                            val array = charArrayOf('[', ']')
                             //to convert array to vararg use *
                             categories = categories.trim(*array)
 
@@ -157,10 +157,10 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             tags = tags.trim(*array)
 
 
-                            val commentStatus:String = post.commentStatus
+                            val commentStatus: String = post.commentStatus
 
                             val table = PostTable(id, date, author,
-                                    title,content,categories,tags,commentStatus,0, mediaTable)
+                                    title, content, categories, tags, commentStatus, 0, mediaTable)
 
                             //insert data
                             postTableDao?.insert(table)
@@ -236,16 +236,12 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
     fun requestNewPost(wpRestInterface: WPRestInterface,
                        date: String) {
-
-        AsyncTask.execute({
-            val call = wpRestInterface.getFilterPostList(date)
-            Timber.i("Request for new query data")
-            Timber.i("Date before: $date")
-            addRemoteData(call)
-            //show toast message
-            MainActivity.showNewDataToast = true
-            Timber.i("new request finished")
-        })
-
+        val call = wpRestInterface.getFilterPostList(date)
+        Timber.i("Request for new query data")
+        Timber.i("Date before: $date")
+        addRemoteData(call)
+        //show toast message
+        MainActivity.showNewDataToast = true
+        Timber.i("new request finished")
     }
 }

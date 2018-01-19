@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.view.MenuItem
 import android.view.View
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
@@ -63,20 +64,20 @@ class BookmarkActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setNoFavouriteMode(){
+    private fun setNoFavouriteMode() {
         no_favouriteLayout.visibility = View.VISIBLE
         bookmarkRcv.visibility = View.GONE
     }
 
-    private fun setFavouriteMode(){
+    private fun setFavouriteMode() {
         no_favouriteLayout.visibility = View.GONE
         bookmarkRcv.visibility = View.VISIBLE
     }
 
     private fun setSwipeForRecyclerView() {
 
-        val swipeHelper = object : SwipeUtil(0, ItemTouchHelper.START
-                or ItemTouchHelper.END, this) {
+        val swipeHelper = object : SwipeUtil(0,
+                ItemTouchHelper.START or ItemTouchHelper.END, this) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val swipedPosition = viewHolder.adapterPosition
@@ -84,7 +85,8 @@ class BookmarkActivity : BaseActivity() {
                 adapter.pendingRemoval(swipedPosition, bookmarkCoordinatorLayout)
             }
 
-            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+            override fun getSwipeDirs(recyclerView: RecyclerView,
+                                      viewHolder: RecyclerView.ViewHolder): Int {
                 val position = viewHolder.adapterPosition
                 val adapter = recyclerView.adapter as BookmarksAdapter
                 return if (adapter.isPendingRemoval(position)) {
@@ -103,4 +105,14 @@ class BookmarkActivity : BaseActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        //buy calling android.R.id.home
+        val id = item.itemId
+        if (id == android.R.id.home) {
+            onBackPressed()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 }

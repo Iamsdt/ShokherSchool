@@ -53,19 +53,44 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
         val book = post.bookmark
 
         if (book == 1){
-            //change image bcg
             holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
         }
 
         holder.bookmarkImg.setOnClickListener({
-            if (post.bookmark == 1){
-                AsyncTask.execute({
-                    postTableDao.setBookmark(post.id)
-                })
-                holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
-            } else{
-                Toast.makeText(context,"Already bookmarked",Toast.LENGTH_SHORT).show()
+            var set = 0
+            var delete = 0
+            AsyncTask.execute({
+                if (book == 0){
+                    set = postTableDao.setBookmark(post.id)
+                } else {
+                    delete = postTableDao.deleteBookmark(post.id)
+                }
+            }).also {
+                if (set > 0){
+                    Toast.makeText(context,"Bookmarked added",Toast.LENGTH_SHORT).show()
+                    holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
+
+                }
+
+                if (delete > 0){
+                    Toast.makeText(context,"Bookmarked deleted",Toast.LENGTH_SHORT).show()
+                    holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark))
+                }
+            }.apply {
+                if (set > 0){
+                    Toast.makeText(context,"Bookmarked added",Toast.LENGTH_SHORT).show()
+                    holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
+
+                }
+
+                if (delete > 0){
+                    Toast.makeText(context,"Bookmarked deleted",Toast.LENGTH_SHORT).show()
+                    holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark))
+                }
+
             }
+
+            //holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
         })
     }
 
