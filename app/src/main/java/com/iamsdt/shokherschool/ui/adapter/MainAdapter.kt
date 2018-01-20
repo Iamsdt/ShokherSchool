@@ -77,11 +77,17 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
                     if (set > 0){
                         Toast.makeText(context,"Bookmarked added", Toast.LENGTH_SHORT).show()
                         holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark_done))
+
+                        //notify item is changed
+                        notifyDataSetChanged()
                     }
 
                     if (delete > 0){
                         Toast.makeText(context,"Bookmarked deleted", Toast.LENGTH_SHORT).show()
                         holder.bookmarkImg.setImageDrawable(context?.getDrawable(R.drawable.ic_bookmark))
+
+                        //notify item is changed
+                        notifyDataSetChanged()
                     }
                 })
 
