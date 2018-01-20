@@ -22,9 +22,11 @@ import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.viewModel.DetailsViewModel
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_details.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class DetailsActivity : BaseActivity() {
@@ -89,14 +91,39 @@ class DetailsActivity : BaseActivity() {
                 }
 
                 if (!allData.mediaLink.isNullOrEmpty()){
-                    picasso.load(allData.mediaLink).fit().into(details_img)
+                    picasso.load(allData.mediaLink).fit()
+                            .centerInside().into(details_img,object : Callback {
+                        override fun onSuccess() {
+                            //nothing to do
+                            Timber.i(picasso.snapshot.downloadCount.toString())
+                        }
+
+                        override fun onError() {
+                            details_img.visibility = View.GONE
+                        }
+
+                    })
+                    Timber.i("picasso id: $picasso")
+                    Timber.i(picasso.snapshot.toString())
+                } else{
+                    details_img.visibility = View.GONE
                 }
                 val content =allData.content
                 webView.loadData(content, "text/html", "UTF-8")
                 details_mockLayout.visibility = View.GONE
 
                 if(!allData.authorImg.isNullOrEmpty()){
-                    picasso.load(allData.authorImg).fit().into(d_authorImg)
+                    picasso.load(allData.authorImg).fit().into(d_authorImg,object : Callback {
+                        override fun onSuccess() {
+                            //nothing to do
+                        }
+
+                        override fun onError() {
+                            d_authorImg.visibility = View.GONE
+                        }
+
+                    })
+                    Timber.i("picasso id: $picasso")
                 }
 
                 //set all the text

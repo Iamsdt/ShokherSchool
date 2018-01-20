@@ -109,7 +109,7 @@ class MainActivity : BaseActivity(),
                 val endHasBeenReached = lastVisible + 5 >= totalItemCount
                 if (totalItemCount > 0 && endHasBeenReached) {
                     //completed 1/1/2018 prevent multiple request
-                    if (!request){
+                    if (!request && Utility.isNetworkAvailable(this@MainActivity)){
                         viewModel.requestNewPost(wpRestInterface,
                                 MyDateUtil.getDate(this@MainActivity))
                         request = true

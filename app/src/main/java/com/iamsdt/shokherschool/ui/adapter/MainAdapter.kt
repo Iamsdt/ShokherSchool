@@ -18,6 +18,7 @@ import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.ui.activity.DetailsActivity
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
 import timber.log.Timber
@@ -120,7 +121,16 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
             val link = post.mediaLink
 
             if (!link.isNullOrEmpty()) {
-                picasso.load(link).fit().into(image)
+                picasso.load(link).fit().into(image,object :Callback{
+                    override fun onSuccess() {
+                        //nothing to do
+                    }
+
+                    override fun onError() {
+                        image.visibility = View.GONE
+                    }
+
+                })
                 Timber.i("picasso id: $picasso")
             }
         }
