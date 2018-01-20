@@ -3,15 +3,18 @@ package com.iamsdt.shokherschool.ui.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
@@ -19,6 +22,7 @@ import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.ui.activity.DetailsActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
+import kotlinx.android.synthetic.main.undo_layout.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,8 +34,6 @@ import kotlin.collections.ArrayList
 class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
                        val postTableDao: PostTableDao):
         RecyclerView.Adapter<BookmarksAdapter.MyViewHolder>() {
-
-    private val PENDING_REMOVAL_TIMEOUT = 3000 // 3sec
 
     // handler for running delayed runnable
     private val handler = Handler()
@@ -56,31 +58,34 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
 
     override fun onBindViewHolder(holder: BookmarksAdapter.MyViewHolder?, position: Int) {
         val post = list!![position]
-        holder?.bindTo(post)
 
-        holder!!.cardView.setOnClickListener {
-            mContext?.startActivity(
-                    Intent(mContext, DetailsActivity::class.java)
-                            .putExtra(ConstantUtil.intentDetails,post.id))
-        }
+        if (itemsPendingRemoval.contains(post.id)) {
+            holder!!.cardView.visibility = View.GONE
+            holder.undoLayout.visibility = View.VISIBLE
 
-        val book = post.bookmark
+            //undo click listener
+            holder.undo.setOnClickListener({
+                undoOpt(post.id)
+            })
+        } else{
+            //show regular layout
+            holder!!.cardView.visibility = View.VISIBLE
+            holder.undoLayout.visibility = View.GONE
 
-        if (book == 1){
-            //change image bcg
-            holder.bookmarkImg.setImageDrawable(mContext?.getDrawable(R.drawable.ic_bookmark_done))
-        }
+            holder.bindTo(post)
 
-        holder.bookmarkImg.setOnClickListener({
-            if (post.bookmark == 1){
-                AsyncTask.execute({
-                    postTableDao.setBookmark(post.id)
-                })
-                holder.bookmarkImg.setImageDrawable(mContext?.getDrawable(R.drawable.ic_bookmark_done))
-            } else{
-                Toast.makeText(mContext,"Already bookmarked", Toast.LENGTH_SHORT).show()
+            holder.cardView.setOnClickListener {
+                mContext?.startActivity(
+                        Intent(mContext, DetailsActivity::class.java)
+                                .putExtra(ConstantUtil.intentDetails,post.id))
             }
-        })
+
+            val book = post.bookmark
+            if (book == 1){
+                //change image bcg
+                holder.bookmarkImg.setImageDrawable(mContext?.getDrawable(R.drawable.ic_bookmark_done))
+            }
+        }
     }
 
     private fun undoOpt(postId: Int) {
@@ -119,18 +124,23 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
         }
         if (list!!.contains(list!![position])) {
             list?.remove(list!![position])
-            var update: Int = -1
-                AsyncTask.execute({
-                    update = postTableDao.deleteBookmark(postID)
-                }).also {
-                    if (update != -1) {
+            var update: Int
+
+            val thread = HandlerThread("Bookmark")
+            thread.start()
+            Handler(thread.looper).post({
+
+                update = postTableDao.deleteBookmark(postID)
+
+                if (update != -1){
+                    Handler(Looper.getMainLooper()).post({
                         notifyItemRemoved(position)
-                    }
-                }.apply {
-                    if (update != -1) {
-                        notifyItemRemoved(position)
-                    }
+                        Snackbar.make(view,"One Item removed",Snackbar.LENGTH_SHORT).show()
+                    })
                 }
+
+                thread.quitSafely()
+            })
 
         }
     }
@@ -150,7 +160,7 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent!!.context)
-                .inflate(R.layout.item_row_main, parent, false)
+                .inflate(R.layout.bookmark_item, parent, false)
 
         return MyViewHolder(view)
     }
@@ -164,6 +174,9 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
         private val date = view.main_post_date
 
         private val image = view.main_post_img
+
+        val undo:TextView = view.undoBtn
+        val undoLayout:LinearLayout = view.swipeLayout
 
         fun bindTo(post: PostModel) {
             title.text = post.title
