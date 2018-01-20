@@ -20,7 +20,7 @@ import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.ui.activity.DetailsActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
-
+import timber.log.Timber
 
 
 /**
@@ -121,6 +121,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
 
             if (!link.isNullOrEmpty()) {
                 picasso.load(link).fit().into(image)
+                Timber.i("picasso id: $picasso")
             }
         }
     }
