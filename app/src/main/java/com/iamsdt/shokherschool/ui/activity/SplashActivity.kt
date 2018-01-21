@@ -10,6 +10,7 @@ import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.utilities.MyDateUtil
+import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.services.DataInsertService
@@ -38,6 +39,9 @@ class SplashActivity : BaseActivity() {
         getComponent().inject(this)
 
         super.onCreate(savedInstanceState)
+
+        //set theme
+        ThemeUtils.initialize(this)
         setContentView(R.layout.activity_splash)
         setSupportActionBar(toolbar)
 

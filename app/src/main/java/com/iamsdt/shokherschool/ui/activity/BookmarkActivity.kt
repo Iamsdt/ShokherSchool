@@ -14,6 +14,7 @@ import android.view.View
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.utilities.SwipeUtil
+import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.ui.adapter.BookmarksAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.viewModel.BookmarkViewModel
@@ -35,6 +36,8 @@ class BookmarkActivity : BaseActivity() {
         getComponent().inject(this)
 
         super.onCreate(savedInstanceState)
+        //set theme
+        ThemeUtils.initialize(this)
         setContentView(R.layout.activity_bookmark)
         setSupportActionBar(toolbar)
 

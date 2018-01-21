@@ -21,6 +21,7 @@ import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.utilities.MyDateUtil
+import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
@@ -58,10 +59,8 @@ class MainActivity : BaseActivity(),
         getComponent().inject(this)
 
         super.onCreate(savedInstanceState)
-
-        // Apply Scoop to the activity
-        //Scoop.getInstance().apply(this)
-
+        //set theme
+        ThemeUtils.initialize(this)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -201,9 +200,6 @@ class MainActivity : BaseActivity(),
             }
 
             R.id.nav_tms -> {
-            }
-
-            R.id.nav_developer -> {
             }
         }
 

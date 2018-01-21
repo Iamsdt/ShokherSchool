@@ -19,6 +19,7 @@ import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.database.dao.TagTableDao
 import com.iamsdt.shokherschool.data.model.DetailsPostModel
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.viewModel.DetailsViewModel
@@ -47,6 +48,8 @@ class DetailsActivity : BaseActivity() {
         getComponent().inject(this)
 
         super.onCreate(savedInstanceState)
+        //set theme
+        ThemeUtils.initialize(this)
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
 
