@@ -11,13 +11,12 @@
         android:layout_height="match_parent"
         android:backgroundTintMode="src_in">
 
-        <!--//fixme 1/12/2018 change according to layout size -->
         <ImageView
             android:id="@+id/main_post_img"
             android:layout_width="0dp"
             android:layout_height="@dimen/main_row_item_horizontal"
             android:layout_marginEnd="10dp"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="2dp"
             android:contentDescription="@string/post_image"
             app:layout_constraintEnd_toStartOf="@+id/textView7"
