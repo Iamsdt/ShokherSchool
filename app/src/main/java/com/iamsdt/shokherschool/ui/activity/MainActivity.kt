@@ -80,7 +80,6 @@ class MainActivity : BaseActivity(),
                         adapter.replaceList(allPost)
                         mainProgressBar.visibility = View.GONE
                         Timber.i("Item Size of adapter:${allPost.size}")
-                        saveDate()
 
                         //if internet is not present show a message
                         if (!Utility.isNetworkAvailable(this@MainActivity)){
@@ -94,6 +93,9 @@ class MainActivity : BaseActivity(),
                             showNewDataToast = false
 
                         }
+
+                        //save date to sp
+                        adapter.saveDate()
                     }
                 })
 
@@ -139,11 +141,6 @@ class MainActivity : BaseActivity(),
                 stopService(intent)
             }
         }
-    }
-
-    private fun saveDate(){
-        //complete 1/15/2018 remove thread
-        viewModel.saveDate(baseContext)
     }
 
     override fun onBackPressed() {

@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.data.database.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.iamsdt.shokherschool.data.database.table.PostTable
 import com.iamsdt.shokherschool.data.model.DetailsPostModel
@@ -37,7 +38,7 @@ interface PostTableDao {
             " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
             " order by PostTable.post_date DESC")
-    val getPostData:List<PostModel>
+    val getPostData:LiveData<List<PostModel>>
 
     @Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +

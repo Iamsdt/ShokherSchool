@@ -17,11 +17,14 @@ import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import com.iamsdt.shokherschool.data.utilities.MyDateUtil
 import com.iamsdt.shokherschool.ui.activity.DetailsActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_row_main.view.*
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -35,6 +38,10 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
     //list
     private var list: List<PostModel>? = null
     private var context:Context ?= null
+
+    //date
+    private var dateList = ArrayList<String>()
+    private var dateCheckedList = ArrayList<String>()
 
     init {
         context = activity.applicationContext
@@ -118,12 +125,17 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
             title.text = post.title
             author.text = post.author
             date.text = post.date
+
             val link = post.mediaLink
+
+            if (!dateList.contains(post.date)){
+                dateList.add(post.date!!)
+            }
 
             if (!link.isNullOrEmpty()) {
                 picasso.load(link).fit().into(image,object :Callback{
                     override fun onSuccess() {
-                        //nothing to do
+
                     }
 
                     override fun onError() {
@@ -134,6 +146,29 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
                 Timber.i("picasso id: $picasso")
             }
         }
+    }
+
+    fun saveDate() {
+
+        val pattern = "yyyy-MM-dd'T'HH:mm:ss"
+        val dtf = SimpleDateFormat(pattern, Locale.getDefault())
+
+        //current date and time
+        var today: Date = dtf.parse(dtf.format(Date()))
+
+        for (n in dateList) {
+            if (dateCheckedList.contains(n)) return
+            val date2 = dtf.parse(n)
+            val date3 = MyDateUtil.compareTwoDate(today, date2)
+
+            Timber.i("Date:$date2 and $today -> $date3")
+
+            today = date3
+            dateCheckedList.add(n)
+        }
+        val spSave = dtf.format(today)
+        MyDateUtil.setDateOnSp(context!!, spSave)
+        Timber.i("date saved: $spSave")
     }
 
 }

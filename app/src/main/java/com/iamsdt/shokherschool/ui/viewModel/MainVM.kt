@@ -2,8 +2,7 @@ package com.iamsdt.shokherschool.ui.viewModel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
-import android.content.Context
+import android.arch.lifecycle.LiveData
 import android.os.AsyncTask
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
@@ -13,14 +12,11 @@ import com.iamsdt.shokherschool.data.database.table.PostTable
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil
-import com.iamsdt.shokherschool.data.utilities.MyDateUtil
 import com.iamsdt.shokherschool.ui.activity.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -29,12 +25,9 @@ import java.util.*
  */
 class MainVM(application: Application) : AndroidViewModel(application) {
 
-    private var allPost: MutableLiveData<List<PostModel>>? = null
+    private var allPost:LiveData<List<PostModel>> ?= null
 
     private val authorInserted = ArrayList<Int>()
-
-    private var dateList = ArrayList<String>()
-    private var dateCheckedList = ArrayList<String>()
 
     private var postTableDao: PostTableDao? = null
     private var authorTableDao: AuthorTableDao? = null
@@ -52,17 +45,10 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun getAllPostList(): MutableLiveData<List<PostModel>>? {
+    fun getAllPostList(): LiveData<List<PostModel>>? {
 
-        if (allPost == null) {
-            allPost = MutableLiveData()
-
-            val runnable = Runnable {
-                fillData()
-            }
-
-            Thread(runnable).start()
-        }
+        /** live data is not counted until it has an active observer **/
+        allPost = postTableDao?.getPostData
 
         return allPost
     }
@@ -99,11 +85,6 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             val title = post.title?.rendered
                             val content = post.content?.rendered
                             val date = post.date
-
-                            //add date to date list
-                            if (dateList.contains(date)) {
-                                dateList.add(date)
-                            }
 
                             //author id
                             val author = post.author
@@ -170,8 +151,6 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                         Timber.i("Data insert complete")
 
                         //all data saved
-                        //now call fill data
-                        fillData()
                         //now request for more data is open
                         MainActivity.request = false
                     })
@@ -182,56 +161,9 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         })
     }
 
-
-    fun saveDate(context: Context) {
-
-        val pattern = "yyyy-MM-dd'T'HH:mm:ss"
-        val dtf = SimpleDateFormat(pattern, Locale.getDefault())
-
-        //current date and time
-        var today: Date = dtf.parse(dtf.format(Date()))
-
-        for (n in dateList) {
-            if (dateCheckedList.contains(n)) return
-            val date2 = dtf.parse(n)
-            val date3 = MyDateUtil.compareTwoDate(today, date2)
-
-            Timber.i("Date:$date2 and $today -> $date3")
-
-            today = date3
-            dateCheckedList.add(n)
-        }
-        val spSave = dtf.format(today)
-        MyDateUtil.setDateOnSp(context, spSave)
-        Timber.i("date saved: $spSave")
-    }
-
-    //get data from database and add data to the mutable live data list
-    private fun fillData() {
-
-        val postData = postTableDao?.getPostData
-
-        //todo 1/3/2018 Use paging library to prevent load all data at once
-
-        if (postData != null && postData.isNotEmpty()) {
-
-            Timber.i("Data found on database. Size: ${postData.size}")
-
-            for (post in postData) {
-                val date = post.date ?: ConstantUtil.dateSpDefaultValue
-                if (!dateList.contains(date)) {
-                    dateList.add(date)
-                }
-            }
-
-            //put the data
-            allPost!!.postValue(postData)
-
-        } else {
-            //id data is empty
-            Timber.i("Database has no data")
-            addRemoteData(null)
-        }
+    override fun onCleared() {
+        super.onCleared()
+        allPost = null
     }
 
     fun requestNewPost(wpRestInterface: WPRestInterface,
