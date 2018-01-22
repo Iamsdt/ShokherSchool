@@ -22,5 +22,7 @@ class ConstantUtil{
         //theme
         val colorSp = "colorSp"
         val themeKey = "themeKey"
+        val NIGHT_MODE_SP_KEY: String = "NightModeSp"
+        val NIGHT_MODE_VALUE_KEY: String = "NightSP"
     }
 }
