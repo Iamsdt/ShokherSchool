@@ -16,6 +16,11 @@
             android:id="@+id/nav_categories"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Categories" />
+
+        <item
+            android:id="@+id/nav_page"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Pages" />
     </group>
 
     <item android:title="@string/action_settings">

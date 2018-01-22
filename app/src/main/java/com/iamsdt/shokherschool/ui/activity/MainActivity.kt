@@ -183,6 +183,10 @@ class MainActivity : BaseActivity(),
 
             }
 
+            R.id.nav_page -> {
+
+            }
+
             R.id.nav_setting -> {
                 startActivity(Intent(this@MainActivity,SettingsActivity::class.java))
             }

@@ -39,24 +39,31 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".ui.activity.BookmarkActivity"
+            android:label="@string/title_activity_bookmark"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.activity.ColorActivity"
+            android:label="@string/title_activity_chooseColor"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.activity.PageActivity"
+            android:label="@string/title_activity_page"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!-- Services -->
         <service
             android:name=".ui.services.DataInsertService"
             android:enabled="true"
             android:exported="false" />
-
-        <activity
-            android:name=".ui.activity.BookmarkActivity"
-            android:label="@string/title_activity_bookmark"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activity.ColorActivity"
-            android:label="@string/title_activity_chooseColor"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activity.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
