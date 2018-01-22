@@ -27,7 +27,7 @@ android {
         buildTypes {
 
             debug {
-                //ext.alwaysUpdateBuildId = false
+                ext.alwaysUpdateBuildId = false
                 minifyEnabled false
                 shrinkResources false
                 proguardFiles getDefaultProguardFile('proguard-android.txt'),
