@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/main_row_item"
     android:background="@color/red_300"
     android:orientation="horizontal"
     android:weightSum="3">
@@ -17,6 +17,7 @@
         android:minHeight="?attr/listPreferredItemHeight"
         android:contentDescription="undo button"
         android:gravity="center"
+        android:layout_gravity="center"
         android:layout_weight="2"
         android:text="Item will remove"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
@@ -30,6 +31,7 @@
         android:minHeight="?attr/listPreferredItemHeight"
         android:contentDescription="undo button"
         android:gravity="center"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:text="Undo"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />

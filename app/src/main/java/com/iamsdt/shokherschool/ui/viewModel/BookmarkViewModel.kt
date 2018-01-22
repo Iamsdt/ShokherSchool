@@ -2,8 +2,7 @@ package com.iamsdt.shokherschool.ui.viewModel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
-import android.os.AsyncTask
+import android.arch.lifecycle.LiveData
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 
@@ -15,22 +14,11 @@ import com.iamsdt.shokherschool.data.model.PostModel
 class BookmarkViewModel(application: Application):
         AndroidViewModel(application){
 
-    private var postData:MutableLiveData<List<PostModel>> ?= null
+    private var postData: LiveData<List<PostModel>>?= null
 
-    fun getData(postTableDao: PostTableDao):MutableLiveData<List<PostModel>>? {
-        if (postData == null){
-            postData = MutableLiveData()
-            fillData(postTableDao)
-        }
-
+    fun getData(postTableDao: PostTableDao):LiveData<List<PostModel>>? {
+        postData = postTableDao.getBookmarkData()
         return postData
     }
 
-    private fun fillData(postTableDao: PostTableDao){
-        AsyncTask.execute({
-            //1 for true
-            val data = postTableDao.getBookmarkData()
-            postData?.postValue(data)
-        })
-    }
 }
