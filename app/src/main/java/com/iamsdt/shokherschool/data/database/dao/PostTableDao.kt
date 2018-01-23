@@ -54,7 +54,7 @@ interface PostTableDao {
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
             " And PostTable.post_id = :arg0 "+
             " order by PostTable.post_date DESC")
-    fun getSinglePostDetails(arg0:Int):DetailsPostModel
+    fun getSinglePostDetails(arg0:Int):LiveData<DetailsPostModel>
 
     @Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +

@@ -114,6 +114,9 @@ android {
 
         //scope for theme
         //implementation 'com.52inc:scoops:1.0.0'
+
+        //facebook shimmer library
+        implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/xml'] } }
 }

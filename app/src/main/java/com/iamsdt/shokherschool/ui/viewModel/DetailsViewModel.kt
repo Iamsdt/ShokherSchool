@@ -2,8 +2,10 @@ package com.iamsdt.shokherschool.ui.viewModel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.os.AsyncTask
+import android.os.Handler
+import android.os.HandlerThread
 import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.database.dao.TagTableDao
@@ -16,30 +18,36 @@ import com.iamsdt.shokherschool.data.model.DetailsPostModel
 class DetailsViewModel(application: Application) :
         AndroidViewModel(application) {
 
-    private var htmlData: MutableLiveData<DetailsPostModel>? = null
+    private var htmlData : LiveData<DetailsPostModel>? = null
+    private var fullData:MutableLiveData<DetailsPostModel> ?= null
 
-    fun getData(postID: Int, postTableDao: PostTableDao,
-                categoriesTableDao: CategoriesTableDao,
-                tagTableDao: TagTableDao): MutableLiveData<DetailsPostModel>? {
+    fun getData(postID: Int, postTableDao: PostTableDao): LiveData<DetailsPostModel>? {
 
-        if (htmlData == null) {
-            htmlData = MutableLiveData()
-
-            initializeData(postID, postTableDao, categoriesTableDao, tagTableDao)
-        }
+        htmlData = postTableDao.getSinglePostDetails(postID)
 
         return htmlData
     }
 
 
-    private fun initializeData(id: Int, postTableDao: PostTableDao,
+    fun fillData(details:DetailsPostModel?,
                                categoriesTableDao: CategoriesTableDao,
-                               tagTableDao: TagTableDao) {
+                               tagTableDao: TagTableDao):
+    MutableLiveData<DetailsPostModel>? {
 
-        AsyncTask.execute({
-            val model = postTableDao.getSinglePostDetails(id)
-            val tagsList = model.tags?.split(",") ?: arrayListOf()
-            val categoriesList = model.categories?.split(",") ?: arrayListOf()
+        if (details == null){
+            return null
+        }
+
+        fullData = MutableLiveData()
+
+        val thread = HandlerThread("DetailsData")
+        thread.start()
+
+        val handler = Handler(thread.looper)
+
+        handler.post({
+            val tagsList = details.tags?.split(",") ?: arrayListOf()
+            val categoriesList = details.categories?.split(",") ?: arrayListOf()
 
             var tags = ""
             tagsList.filterNot { it.isEmpty() }
@@ -52,15 +60,18 @@ class DetailsViewModel(application: Application) :
                     .forEach { categories += categoriesTableDao.getCategoriesName(it) + ", " }
 
             //create new model and add tags and categories
-            val detailsPostModel = DetailsPostModel(model.id,
-                    model.date,
-                    model.title,
-                    model.content,
-                    model.authorName,
-                    model.authorDetails,
-                    model.authorImg,
-                    model.mediaLink, tags, categories)
-            htmlData!!.postValue(detailsPostModel)
+            val detailsPostModel = DetailsPostModel(details.id,
+                    details.date,
+                    details.title,
+                    details.content,
+                    details.authorName,
+                    details.authorDetails,
+                    details.authorImg,
+                    details.mediaLink, tags, categories)
+
+            fullData?.postValue(detailsPostModel)
         })
+
+        return fullData
     }
 }
