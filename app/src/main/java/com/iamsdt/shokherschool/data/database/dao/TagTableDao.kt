@@ -12,18 +12,23 @@ import com.iamsdt.shokherschool.data.database.table.TagTable
 interface TagTableDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(page: TagTable): Long
+    fun insert(tag: TagTable): Long
 
     @get:Query("Select * From TagTable")
     val allData: List<TagTable>
 
+    /**
+     * Get tag name according to ID
+     * @param arg0 int id
+     * @return name of the tag in String
+     */
     @Query("Select TagTable.tag_name From TagTable where TagTable.tag_id = :arg0")
     fun getTagName(arg0:Int):String
 
     @Delete
-    fun delete(page: TagTable): Int
+    fun delete(tag: TagTable): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(page: TagTable) : Int
+    fun update(tag: TagTable) : Int
 
 }

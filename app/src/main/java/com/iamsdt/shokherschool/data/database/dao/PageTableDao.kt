@@ -13,6 +13,9 @@ interface PageTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(page: PageTable): Long
 
+    /**
+     * Get list of pages
+     */
     @get:Query("Select * From PageTable")
     val allData: List<PageTable>
 

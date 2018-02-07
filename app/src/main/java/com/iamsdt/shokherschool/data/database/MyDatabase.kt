@@ -29,8 +29,13 @@ abstract class MyDatabase : RoomDatabase() {
 
 
     companion object {
-        private val dbName = "ShokerSchool"
+        private const val dbName = "ShokerSchool"
 
+        /**
+         * Get instance of Database
+         * @param context of application
+         * @return instance of database
+         */
         fun getInstance(context: Context): MyDatabase =
                 Room.databaseBuilder(context,
                         MyDatabase::class.java, dbName).build()

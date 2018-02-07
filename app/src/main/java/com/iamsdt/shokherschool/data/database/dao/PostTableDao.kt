@@ -15,20 +15,26 @@ import com.iamsdt.shokherschool.data.model.PostModel
 interface PostTableDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(post: PostTable):Long
+    fun insert(post: PostTable): Long
 
+    /**
+     * Get first ten post from database*/
     @get:Query("Select * From PostTable order by PostTable.post_date DESC LIMIT 10")
-    val getFirst10DataList:List<PostTable>
+    val getFirst10DataList: List<PostTable>
 
     /**
      * This sql command also can be done by using inner join
      * here is code
-     *
-    SELECT PostTable.post_id AS id, PostTable.post_title as title, PostTable.post_date as date, AuthorTable.author_name as name, MediaTable.media_thumbnail_pic as thumb
+     * SELECT PostTable.post_id AS id, PostTable.post_title as title, PostTable.post_date as date, AuthorTable.author_name as name, MediaTable.media_thumbnail_pic as thumb
     FROM ((PostTable inner join AuthorTable on PostTable.post_authorID = AuthorTable.author_id)
     inner join MediaTable on PostTable.post_featuredMediaID = MediaTable.media_id) order by PostTable.post_date desc
      */
 
+    /**
+     * Get List of Post Data
+     * Select from two table PostTable AuthorTable
+     * join condition PostTable.post_authorID = AuthorTable.author_id
+     * */
     @get:Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +
             " PostTable.post_title AS title," +
@@ -38,7 +44,14 @@ interface PostTableDao {
             " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
             " order by PostTable.post_date DESC")
-    val getPostData:LiveData<List<PostModel>>
+    val getPostData: LiveData<List<PostModel>>
+
+    /**
+     * Get details about a Single post
+     * Select from two table PostTable AuthorTable
+     * join condition PostTable.post_authorID = AuthorTable.author_id
+     *
+     * @return live data of Details post*/
 
     @Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +
@@ -52,9 +65,17 @@ interface PostTableDao {
             " PostTable.postCategories as categories" +
             " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
-            " And PostTable.post_id = :arg0 "+
+            " And PostTable.post_id = :arg0 " +
             " order by PostTable.post_date DESC")
-    fun getSinglePostDetails(arg0:Int):LiveData<DetailsPostModel>
+    fun getSinglePostDetails(arg0: Int): LiveData<DetailsPostModel>
+
+    /**
+     * Get a list of bookmarked post
+     * Select from two table PostTable and Author Table
+     * join condition PostTable.post_authorID = AuthorTable.author_id
+     *
+     * @return live data with list of PostModel
+     */
 
     @Query("SELECT PostTable.post_id AS id," +
             " PostTable.post_date AS date," +
@@ -64,21 +85,34 @@ interface PostTableDao {
             " PostTable.bookmark AS bookmark" +
             " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
-            " And PostTable.bookmark = 1"+
+            " And PostTable.bookmark = 1" +
             " order by PostTable.post_date DESC")
-    fun getBookmarkData():LiveData<List<PostModel>>
+    fun getBookmarkData(): LiveData<List<PostModel>>
 
-
+    /**
+     * Set bookmark
+     * actually update bookmark 0 to 1
+     * @param arg0 post id
+     *
+     * @return update status
+     */
     @Query("update PostTable set bookmark = 1 where PostTable.post_id = :arg0")
-    fun setBookmark(arg0: Int):Int
+    fun setBookmark(arg0: Int): Int
 
+    /**
+     * Delete from bookmark
+     * actually update bookmark 1 to 0
+     * @param arg0 post id
+     *
+     * @return update status
+     */
     @Query("update PostTable set bookmark = 0 where PostTable.post_id = :arg0")
-    fun deleteBookmark(arg0: Int):Int
+    fun deleteBookmark(arg0: Int): Int
 
     @Delete
-    fun delete(post: PostTable):Int
+    fun delete(post: PostTable): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(post: PostTable):Int
+    fun update(post: PostTable): Int
 
 }

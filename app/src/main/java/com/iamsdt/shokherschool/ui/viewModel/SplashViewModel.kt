@@ -160,6 +160,9 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         })
     }
 
+    /**
+     * Add mock data to the Mutable Live data
+     */
     private fun addMockData() {
         // don't need to fill with real data data to all post
         // just add some mock data

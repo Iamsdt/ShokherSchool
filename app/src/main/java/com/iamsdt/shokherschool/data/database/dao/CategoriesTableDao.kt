@@ -17,6 +17,11 @@ interface CategoriesTableDao {
     @get:Query("Select * From CategoriesTable")
     val getAllData: List<CategoriesTable>
 
+    /**
+     * Get categories Name
+     * @param arg0 id of the particular category
+     *
+     * @return name of the category in string*/
     @Query("Select CategoriesTable.categories_name From CategoriesTable where CategoriesTable.categories_id = :arg0")
     fun getCategoriesName(arg0:Int):String
 
