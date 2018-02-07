@@ -7,22 +7,22 @@ package com.iamsdt.shokherschool.data.utilities
 class ConstantUtil{
     companion object {
         //base url
-        val retrofitBaseUrl:String = "https://shokherschool.com/wp-json/wp/v2/"
+        const val retrofitBaseUrl:String = "https://shokherschool.com/wp-json/wp/v2/"
 
 
-        val dateSpName = "DateSp"
-        val dateSpDefaultValue = "2017-01-26T23:32:00"
+        const val dateSpName = "DateSp"
+        const val dateSpDefaultValue = "2017-01-26T23:32:00"
 
-        val ServiceRunningDate = "ServiceRunningDate"
-        val ServiceSp = "ServiceSp"
+        const val ServiceRunningDate = "ServiceRunningDate"
+        const val ServiceSp = "ServiceSp"
 
         //intent parse to main activity to details activity
-        val intentDetails = "IntentDetails"
+        const val intentDetails = "IntentDetails"
 
         //theme
-        val colorSp = "colorSp"
-        val themeKey = "themeKey"
-        val NIGHT_MODE_SP_KEY: String = "NightModeSp"
-        val NIGHT_MODE_VALUE_KEY: String = "NightSP"
+        const val colorSp = "colorSp"
+        const val themeKey = "themeKey"
+        const val NIGHT_MODE_SP_KEY: String = "NightModeSp"
+        const val NIGHT_MODE_VALUE_KEY: String = "NightSP"
     }
 }
