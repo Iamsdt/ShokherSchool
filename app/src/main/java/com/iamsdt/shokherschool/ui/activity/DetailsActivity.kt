@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
@@ -86,63 +88,62 @@ class DetailsActivity : BaseActivity() {
 
         viewModel.getData(postID, postTableDao)?.observe(this,
                 Observer<DetailsPostModel> { allData ->
-
                     if (allData != null) {
 
-                        viewModel.fillData(allData, categoriesTableDao, tagTableDao)?.
-                                observe(this, Observer<DetailsPostModel> { fullData ->
-                                    //if internet is not present show a message
-                                    if (!Utility.isNetworkAvailable(this@DetailsActivity)) {
-                                        Snackbar.make(detailsLayout, "No Internet available\nShowing a catch version", Snackbar.LENGTH_LONG)
-                                                .show()
-                                    }
+                        fillData(allData)
 
-                                    if (!fullData?.mediaLink.isNullOrEmpty()) {
-                                        picasso.load(fullData?.mediaLink).fit()
-                                                .centerInside().into(details_img, object : Callback {
-                                            override fun onSuccess() {
-                                                //nothing to do
-                                                Timber.i(picasso.snapshot.downloadCount.toString())
-                                            }
+                        //if internet is not present show a message
+                        if (!Utility.isNetworkAvailable(this@DetailsActivity)) {
+                            Snackbar.make(detailsLayout, "No Internet available\nShowing a catch version", Snackbar.LENGTH_LONG)
+                                    .show()
+                        }
 
-                                            override fun onError() {
-                                                details_img.visibility = View.GONE
-                                            }
+                        if (!allData.mediaLink.isNullOrEmpty()) {
+                            picasso.load(allData.mediaLink).fit()
+                                    .centerInside().into(details_img, object : Callback {
+                                override fun onSuccess() {
+                                    //nothing to do
+                                    Timber.i(picasso.snapshot.downloadCount.toString())
+                                }
 
-                                        })
-                                        Timber.i("picasso id: $picasso")
-                                        Timber.i(picasso.snapshot.toString())
-                                    } else {
-                                        details_img.visibility = View.GONE
-                                    }
+                                override fun onError() {
+                                    details_img.visibility = View.GONE
+                                }
 
-                                    val content = fullData?.content
-                                    webView.loadData(content, "text/html", "UTF-8")
-                                    details_mockLayout.visibility = View.GONE
+                            })
+                            Timber.i("picasso id: $picasso")
+                            Timber.i(picasso.snapshot.toString())
+                        } else {
+                            details_img.visibility = View.GONE
+                        }
 
-                                    if (!fullData!!.authorImg.isNullOrEmpty()) {
-                                        picasso.load(fullData.authorImg).fit().into(d_authorImg, object : Callback {
-                                            override fun onSuccess() {
-                                                //nothing to do
-                                            }
+                        val content = allData.content
+                        webView.loadData(content, "text/html", "UTF-8")
+                        details_mockLayout.visibility = View.GONE
 
-                                            override fun onError() {
-                                                d_authorImg.visibility = View.GONE
-                                            }
+                        if (!allData.authorImg.isNullOrEmpty()) {
+                            picasso.load(allData.authorImg).fit().into(d_authorImg,
+                                    object : Callback {
+                                override fun onSuccess() {
+                                    //nothing to do
+                                }
 
-                                        })
-                                        Timber.i("picasso id: $picasso")
-                                    }
+                                override fun onError() {
+                                    d_authorImg.visibility = View.GONE
+                                }
 
-                                    //set all the text
-                                    details_title.text = allData.title
-                                    d_authorName.text = allData.authorName
-                                    d_authorDetails.text = allData.authorDetails
+                            })
+                            Timber.i("picasso id: $picasso")
+                        }
 
-                                    val tag = "Categories: ${allData.categories}  Tags: ${allData.tags}"
-                                    d_tags.text = tag
+                        //set all the text
+                        details_title.text = allData.title
+                        d_authorName.text = allData.authorName
+                        d_authorDetails.text = allData.authorDetails
 
-                                })
+                        val tag = "Categories: ${allData.categories}  Tags: ${allData.tags}"
+                        d_tags.text = tag
+
                     }
                 })
 
@@ -182,6 +183,35 @@ class DetailsActivity : BaseActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun fillData(details: DetailsPostModel) {
+        val thread = HandlerThread("DetailsData")
+        thread.start()
+
+        //create a background thread
+        val handler = Handler(thread.looper)
+        handler.post({
+            val tagsList = details.tags?.split(",") ?: arrayListOf()
+            val categoriesList = details.categories?.split(",") ?: arrayListOf()
+
+            var tags = ""
+            tagsList.filterNot { it.isEmpty() }
+                    .map { it.trim().toInt() }
+                    .forEach { tags += tagTableDao.getTagName(it) + ", " }
+
+            var categories = ""
+            categoriesList.filterNot { it.isEmpty() }
+                    .map { it.trim().toInt() }
+                    .forEach { categories += categoriesTableDao.getCategoriesName(it) + ", " }
+
+            thread.quitSafely()
+            Handler(mainLooper).post({
+                val tag = "Categories: $categories  Tags: $tags"
+                d_tags.text = tag
+            })
+        })
     }
 
 }

@@ -19,17 +19,34 @@ class DetailsViewModel(application: Application) :
         AndroidViewModel(application) {
 
     private var htmlData : LiveData<DetailsPostModel>? = null
+
+    //don not needed any more
     private var fullData:MutableLiveData<DetailsPostModel> ?= null
 
+    /**
+     * Get data from database
+     * @param postID id of desired post
+     * @param postTableDao Data Accessing object for post table
+     *
+     * @return live data
+     */
     fun getData(postID: Int, postTableDao: PostTableDao): LiveData<DetailsPostModel>? {
-
         htmlData = postTableDao.getSinglePostDetails(postID)
-
         return htmlData
     }
 
 
-    fun fillData(details:DetailsPostModel?,
+    //need to fill data
+    //don't use any more
+
+    /**
+     * Get data from database
+     * @param details DetailsPostModel class
+     * @param categoriesTableDao Data Accessing object for Categories table
+     * @param tagTableDao Data Accessing object for Tag table
+     * @return live data
+     */
+    private fun fillData(details:DetailsPostModel?,
                                categoriesTableDao: CategoriesTableDao,
                                tagTableDao: TagTableDao):
     MutableLiveData<DetailsPostModel>? {
