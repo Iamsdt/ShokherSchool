@@ -114,7 +114,7 @@ class DetailsActivity : BaseActivity() {
                         //save title for share intent
                         shareText = allData.title ?:"no title"
                         //update share action provider
-                        resetSap()
+                        //resetSap()
 
                         //save bookmark status on global variable
                         bookmarkStatus = allData.bookmark
@@ -219,24 +219,25 @@ class DetailsActivity : BaseActivity() {
     private fun createShareIntent(): Intent? {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
-        val share = shareText + "read more on: https://shokherschool.com/?p=$postID"
+        val share = shareText + "... read more on -> https://shokherschool.com/?p=$postID"
         shareIntent.putExtra(Intent.EXTRA_TEXT,share)
         return shareIntent
     }
 
+    //doesn't require, it will not update later
     /** Reset share action provider
      * after update the data
      */
-    private fun resetSap() {
-        if (sap != null) {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            val share = shareText + "read more on: https://shokherschool.com/?p=$postID"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, share)
-
-            sap?.setShareIntent(shareIntent)
-        }
-    }
+//    private fun resetSap() {
+//        if (sap != null) {
+//            val shareIntent = Intent(Intent.ACTION_SEND)
+//            shareIntent.type = "text/plain"
+//            val share = shareText + "read more on: https://shokherschool.com/?p=$postID"
+//            shareIntent.putExtra(Intent.EXTRA_TEXT, share)
+//
+//            sap?.setShareIntent(shareIntent)
+//        }
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
