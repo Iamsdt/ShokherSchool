@@ -76,6 +76,10 @@ class BookmarkActivity : BaseActivity() {
         bookmarkRcv.visibility = View.VISIBLE
     }
 
+
+    /**
+     * Method for swipe option in recyclerview
+     **/
     private fun setSwipeForRecyclerView() {
 
         val swipeHelper = object : SwipeUtil(0,
