@@ -10,9 +10,9 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="@color/grey_0"
-        android:backgroundTintMode="src_in"
-        android:layout_weight="1">
+        android:backgroundTintMode="src_in">
 
         <!--//completed  1/12/2018 change according to layout size -->
         <ImageView
@@ -111,10 +111,10 @@
             android:layout_height="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
+            android:contentDescription="Bookmark icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bookmark"
-            android:contentDescription="Bookmark icon"
             tools:ignore="HardcodedText" />
     </android.support.constraint.ConstraintLayout>
 

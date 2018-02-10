@@ -1,6 +1,5 @@
 package com.iamsdt.shokherschool.ui.activity
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -16,8 +15,6 @@ import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.viewModel.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
-import timber.log.Timber
-import java.lang.Thread.sleep
 import javax.inject.Inject
 
 class SplashActivity : BaseActivity() {
@@ -45,27 +42,31 @@ class SplashActivity : BaseActivity() {
         setContentView(R.layout.activity_splash)
         setSupportActionBar(toolbar)
 
-        viewModel.getAllPostList(postTableDao, authorTableDao, wpRestInterface)?.observe(this, Observer { allData ->
-            if (allData != null && allData.isNotEmpty()) {
-                //complete 1/2/2018 add some wait time to wast some user and developer time
+        startActivity(Intent(this@SplashActivity,
+                MainActivity::class.java))
 
-                Thread({
-                    try {
-                        //fixme 1/18/2018 change time
-                        sleep(100)
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Timber.e(e, "Error on Splash Activity Thread")
-                    } finally {
-                        startActivity(Intent(this@SplashActivity,
-                                MainActivity::class.java))
-                        finish()
-                    }
-                }).start()
-
-            }
-        })
+//        viewModel.getAllPostList(postTableDao, authorTableDao, wpRestInterface)?.observe(this, Observer { allData ->
+//
+//            if (allData != null && allData.isNotEmpty()) {
+//                //complete 1/2/2018 add some wait time to wast some user and developer time
+//
+//                Thread({
+//                    try {
+//                        //fixme 1/18/2018 change time
+//                        sleep(100)
+//
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                        Timber.e(e, "Error on Splash Activity Thread")
+//                    } finally {
+//                        startActivity(Intent(this@SplashActivity,
+//                                MainActivity::class.java))
+//                        finish()
+//                    }
+//                }).start()
+//
+//            }
+//        })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

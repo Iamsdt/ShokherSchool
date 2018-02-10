@@ -94,6 +94,8 @@ class MainActivity : BaseActivity(),
 
                         }
 
+                        //stop animation
+
                         //save date to sp
                         adapter.saveDate()
                     }

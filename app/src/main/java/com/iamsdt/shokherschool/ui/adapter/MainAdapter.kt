@@ -149,6 +149,10 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
         }
     }
 
+
+    /**
+     * This method is for save Date for make older request
+     */
     fun saveDate() {
 
         val pattern = "yyyy-MM-dd'T'HH:mm:ss"
