@@ -8,7 +8,9 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.support.design.widget.Snackbar
+import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.NestedScrollView
+import android.support.v7.widget.ShareActionProvider
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -52,6 +54,11 @@ class DetailsActivity : BaseActivity() {
     //post id
     private var postID:Int = 0
 
+    //share text
+    private var shareText = ""
+    private var sap:ShareActionProvider ?= null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //inject
         getComponent().inject(this)
@@ -66,9 +73,9 @@ class DetailsActivity : BaseActivity() {
         postID = intent.getIntExtra(ConstantUtil.intentDetails, 0)
 
         //initialize web view
-        //debug only 11/27/2017 remove later
-        val webView = d_webview
-        webView?.webViewClient = object : WebViewClient() {
+        //complete only 11/27/2017 remove later
+        //val webView = d_webview
+        d_webview?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView,
                                                   request: WebResourceRequest): Boolean {
 
@@ -88,7 +95,7 @@ class DetailsActivity : BaseActivity() {
         }
 
         //web view settings
-        val settings = webView!!.settings
+        val settings = d_webview!!.settings
         //app web view catching
         //todo 2/10/2018 add settings
         //by default it false
@@ -103,6 +110,11 @@ class DetailsActivity : BaseActivity() {
                     if (allData != null) {
                         //update categories and tags
                         fillData(allData)
+
+                        //save title for share intent
+                        shareText = allData.title ?:"no title"
+                        //update share action provider
+                        resetSap()
 
                         //save bookmark status on global variable
                         bookmarkStatus = allData.bookmark
@@ -133,7 +145,7 @@ class DetailsActivity : BaseActivity() {
                             details_img.visibility = View.GONE
                         }
 
-                        webView.loadData(allData.content, "text/html", "UTF-8")
+                        d_webview.loadData(allData.content, "text/html", "UTF-8")
 
                         if (!allData.authorImg.isNullOrEmpty()) {
                             picasso.load(allData.authorImg).fit().into(d_authorImg,
@@ -183,7 +195,7 @@ class DetailsActivity : BaseActivity() {
 
         //set bookmark menu icon
         val bookmarkItem =menu?.findItem(R.id.action_bookmark)
-
+        //for bookmark
         if (bookmarkStatus == 0){
             bookmarkItem?.setIcon(R.drawable.ic_bookmark)
             Timber.i("Bookmark status on Menu Create: $bookmarkStatus")
@@ -193,7 +205,33 @@ class DetailsActivity : BaseActivity() {
             Timber.i("Bookmark status on Menu Create: $bookmarkStatus")
         }
 
+        val shareMenuItem = menu?.findItem(R.id.action_share)
+        sap = MenuItemCompat.getActionProvider(shareMenuItem) as ShareActionProvider
+        sap?.setShareIntent(createShareIntent())
+
         return true
+    }
+
+    /**Create intent for share action provide
+     * @return intent
+     */
+    private fun createShareIntent(): Intent? {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        val share = shareText + "read more on: https://shokherschool.com/?p=$postID"
+        shareIntent.putExtra(Intent.EXTRA_TEXT,share)
+        return shareIntent
+    }
+
+    private fun resetSap() {
+        if (sap != null) {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            val share = shareText + "read more on: https://shokherschool.com/?p=$postID"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, share)
+
+            sap?.setShareIntent(shareIntent)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
