@@ -97,7 +97,6 @@ class DetailsActivity : BaseActivity() {
 
         settings.allowContentAccess = false
         settings.loadWithOverviewMode = true
-        settings.useWideViewPort = true
 
         viewModel.getData(postID, postTableDao)?.observe(this,
                 Observer<DetailsPostModel> { allData ->
@@ -187,9 +186,11 @@ class DetailsActivity : BaseActivity() {
 
         if (bookmarkStatus == 0){
             bookmarkItem?.setIcon(R.drawable.ic_bookmark)
+            Timber.i("Bookmark status on Menu Create: $bookmarkStatus")
 
         } else{
             bookmarkItem?.setIcon(R.drawable.ic_bookmark_done)
+            Timber.i("Bookmark status on Menu Create: $bookmarkStatus")
         }
 
         return true

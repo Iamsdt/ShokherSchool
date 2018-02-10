@@ -62,7 +62,8 @@ interface PostTableDao {
             " AuthorTable.author_avatarUrl24 AS authorImg," +
             " PostTable.media_medium_pic AS mediaLink," +
             " PostTable.tags As tags," +
-            " PostTable.postCategories as categories" +
+            " PostTable.postCategories as categories, " +
+            " PostTable.bookmark AS bookmark" +
             " FROM PostTable, AuthorTable" +
             " WHERE PostTable.post_authorID = AuthorTable.author_id" +
             " And PostTable.post_id = :arg0 " +
