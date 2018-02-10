@@ -57,6 +57,8 @@ class MyDateUtil{
             second
         }
 
+        /** Get date from sp
+         * @return date*/
         fun getDateForService(context: Context):String{
             val sp = context.getSharedPreferences(ConstantUtil.ServiceSp,
                     Context.MODE_PRIVATE)
@@ -65,7 +67,6 @@ class MyDateUtil{
             return sp.getString(ConstantUtil.ServiceRunningDate,
                     "")
         }
-
 
         fun saveServiceDateOnSp(context: Context){
             val sdf = SimpleDateFormat("dd-MM-yyyy",Locale.US)
@@ -79,6 +80,12 @@ class MyDateUtil{
             editor.apply()
         }
 
+        /**
+         * Get difference between toady and provided
+         * @param spDate given date
+         *
+         * @return number of difference
+         */
         fun compareDateIntervals(spDate:String):Int{
             val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.US)
             val previousDate = sdf.parse(spDate)
