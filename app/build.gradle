@@ -117,6 +117,9 @@ android {
 
         //facebook shimmer library
         implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
+        //shimmer library
+        //implementation 'com.github.sharish:ShimmerRecyclerView:v1.2'
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/xml'] } }
 }
