@@ -183,6 +183,7 @@ class DetailsActivity : BaseActivity() {
             }
         })
         fab.setOnClickListener { view ->
+            //todo 2/10/2018 add comment option
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
@@ -223,6 +224,9 @@ class DetailsActivity : BaseActivity() {
         return shareIntent
     }
 
+    /** Reset share action provider
+     * after update the data
+     */
     private fun resetSap() {
         if (sap != null) {
             val shareIntent = Intent(Intent.ACTION_SEND)
@@ -254,6 +258,10 @@ class DetailsActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Method for set or remove bookmark
+     * @param item menu item
+     */
     private fun setOrRemoveBookmark(item: MenuItem) {
 
         if (postID == 0){
