@@ -14,7 +14,12 @@ import java.util.*
 class MyDateUtil{
     companion object {
 
-        fun getReadableDate(string: String): String {
+        fun getReadableDate(string: String?): String {
+
+            if (string == null || string.isEmpty()){
+                return "no date found"
+            }
+
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",Locale.US)
             val output = SimpleDateFormat("dd-MMM-yyyy",Locale.US)
             val postDate = sdf.parse(string)

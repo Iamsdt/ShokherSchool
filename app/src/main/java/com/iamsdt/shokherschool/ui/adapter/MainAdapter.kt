@@ -124,7 +124,8 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
         fun bindTo(post: PostModel) {
             title.text = post.title
             author.text = post.author
-            date.text = post.date
+            val readableDate = MyDateUtil.getReadableDate(post.date)
+            date.text = readableDate
 
             val link = post.mediaLink
 
