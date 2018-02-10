@@ -13,4 +13,5 @@ class DetailsPostModel(var id: Int? = 0,
                        var authorImg:String ?= "",
                        var mediaLink: String? = "",
                        var tags:String ?= "",
-                       var categories: String ?= "")
+                       var categories: String ?= "",
+                       var bookmark:Int = 0)

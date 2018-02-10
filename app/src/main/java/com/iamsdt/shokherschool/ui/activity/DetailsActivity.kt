@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
@@ -45,6 +46,12 @@ class DetailsActivity : BaseActivity() {
                 .get(DetailsViewModel::class.java)
     }
 
+    //bookmark status
+    private var bookmarkStatus:Int = 0
+
+    //post id
+    private var postID:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //inject
         getComponent().inject(this)
@@ -55,11 +62,8 @@ class DetailsActivity : BaseActivity() {
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
 
-        //debug only 1/11/2018 remove later
-        details_mockLayout.visibility = View.VISIBLE
-
         //getting intent data
-        val postID = intent.getIntExtra(ConstantUtil.intentDetails, 0)
+        postID = intent.getIntExtra(ConstantUtil.intentDetails, 0)
 
         //initialize web view
         //debug only 11/27/2017 remove later
@@ -67,12 +71,15 @@ class DetailsActivity : BaseActivity() {
         webView?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView,
                                                   request: WebResourceRequest): Boolean {
+
+                //open external link in google chrome
                 Utility.customTab(this@DetailsActivity, request.url.toString())
                 return true
             }
 
+            //open external link in google chrome
             //using deprecated method
-            //don't find possible solution
+            // some time above method is not call
             @Suppress("OverridingDeprecatedMember")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Utility.customTab(this@DetailsActivity, url!!)
@@ -80,17 +87,26 @@ class DetailsActivity : BaseActivity() {
             }
         }
 
+        //web view settings
         val settings = webView!!.settings
+        //app web view catching
+        //todo 2/10/2018 add settings
+        //by default it false
         settings.setAppCacheEnabled(false)
         settings.cacheMode = WebSettings.LOAD_NO_CACHE
+
         settings.allowContentAccess = false
-        settings.loadWithOverviewMode = false
+        settings.loadWithOverviewMode = true
+        settings.useWideViewPort = true
 
         viewModel.getData(postID, postTableDao)?.observe(this,
                 Observer<DetailsPostModel> { allData ->
                     if (allData != null) {
-
+                        //update categories and tags
                         fillData(allData)
+
+                        //save bookmark status on global variable
+                        bookmarkStatus = allData.bookmark
 
                         //if internet is not present show a message
                         if (!Utility.isNetworkAvailable(this@DetailsActivity)) {
@@ -98,12 +114,13 @@ class DetailsActivity : BaseActivity() {
                                     .show()
                         }
 
+
                         if (!allData.mediaLink.isNullOrEmpty()) {
                             picasso.load(allData.mediaLink).fit()
                                     .centerInside().into(details_img, object : Callback {
                                 override fun onSuccess() {
                                     //nothing to do
-                                    Timber.i(picasso.snapshot.downloadCount.toString())
+                                    Timber.i(picasso.snapshot.dump().toString())
                                 }
 
                                 override fun onError() {
@@ -117,9 +134,7 @@ class DetailsActivity : BaseActivity() {
                             details_img.visibility = View.GONE
                         }
 
-                        val content = allData.content
-                        webView.loadData(content, "text/html", "UTF-8")
-                        details_mockLayout.visibility = View.GONE
+                        webView.loadData(allData.content, "text/html", "UTF-8")
 
                         if (!allData.authorImg.isNullOrEmpty()) {
                             picasso.load(allData.authorImg).fit().into(d_authorImg,
@@ -142,6 +157,7 @@ class DetailsActivity : BaseActivity() {
                         d_authorDetails.text = allData.authorDetails
 
                         val tag = "Categories: ${allData.categories}  Tags: ${allData.tags}"
+                        Timber.i(tag)
                         d_tags.text = tag
 
                     }
@@ -165,6 +181,17 @@ class DetailsActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.details_menu, menu)
+
+        //set bookmark menu icon
+        val bookmarkItem =menu?.findItem(R.id.action_bookmark)
+
+        if (bookmarkStatus == 0){
+            bookmarkItem?.setIcon(R.drawable.ic_bookmark)
+
+        } else{
+            bookmarkItem?.setIcon(R.drawable.ic_bookmark_done)
+        }
+
         return true
     }
 
@@ -173,6 +200,9 @@ class DetailsActivity : BaseActivity() {
         when (item.itemId) {
         //back to home
             android.R.id.home -> onBackPressed()
+
+            R.id.action_bookmark ->
+                setOrRemoveBookmark(item)
 
             R.id.action_settings -> startActivity(Intent(this@DetailsActivity,
                     SettingsActivity::class.java))
@@ -185,8 +215,53 @@ class DetailsActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setOrRemoveBookmark(item: MenuItem) {
+
+        if (postID == 0){
+            return
+        }
+
+        var set = 0
+        var delete = 0
+
+        val thread = HandlerThread("BookmarkDetailsClick")
+        thread.start()
+
+        Handler(thread.looper).post({
+            if (bookmarkStatus == 0){
+                set = postTableDao.setBookmark(postID)
+            } else {
+                delete = postTableDao.deleteBookmark(postID)
+            }
+
+            Handler(Looper.getMainLooper()).post({
+                if (set > 0){
+                    Snackbar.make(detailsLayout, "Added to Bookmark", Snackbar.LENGTH_LONG)
+                            .show()
+                    item.setIcon(R.drawable.ic_bookmark_done)
+                }
+
+                if (delete > 0){
+                    Snackbar.make(detailsLayout, "Remove from Bookmark", Snackbar.LENGTH_LONG)
+                            .show()
+                    item.setIcon(R.drawable.ic_bookmark)
+                }
+            })
+
+            //release thread
+            thread.quitSafely()
+        })
+    }
+
+
+    /**
+     *This method is for update tag and categories to name
+     * in background
+     *
+     * @param details Post Model Class Details*/
 
     private fun fillData(details: DetailsPostModel) {
+
         val thread = HandlerThread("DetailsData")
         thread.start()
 
@@ -206,9 +281,13 @@ class DetailsActivity : BaseActivity() {
                     .map { it.trim().toInt() }
                     .forEach { categories += categoriesTableDao.getCategoriesName(it) + ", " }
 
+            //release thread
             thread.quitSafely()
+
+            //create new thread with main thread
             Handler(mainLooper).post({
                 val tag = "Categories: $categories  Tags: $tags"
+                Timber.i("New tag $tag")
                 d_tags.text = tag
             })
         })
