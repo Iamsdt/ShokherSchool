@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.MenuItem
 import android.view.View
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
@@ -106,16 +105,5 @@ class BookmarkActivity : BaseActivity() {
         //set swipe background-Color
         swipeHelper.leftColorCode = (ContextCompat.getColor(this, R.color.red_300))
 
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        //buy calling android.R.id.home
-        val id = item.itemId
-        if (id == android.R.id.home) {
-            onBackPressed()
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 }

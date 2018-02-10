@@ -42,7 +42,11 @@
         <activity
             android:name=".ui.activity.BookmarkActivity"
             android:label="@string/title_activity_bookmark"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
 
         <activity
             android:name=".ui.activity.ColorActivity"
