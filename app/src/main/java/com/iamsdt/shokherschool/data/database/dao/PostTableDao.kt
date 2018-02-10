@@ -59,7 +59,7 @@ interface PostTableDao {
             " PostTable.postContent AS content," +
             " AuthorTable.author_name AS authorName," +
             " AuthorTable.author_description AS authorDetails," +
-            " AuthorTable.author_avatarUrl24 AS authorImg," +
+            " AuthorTable.author_avatarUrl96 AS authorImg," +
             " PostTable.media_medium_pic AS mediaLink," +
             " PostTable.tags As tags," +
             " PostTable.postCategories as categories, " +
