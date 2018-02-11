@@ -16,6 +16,8 @@ import timber.log.Timber
 
 class SplashActivity : BaseActivity() {
 
+    private val requestCodeIntro = 10
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -37,14 +39,12 @@ class SplashActivity : BaseActivity() {
                 try {
                     // time 1 sec
                     Thread.sleep(timer)
-
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Timber.e(e, "Error on Splash Activity Thread")
                 } finally {
-                    startActivity(Intent(this@SplashActivity,
-                            MainActivity::class.java))
-                    finish()
+                    startActivityForResult(Intent(this@SplashActivity,
+                            MainActivity::class.java),requestCodeIntro)
                 }
             }).start()
 
@@ -88,4 +88,18 @@ class SplashActivity : BaseActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == requestCodeIntro) {
+            if (resultCode == RESULT_OK) {
+                SpUtils.saveAppRunFirstTime(this)
+            } else{
+                SpUtils.saveAppRunFirstTime(this)
+            }
+
+            startActivity(Intent(this@SplashActivity,
+                    MainActivity::class.java))
+            finish()
+        }
+    }
 }

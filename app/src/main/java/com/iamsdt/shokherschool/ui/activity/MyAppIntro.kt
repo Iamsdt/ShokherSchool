@@ -25,6 +25,8 @@ class MyAppIntro : IntroActivity() {
                 .image(R.drawable.ic_menu_slideshow)
                 .background(R.color.amber_500)
                 .backgroundDark(R.color.amber_900)
+                .canGoBackward(false)
+                .canGoForward(true)
                 .build())
 
         addSlide(SimpleSlide.Builder()
@@ -33,6 +35,8 @@ class MyAppIntro : IntroActivity() {
                 .image(R.drawable.ic_menu_send)
                 .background(R.color.blue_500)
                 .backgroundDark(R.color.blue_900)
+                .canGoBackward(true)
+                .canGoForward(true)
                 .build())
     }
 }
