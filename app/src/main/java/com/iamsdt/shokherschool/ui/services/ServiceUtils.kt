@@ -8,6 +8,8 @@ import com.iamsdt.shokherschool.data.retrofit.pojo.categories.CategoriesResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.page.PageResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.tags.TagResponse
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.ERROR
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.SUCCESS
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,13 +34,16 @@ class ServiceUtils {
          */
         fun addPostData(postTableDao: PostTableDao,
                         authorTableDao: AuthorTableDao,
-                        wpRestInterface: WPRestInterface): String {
+                        wpRestInterface: WPRestInterface): HashMap<String, String> {
             //make request to server
+            val hashMap = HashMap<String, String>()
+
             try {
                 val call = wpRestInterface.getAllPostList()
                 call.enqueue(object : Callback<List<PostResponse>> {
                     override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
                         Timber.e(t, "post data failed")
+                        hashMap[ERROR] = "error on response : ${t?.message}"
                     }
 
                     override fun onResponse(call: Call<List<PostResponse>>?, response: Response<List<PostResponse>>?) {
@@ -121,17 +126,18 @@ class ServiceUtils {
                                 }
 
                                 Timber.i("post data save to database")
+                                hashMap[SUCCESS] = "post data insert complete"
                             })
                         }
-
                     }
-
                 })
 
-                return ""
             } catch (e: Exception) {
-                return "error"
+                Timber.e("Error on data insert ${e.message}")
+                hashMap[ERROR] = "Error on data insert ${e.message}"
             }
+
+            return hashMap
         }
 
         /**
@@ -140,7 +146,11 @@ class ServiceUtils {
          * @param tagTableDao access tag table
          * @param wpRestInterface retrofit interface
          * */
-        fun addTagData(tagTableDao: TagTableDao, wpRestInterface: WPRestInterface) {
+        fun addTagData(tagTableDao: TagTableDao, wpRestInterface: WPRestInterface):
+                HashMap<String, String> {
+
+            val hashMap = HashMap<String, String>()
+
             try {
                 val tagCall = wpRestInterface.getTags()
 
@@ -155,19 +165,24 @@ class ServiceUtils {
 
                             tags.map { TagTable(it.count, it.name, it.id) }
                                     .forEach { tagTableDao.insert(it) }
-                            Timber.i("category insert finished")
+                            Timber.i("tag insert finished")
+                            hashMap[SUCCESS] = "tag insert finished"
                         })
 
                     }
 
                     override fun onFailure(call: Call<List<TagResponse>>?, t: Throwable?) {
-                        Timber.i(t, "tag Response error")
+                        Timber.i(t, "tag Response error ${t?.message}")
+                        hashMap[ERROR] = "tag Response error ${t?.message}"
                     }
 
                 })
             } catch (e: Exception) {
-                Timber.e(e, "Exception on tag data insert")
+                Timber.e(e, "Exception on tag data insert ${e.message}")
+                hashMap[SUCCESS] = "Exception on tag data insert: ${e.message}"
             }
+
+            return hashMap
         }
 
         /***
@@ -175,9 +190,14 @@ class ServiceUtils {
          *
          * @param categoriesTableDao access categories table
          * @param wpRestInterface retrofit interface
+         *
+         * @return hashMap with success or error message
          */
         fun addCategoriesData(categoriesTableDao: CategoriesTableDao,
-                           wpRestInterface: WPRestInterface) {
+                              wpRestInterface: WPRestInterface): HashMap<String, String> {
+
+            val hashMap = HashMap<String, String>()
+
             try {
                 val categoriesCall = wpRestInterface.getCategories()
 
@@ -198,18 +218,23 @@ class ServiceUtils {
                             }
 
                             Timber.i("category insert finished")
+                            hashMap[SUCCESS] = "category insert finished"
                         })
 
                     }
 
                     override fun onFailure(call: Call<List<CategoriesResponse>>?, t: Throwable?) {
-                        Timber.i(t, "Categories Response error")
+                        Timber.i(t, "Categories Response error ${t?.message}")
+                        hashMap[ERROR] = "Categories Response error ${t?.message}"
                     }
 
                 })
             } catch (e: Exception) {
-                Timber.e(e, "Error on categories data insert")
+                Timber.e(e, "Error on categories data insert ${e.message}")
+                hashMap[ERROR] = "Categories Response error ${e.message}"
             }
+
+            return hashMap
         }
 
         /***
@@ -218,7 +243,11 @@ class ServiceUtils {
          * @param pageTableDao access page table
          * @param wpRestInterface retrofit interface
          */
-        fun addPageData(pageTableDao: PageTableDao, wpRestInterface: WPRestInterface) {
+        fun addPageData(pageTableDao: PageTableDao, wpRestInterface: WPRestInterface):
+                HashMap<String, String> {
+
+            val hashMap = HashMap<String,String>()
+
             try {
                 val pageCall = wpRestInterface.getPages()
 
@@ -239,17 +268,22 @@ class ServiceUtils {
                             }
 
                             Timber.i("page insert finished")
+                            hashMap[SUCCESS] = "page insert finished"
                         })
                     }
 
                     override fun onFailure(call: Call<List<PageResponse>>?, t: Throwable?) {
-                        Timber.i(t, "Categories Response error")
+                        Timber.i(t, "Categories Response error ${t?.message}")
+                        hashMap[ERROR] = "Categories Response error ${t?.message}"
                     }
 
                 })
-            } catch (e:Exception){
-                Timber.e(e, "Error on page data insert")
+            } catch (e: Exception) {
+                Timber.e(e, "Error on page data insert ${e.message}")
+                hashMap[ERROR] = "Categories Response error ${e.message}"
             }
+
+            return hashMap
         }
     }
 }

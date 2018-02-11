@@ -26,6 +26,15 @@ class ConstantUtil{
         const val NIGHT_MODE_VALUE_KEY: String = "NightSP"
 
         //all sp
-        const val APP_RUN_FOR_FIRSTTIME = "appRunForFirstTime"
+        const val APP_RUN_FOR_FIRST_TIME = "appRunForFirstTime"
+
+        //event bus
+        const val UPDATE_SERVICE = "UpdateService"
+        //data insert
+        const val DATA_INSERT = "dataInsert"
+
+        //success and error
+        const val SUCCESS = "SUCCESS"
+        const val ERROR = "ERROR"
     }
 }

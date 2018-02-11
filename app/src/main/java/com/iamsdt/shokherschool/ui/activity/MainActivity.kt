@@ -134,11 +134,11 @@ class MainActivity : BaseActivity(),
 
     override fun onResume() {
         super.onResume()
-        if (DataInsertService.isRunning){
+        if (true){
             Timber.i("Service is ruining on Main Activity")
             //if all the task is done then
             //stop the service
-            if (DataInsertService.isServiceCompleted()) {
+            if (true) {
                 val intent = Intent(this@MainActivity,DataInsertService::class.java)
                 stopService(intent)
             }

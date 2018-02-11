@@ -2,7 +2,7 @@ package com.iamsdt.shokherschool.data.utilities
 
 import android.content.Context
 import androidx.content.edit
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.APP_RUN_FOR_FIRSTTIME
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.APP_RUN_FOR_FIRST_TIME
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -58,13 +58,13 @@ class SpUtils {
 
         //app running for first time
         fun isAppRunFirstTime(context: Context): Boolean {
-            val sp = context.getSharedPreferences(APP_RUN_FOR_FIRSTTIME, Context.MODE_PRIVATE)
-            return sp.getBoolean(APP_RUN_FOR_FIRSTTIME, true)
+            val sp = context.getSharedPreferences(APP_RUN_FOR_FIRST_TIME, Context.MODE_PRIVATE)
+            return sp.getBoolean(APP_RUN_FOR_FIRST_TIME, true)
         }
 
         fun AppRunFirstTime(context: Context) {
-            val sp = context.getSharedPreferences(APP_RUN_FOR_FIRSTTIME, Context.MODE_PRIVATE)
-            sp.edit { putBoolean(APP_RUN_FOR_FIRSTTIME, false) }
+            val sp = context.getSharedPreferences(APP_RUN_FOR_FIRST_TIME, Context.MODE_PRIVATE)
+            sp.edit { putBoolean(APP_RUN_FOR_FIRST_TIME, false) }
         }
     }
 }

@@ -75,7 +75,7 @@ class SplashActivity : BaseActivity() {
 
         //todo 2/10/2018 run update service
         if (Utility.isTimeForRunService(this@SplashActivity)) {
-            if (!DataInsertService.isRunning) {
+            if (true) {
                 val intent = Intent(this@SplashActivity, DataInsertService::class.java)
                 startService(intent)
                 //save date
