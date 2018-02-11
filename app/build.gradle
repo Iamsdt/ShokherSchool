@@ -126,6 +126,9 @@ android {
 
         //sweet kotlin
         implementation 'androidx.core:core-ktx:0.1'
+
+        //app intro
+        implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/xml'] } }
 }

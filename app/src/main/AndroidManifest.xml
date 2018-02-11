@@ -59,6 +59,9 @@
             android:label="@string/title_activity_page"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity android:name=".ui.activity.MyAppIntro"
+            android:theme="@style/Theme.Intro"/>
+
         <!-- Services -->
         <service
             android:name=".ui.services.DataInsertService"
