@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
+import androidx.content.edit
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.model.ThemesContract
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_color.*
 import kotlinx.android.synthetic.main.content_color.*
 
 
-class ColorActivity : AppCompatActivity(),ClickListener {
+class ColorActivity : AppCompatActivity(), ClickListener {
 
     private val themes = ArrayList<ThemesContract>()
 
@@ -37,7 +38,7 @@ class ColorActivity : AppCompatActivity(),ClickListener {
         //fill theme ids
         fillThemeIds()
         //adapter
-        val adapter = ColorAdapter(themes,this,this)
+        val adapter = ColorAdapter(themes, this, this)
 
         color_recyclerView.adapter = adapter
 
@@ -72,11 +73,9 @@ class ColorActivity : AppCompatActivity(),ClickListener {
     override fun onItemClick(themeID: Int) {
         val themeCont = themes[themeID]
 
-        val preferences = getSharedPreferences(ConstantUtil.colorSp, Context.MODE_PRIVATE)
-        val editor = preferences.edit()
+        val sp = getSharedPreferences(ConstantUtil.colorSp, Context.MODE_PRIVATE)
 
-        editor.putInt(ConstantUtil.themeKey, themeCont.id)
-        editor.apply()
+        sp.edit { putInt(ConstantUtil.themeKey, themeCont.id) }
 
         val restartIntent = Intent(this, ColorActivity::class.java)
         setResult(Activity.RESULT_OK)
