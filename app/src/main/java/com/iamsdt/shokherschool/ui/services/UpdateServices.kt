@@ -40,12 +40,17 @@ class UpdateServices:BaseServices(){
     override fun onCreate() {
         getComponent().inject(this)
         super.onCreate()
+
+        isRunning = true
+
         this.stopSelf()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         Timber.i("*****UpdateServices is running *****")
+
+        isRunning = true
 
         var error = ""
 
@@ -84,5 +89,10 @@ class UpdateServices:BaseServices(){
     override fun onDestroy() {
         super.onDestroy()
         Timber.i("*****UpdateServices is stopped*****")
+        isRunning = false
+    }
+
+    companion object {
+        var isRunning = false
     }
 }

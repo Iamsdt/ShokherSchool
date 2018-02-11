@@ -34,12 +34,15 @@ class DataInsertService : BaseServices() {
     override fun onCreate() {
         getComponent().inject(this)
         super.onCreate()
+        isRunning = true
         this.stopSelf()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         Timber.i("*****DataInsertService is running*****")
+
+        isRunning = true
 
         var error = ""
 
@@ -73,10 +76,15 @@ class DataInsertService : BaseServices() {
     override fun onDestroy() {
         super.onDestroy()
         Timber.i("*****DataInsertService is stopped*****")
+        isRunning = false
     }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    companion object {
+        var isRunning = false
     }
 
 }

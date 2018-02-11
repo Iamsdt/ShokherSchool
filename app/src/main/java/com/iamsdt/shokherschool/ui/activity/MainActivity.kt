@@ -18,33 +18,49 @@ import android.view.View
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.DATA_INSERT_SERVICE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_DATA_SERVICE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.UPDATE_SERVICE
 import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.services.DataInsertService
+import com.iamsdt.shokherschool.ui.services.PostDataService
+import com.iamsdt.shokherschool.ui.services.UpdateServices
 import com.iamsdt.shokherschool.ui.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(),
-        NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener {
 
     //main adapter for recyclerView
-    @Inject lateinit var adapter:MainAdapter
+    @Inject
+    lateinit var adapter: MainAdapter
 
     //dao to access database
-    @Inject lateinit var postTableDao:PostTableDao
-    @Inject lateinit var authorTableDao:AuthorTableDao
+    @Inject
+    lateinit var postTableDao: PostTableDao
+    @Inject
+    lateinit var authorTableDao: AuthorTableDao
 
     //rest interface to get data from server
-    @Inject lateinit var wpRestInterface:WPRestInterface
+    @Inject
+    lateinit var wpRestInterface: WPRestInterface
+
+    //event bus
+    @Inject
+    lateinit var eventBus: EventBus
 
     //theme request code
     private val themeRequestCode = 121
@@ -65,7 +81,7 @@ class MainActivity : BaseActivity(),
         setSupportActionBar(toolbar)
 
         val manager = LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL,false)
+                LinearLayoutManager.VERTICAL, false)
 
         mainRcv.layoutManager = manager
         mainRcv.adapter = adapter
@@ -73,23 +89,23 @@ class MainActivity : BaseActivity(),
 
         adapter.changeContext(this@MainActivity)
 
-        viewModel.setup(postTableDao,authorTableDao,wpRestInterface)
+        viewModel.setup(postTableDao, authorTableDao, wpRestInterface)
         viewModel.getAllPostList()?.observe(this,
                 Observer<List<PostModel>> { allPost ->
-                    if (allPost != null && !allPost.isEmpty()){
+                    if (allPost != null && !allPost.isEmpty()) {
                         adapter.replaceList(allPost)
                         mainProgressBar.visibility = View.GONE
                         Timber.i("Item Size of adapter:${allPost.size}")
 
                         //if internet is not present show a message
-                        if (!Utility.isNetworkAvailable(this@MainActivity)){
+                        if (!Utility.isNetworkAvailable(this@MainActivity)) {
                             Snackbar.make(mainLayout, "No Internet available", Snackbar.LENGTH_LONG)
                                     .show()
                         }
 
-                        if (showNewDataToast){
-                                Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT)
-                                        .show()
+                        if (showNewDataToast) {
+                            Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT)
+                                    .show()
                             showNewDataToast = false
 
                         }
@@ -102,7 +118,7 @@ class MainActivity : BaseActivity(),
                 })
 
         //scroll listener to lode more data on scroll
-        mainRcv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        mainRcv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -112,7 +128,7 @@ class MainActivity : BaseActivity(),
                 val endHasBeenReached = lastVisible + 5 >= totalItemCount
                 if (totalItemCount > 0 && endHasBeenReached) {
                     //completed 1/1/2018 prevent multiple request
-                    if (!request && Utility.isNetworkAvailable(this@MainActivity)){
+                    if (!request && Utility.isNetworkAvailable(this@MainActivity)) {
                         viewModel.requestNewPost(wpRestInterface,
                                 SpUtils.getPostDateFromSp(this@MainActivity))
                         request = true
@@ -132,19 +148,6 @@ class MainActivity : BaseActivity(),
         nav_view.setNavigationItemSelectedListener(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (true){
-            Timber.i("Service is ruining on Main Activity")
-            //if all the task is done then
-            //stop the service
-            if (true) {
-                val intent = Intent(this@MainActivity,DataInsertService::class.java)
-                stopService(intent)
-            }
-        }
-    }
-
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -158,12 +161,13 @@ class MainActivity : BaseActivity(),
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings ->{
+            R.id.action_settings -> {
                 startActivity(Intent(baseContext, SettingsActivity::class.java))
                 true
             }
@@ -175,7 +179,7 @@ class MainActivity : BaseActivity(),
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_bookmark -> {
-                startActivity(Intent(this@MainActivity,BookmarkActivity::class.java))
+                startActivity(Intent(this@MainActivity, BookmarkActivity::class.java))
             }
 
             R.id.nav_categories -> {
@@ -187,7 +191,7 @@ class MainActivity : BaseActivity(),
             }
 
             R.id.nav_setting -> {
-                startActivity(Intent(this@MainActivity,SettingsActivity::class.java))
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             }
 
             R.id.nav_choseColor -> {
@@ -213,16 +217,63 @@ class MainActivity : BaseActivity(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == themeRequestCode && resultCode == Activity.RESULT_OK){
+        if (requestCode == themeRequestCode && resultCode == Activity.RESULT_OK) {
             //recreate this activity
             recreate()
         }
     }
 
+    @Subscribe
+    fun onMessageRecive(evenMessage: EventMessage) {
+        if (evenMessage.key == UPDATE_SERVICE) {
+            if (evenMessage.errorMessage.isEmpty()) {
+                if (UpdateServices.isRunning) {
+                    stopService(Intent(this, UpdateServices::class.java))
+                }
+            } else {
+                startService(Intent(this, UpdateServices::class.java))
+            }
+
+        } else if (evenMessage.key == POST_DATA_SERVICE) {
+
+            if (evenMessage.errorMessage.isEmpty()) {
+                //start data insert services
+                startService(Intent(this, DataInsertService::class.java))
+
+                if (PostDataService.isRunning) {
+                    //stop post dataServices
+                    stopService(Intent(this, PostDataService::class.java))
+                }
+            } else {
+                startService(Intent(this, PostDataService::class.java))
+            }
+
+        } else if (evenMessage.key == DATA_INSERT_SERVICE) {
+            if (evenMessage.errorMessage.isEmpty()) {
+                if (DataInsertService.isRunning) {
+                    stopService(Intent(this, DataInsertService::class.java))
+                }
+            } else {
+                startService(Intent(this, DataInsertService::class.java))
+            }
+        }
+    }
+
+    //register and unregister event bus
+    override fun onStart() {
+        super.onStart()
+        eventBus.register(this@MainActivity)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        eventBus.unregister(this@MainActivity)
+    }
+
     companion object {
         //request to prevent duplicate request for getting new data
         //on view model class
-        var request:Boolean = false
-        var showNewDataToast:Boolean = false
+        var request: Boolean = false
+        var showNewDataToast: Boolean = false
     }
 }
