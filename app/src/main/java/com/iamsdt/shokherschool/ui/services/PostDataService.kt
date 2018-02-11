@@ -5,9 +5,14 @@ import android.content.Intent
 import android.os.IBinder
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
+import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.ERROR
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_DATA_SERVICE
 import com.iamsdt.shokherschool.ui.base.BaseServices
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPostData
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,6 +27,8 @@ class PostDataService : BaseServices() {
     @Inject lateinit var wpRestInterface: WPRestInterface
     @Inject lateinit var authorTableDao: AuthorTableDao
 
+    @Inject lateinit var eventBus: EventBus
+
     override fun onCreate() {
         getComponent().inject(this)
         super.onCreate()
@@ -32,7 +39,17 @@ class PostDataService : BaseServices() {
 
         Timber.i("*****PostDataService is running*****")
 
-        addPostData(postTableDao,authorTableDao,wpRestInterface)
+        var error = ""
+
+        //add post data
+        val postMap = addPostData(postTableDao,authorTableDao,wpRestInterface)
+
+        if (postMap.containsKey(ConstantUtil.ERROR)) {
+            error = postMap[ERROR] ?: ""
+        }
+
+        eventBus.post(EventMessage(key = POST_DATA_SERVICE,
+                message = "complete",errorMessage = error))
 
         return super.onStartCommand(intent, flags, startId)
     }

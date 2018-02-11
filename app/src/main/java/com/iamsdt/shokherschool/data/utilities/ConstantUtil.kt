@@ -30,8 +30,8 @@ class ConstantUtil{
 
         //event bus
         const val UPDATE_SERVICE = "UpdateService"
-        //data insert
-        const val DATA_INSERT = "dataInsert"
+        const val DATA_INSERT_SERVICE = "dataInsertService"
+        const val POST_DATA_SERVICE = "postDataService"
 
         //success and error
         const val SUCCESS = "SUCCESS"

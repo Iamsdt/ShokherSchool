@@ -76,7 +76,7 @@ class UpdateServices:BaseServices(){
         }
 
         eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                message = "Update Service complete",errorMessage = error))
+                message = "complete",errorMessage = error))
 
         return super.onStartCommand(intent, flags, startId)
     }

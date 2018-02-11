@@ -5,11 +5,16 @@ import android.os.IBinder
 import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
 import com.iamsdt.shokherschool.data.database.dao.PageTableDao
 import com.iamsdt.shokherschool.data.database.dao.TagTableDao
+import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.DATA_INSERT_SERVICE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.ERROR
 import com.iamsdt.shokherschool.ui.base.BaseServices
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addCategoriesData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPageData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addTagData
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,6 +29,8 @@ class DataInsertService : BaseServices() {
     @Inject lateinit var tagTableDao: TagTableDao
     @Inject lateinit var wpRestInterface: WPRestInterface
 
+    @Inject lateinit var eventBus: EventBus
+
     override fun onCreate() {
         getComponent().inject(this)
         super.onCreate()
@@ -32,18 +39,33 @@ class DataInsertService : BaseServices() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
+        Timber.i("*****DataInsertService is running*****")
+
+        var error = ""
+
+        //add categories and tags and page
         //add tag data
-        addTagData(tagTableDao,wpRestInterface)
+        val tagMap = addTagData(tagTableDao, wpRestInterface)
+        if (tagMap.containsKey(ConstantUtil.ERROR)) {
+            error = tagMap[ERROR] ?: ""
+        }
 
         //add categories
-        addCategoriesData(categoriesTableDao,wpRestInterface)
+        val categoryMap = addCategoriesData(categoriesTableDao, wpRestInterface)
+        if (categoryMap.containsKey(ConstantUtil.ERROR)) {
+            error += categoryMap[ConstantUtil.ERROR]
+        }
 
         //add page data
-        addPageData(pageTableDao,wpRestInterface)
+        val pageMap = addPageData(pageTableDao, wpRestInterface)
+        if (pageMap.containsKey(ConstantUtil.ERROR)) {
+            error += pageMap[ConstantUtil.ERROR]
+        }
 
-        Timber.i("*****DataInsertService is running*****")
+        eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
+                message = "complete",errorMessage = error))
+
         Timber.i("DataInsertService complete")
-
 
         return super.onStartCommand(intent, flags, startId)
     }
