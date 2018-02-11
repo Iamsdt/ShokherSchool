@@ -43,21 +43,25 @@ class Utility {
          */
         fun isTimeForRunService(context: Context): Boolean {
 
+            if (SpUtils.isAppRunFirstTime(context)){
+                SpUtils.saveUpdateServiceDateOnSp(context)
+                return false
+            }
+
             val spDate = SpUtils.getDateForUpdateService(context)
 
             // if previous date is empty
             // then time for running service
-            if (spDate.isEmpty() && !SpUtils.isAppRunFirstTime(context)) {
+            if (spDate.isEmpty()) {
                 return isNetworkAvailable(context)
             }
 
-            //fixme 1/10/2018 add setting for sync interval
-            val interval = 7
+            //complete 1/10/2018 add setting for sync interval
+            val interval = SettingsSPUtils.syncTimeInterval(context)
 
             val intervalDay = MyDateUtil.compareDateIntervals(spDate)
 
             return (intervalDay >= interval) && isNetworkAvailable(context)
-                    && !SpUtils.isAppRunFirstTime(context)
         }
 
         /**

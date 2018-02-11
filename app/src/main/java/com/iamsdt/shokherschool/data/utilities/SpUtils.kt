@@ -62,7 +62,7 @@ class SpUtils {
             return sp.getBoolean(APP_RUN_FOR_FIRST_TIME, true)
         }
 
-        fun AppRunFirstTime(context: Context) {
+        fun saveAppRunFirstTime(context: Context) {
             val sp = context.getSharedPreferences(APP_RUN_FOR_FIRST_TIME, Context.MODE_PRIVATE)
             sp.edit { putBoolean(APP_RUN_FOR_FIRST_TIME, false) }
         }
