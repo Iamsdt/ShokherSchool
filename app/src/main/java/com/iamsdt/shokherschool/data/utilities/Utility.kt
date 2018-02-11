@@ -10,9 +10,9 @@ import com.iamsdt.shokherschool.R
 
 
 /**
-* Created by Shudipto Trafder on 11/14/2017.
-* at 9:01 PM
-*/
+ * Created by Shudipto Trafder on 11/14/2017.
+ * at 9:01 PM
+ */
 
 class Utility {
 
@@ -31,13 +31,23 @@ class Utility {
             return info != null && info.isConnectedOrConnecting
         }
 
+        /**
+         * This method is for check is time for update
+         * It will check the followings
+         * is app running for first time
+         * save date is older than user setting
+         * by default older date is 7
+         * @param context to access sp
+         *
+         * @return boolean true or false
+         */
         fun isTimeForRunService(context: Context): Boolean {
 
-            val spDate = MyDateUtil.getDateForService(context)
+            val spDate = SpUtils.getDateForUpdateService(context)
 
             // if previous date is empty
             // then time for running service
-            if (spDate.isEmpty()) {
+            if (spDate.isEmpty() && !SpUtils.isAppRunFirstTime(context)) {
                 return isNetworkAvailable(context)
             }
 
@@ -47,6 +57,7 @@ class Utility {
             val intervalDay = MyDateUtil.compareDateIntervals(spDate)
 
             return (intervalDay >= interval) && isNetworkAvailable(context)
+                    && !SpUtils.isAppRunFirstTime(context)
         }
 
         /**

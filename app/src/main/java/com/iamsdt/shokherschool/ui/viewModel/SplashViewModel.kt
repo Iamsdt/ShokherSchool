@@ -6,15 +6,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.os.AsyncTask
 import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
-import com.iamsdt.shokherschool.data.database.table.AuthorTable
-import com.iamsdt.shokherschool.data.database.table.MediaTable
-import com.iamsdt.shokherschool.data.database.table.PostTable
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
 
 /**
@@ -43,9 +36,6 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                 if (data.isEmpty()) {
 
                     Timber.i("No data in database")
-                    addRemoteData(postTableDao,
-                            authorTableDao,
-                            wpRestInterface)
 
                 } else {
                     Timber.i("Database has data")
@@ -57,108 +47,7 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         return allPost
     }
 
-    private fun addRemoteData(postTableDao: PostTableDao,
-                              authorTableDao: AuthorTableDao,
-                              wpRestInterface: WPRestInterface) {
 
-        //make request to server
-        val call = wpRestInterface.getAllPostList()
-
-        call.enqueue(object : Callback<List<PostResponse>> {
-            override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
-                Timber.e(t, "post data failed")
-            }
-
-            override fun onResponse(call: Call<List<PostResponse>>?, response: Response<List<PostResponse>>?) {
-
-                val authorInserted = ArrayList<Int>()
-
-                if (response!!.isSuccessful) {
-
-                    Timber.i("Response found from server")
-
-                    AsyncTask.execute({
-
-                        val postData = response.body()
-
-                        for (post in postData!!) {
-                            val id = post.id
-                            val title = post.title?.rendered
-                            val content = post.content?.rendered
-                            val date = post.date
-
-                            //author id
-                            val author = post.author
-                            if (!authorInserted.contains(author)) {
-                                //request data from server
-                                val authorResponse =
-                                        wpRestInterface.getAuthorByID(author).execute()
-
-                                if (authorResponse.isSuccessful) {
-                                    val authorData = authorResponse.body()
-                                    val authorTable = AuthorTable(
-                                            authorData?.avatarUrls?.avatar24,
-                                            authorData?.avatarUrls?.avatar48,
-                                            authorData?.avatarUrls?.avatar96,
-                                            authorData?.name, authorData?.link,
-                                            authorData?.description, authorData?.id)
-
-                                    authorTableDao.insert(authorTable)
-
-                                    authorInserted.add(author)
-                                }
-                            }
-
-                            val media = post.featuredMedia
-                            var mediaTable:MediaTable ?= null
-
-                            if (media != 0){
-
-                                val mediaResponse = wpRestInterface.getMediaByID(media).execute()
-
-                                if (mediaResponse!!.isSuccessful) {
-                                    val mediaData = mediaResponse.body()
-                                    //media image size
-                                    val mediaDetails = mediaData?.mediaDetails?.sizes
-
-                                    mediaTable = MediaTable(mediaData?.id,
-                                            mediaData?.title?.rendered,
-                                            mediaDetails?.medium?.sourceUrl)
-                                }
-                            }
-
-                            var categories:String = post.categories.toString()
-                            var tags:String = post.tags.toString()
-                            val commentStatus:String = post.commentStatus
-
-                            //categories list will be [1,2,3,4,5]
-                            // so remove '[' and ']'
-                            val array = charArrayOf('[',']')
-                            //to convert array to vararg use *
-                            categories = categories.trim(*array)
-
-                            //same for tags
-                            tags = tags.trim(*array)
-
-                            //0 for bookmark
-                            val table = PostTable(id, date, author,
-                                    title,content,categories,tags,commentStatus,0,mediaTable)
-
-                            //insert data
-                            postTableDao.insert(table)
-                        }
-
-                        Timber.i("data save to database")
-
-                        //now add mock data
-                        addMockData()
-                    })
-                }
-
-            }
-
-        })
-    }
 
     /**
      * Add mock data to the Mutable Live data

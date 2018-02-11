@@ -13,7 +13,6 @@ import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.retrofit.pojo.categories.CategoriesResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.page.PageResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.tags.TagResponse
-import com.iamsdt.shokherschool.data.utilities.MyDateUtil
 import com.iamsdt.shokherschool.ui.base.BaseServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -65,7 +64,7 @@ class DataInsertService : BaseServices() {
 
         if (isServiceCompleted()) {
             Timber.i("Service complete date saved")
-            MyDateUtil.saveServiceDateOnSp(baseContext)
+            //todo (baseContext)
         }
 
         return super.onStartCommand(intent, flags, startId)

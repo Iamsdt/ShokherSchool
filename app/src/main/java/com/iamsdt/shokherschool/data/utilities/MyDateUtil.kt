@@ -1,6 +1,5 @@
 package com.iamsdt.shokherschool.data.utilities
 
-import android.content.Context
 import org.joda.time.DateTime
 import org.joda.time.Days
 import timber.log.Timber
@@ -27,27 +26,6 @@ class MyDateUtil{
             return output.format(postDate)
         }
 
-        /**Get date from sp
-         * @param context access to sp
-         * @return date that saved in the sp*/
-        fun getDate(context: Context):String {
-            val sp = context.getSharedPreferences(ConstantUtil.dateSpName,
-                    Context.MODE_PRIVATE)
-            return sp.getString(ConstantUtil.dateSpName,ConstantUtil.dateSpDefaultValue)
-        }
-
-        /**Save date to sp
-         * @param context for access sp
-         * @param string date to save*/
-        fun setDateOnSp(context: Context,string: String){
-            val sp = context.getSharedPreferences(ConstantUtil.dateSpName,
-                    Context.MODE_PRIVATE)
-
-            val editor = sp.edit()
-            editor.putString(ConstantUtil.dateSpName,string)
-            editor.apply()
-        }
-
         /**
          * This methods for compare two date
          * to find out which date is older
@@ -60,29 +38,6 @@ class MyDateUtil{
             first
         } else {
             second
-        }
-
-        /** Get date from sp
-         * @return date*/
-        fun getDateForService(context: Context):String{
-            val sp = context.getSharedPreferences(ConstantUtil.ServiceSp,
-                    Context.MODE_PRIVATE)
-            //default value is empty
-            //complete 1/10/2018 change default value to empty
-            return sp.getString(ConstantUtil.ServiceRunningDate,
-                    "")
-        }
-
-        fun saveServiceDateOnSp(context: Context){
-            val sdf = SimpleDateFormat("dd-MM-yyyy",Locale.US)
-            val todayDate = sdf.format(Date())
-
-            val sp = context.getSharedPreferences(ConstantUtil.ServiceSp,
-                    Context.MODE_PRIVATE)
-
-            val editor = sp.edit()
-            editor.putString(ConstantUtil.ServiceRunningDate,todayDate)
-            editor.apply()
         }
 
         /**

@@ -18,6 +18,7 @@ import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.data.utilities.MyDateUtil
+import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.ui.activity.DetailsActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -172,7 +173,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
             dateCheckedList.add(n)
         }
         val spSave = dtf.format(today)
-        MyDateUtil.setDateOnSp(context!!, spSave)
+        SpUtils.setPostDateOnSp(context!!, spSave)
         Timber.i("date saved: $spSave")
     }
 

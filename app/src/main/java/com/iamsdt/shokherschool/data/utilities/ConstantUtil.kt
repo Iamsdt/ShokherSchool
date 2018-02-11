@@ -24,5 +24,8 @@ class ConstantUtil{
         const val themeKey = "themeKey"
         const val NIGHT_MODE_SP_KEY: String = "NightModeSp"
         const val NIGHT_MODE_VALUE_KEY: String = "NightSP"
+
+        //all sp
+        const val APP_RUN_FOR_FIRSTTIME = "appRunForFirstTime"
     }
 }

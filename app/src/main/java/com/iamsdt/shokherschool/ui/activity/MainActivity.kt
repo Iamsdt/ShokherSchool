@@ -20,7 +20,7 @@ import com.iamsdt.shokherschool.data.database.dao.AuthorTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.data.utilities.MyDateUtil
+import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.adapter.MainAdapter
@@ -114,7 +114,7 @@ class MainActivity : BaseActivity(),
                     //completed 1/1/2018 prevent multiple request
                     if (!request && Utility.isNetworkAvailable(this@MainActivity)){
                         viewModel.requestNewPost(wpRestInterface,
-                                MyDateUtil.getDate(this@MainActivity))
+                                SpUtils.getPostDateFromSp(this@MainActivity))
                         request = true
                         Timber.i("New request start")
                     }
@@ -135,7 +135,7 @@ class MainActivity : BaseActivity(),
     override fun onResume() {
         super.onResume()
         if (DataInsertService.isRunning){
-            Timber.w("Service is ruining on Main Activity")
+            Timber.i("Service is ruining on Main Activity")
             //if all the task is done then
             //stop the service
             if (DataInsertService.isServiceCompleted()) {
