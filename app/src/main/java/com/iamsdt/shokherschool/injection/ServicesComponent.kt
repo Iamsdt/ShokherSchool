@@ -4,6 +4,7 @@ import com.iamsdt.shokherschool.injection.module.ServiceModule
 import com.iamsdt.shokherschool.injection.scopes.ServicesScope
 import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.services.PostDataService
+import com.iamsdt.shokherschool.ui.services.UpdateServices
 import dagger.Component
 
 /**
@@ -16,4 +17,5 @@ import dagger.Component
 interface ServicesComponent {
     fun inject(dataInsertService: DataInsertService)
     fun inject(postDataService: PostDataService)
+    fun inject(updateServices: UpdateServices)
 }
