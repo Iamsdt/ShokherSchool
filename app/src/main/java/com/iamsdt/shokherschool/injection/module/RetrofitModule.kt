@@ -2,10 +2,9 @@ package com.iamsdt.shokherschool.injection.module
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
-import com.iamsdt.shokherschool.data.retrofit.RetrofitHandler
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import com.iamsdt.shokherschool.injection.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -19,10 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module(includes = [NetworkModule::class])
 class RetrofitModule {
 
-    @Provides
-    @ApplicationScope
-    fun getRetHandler(wpRestInterface: WPRestInterface):RetrofitHandler
-            = RetrofitHandler(wpRestInterface)
+//    @Provides
+//    @ApplicationScope
+//    fun getRetHandler(wpRestInterface: WPRestInterface):RetrofitHandler
+//            = RetrofitHandler(wpRestInterface)
 
     @Provides
     @ApplicationScope
