@@ -66,7 +66,7 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
 
             //undo click listener
             holder.undo.setOnClickListener({
-                undoOpt(post.id)
+                undoOpt(post)
             })
         } else{
             //show regular layout
@@ -89,14 +89,17 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
         }
     }
 
-    private fun undoOpt(postId: Int) {
-        val pendingRemovalRunnable = pendingRunnable[postId]
-        pendingRunnable.remove(postId)
+    private fun undoOpt(post:PostModel) {
+        val pendingRemovalRunnable = pendingRunnable[post.id]
+        pendingRunnable.remove(post.id)
         if (pendingRemovalRunnable != null)
             handler.removeCallbacks(pendingRemovalRunnable)
-        itemsPendingRemoval.remove(postId)
+        itemsPendingRemoval.remove(post.id)
         // this will rebind the row in "normal" state
-        notifyItemChanged(list!!.indexOf(list!![postId]))
+
+        val position = list!!.indexOf(post)
+
+        notifyItemChanged(position)
     }
 
     fun pendingRemoval(position: Int, view: View) {
