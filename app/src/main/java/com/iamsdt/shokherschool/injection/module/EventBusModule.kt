@@ -14,7 +14,5 @@ import org.greenrobot.eventbus.EventBus
 class EventBusModule{
     @Provides
     @ApplicationScope
-    fun getBus():EventBus = EventBus.builder()
-            .logNoSubscriberMessages(false)
-            .sendNoSubscriberEvent(false).installDefaultEventBus()
+    fun getBus():EventBus = EventBus.builder().installDefaultEventBus()
 }

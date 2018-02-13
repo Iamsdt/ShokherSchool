@@ -66,11 +66,13 @@
         <service
             android:name=".ui.services.DataInsertService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:process=":data"/>
         <service
             android:name=".ui.services.PostDataService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:process=":post"/>
         <service
             android:name=".ui.services.UpdateServices"
             android:enabled="true"

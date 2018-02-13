@@ -44,6 +44,13 @@ android {
 
     kapt {
         generateStubs = true
+        arguments {
+            arg('eventBusIndex', 'com.iamsdt.shokherschool.eventBusIndex')
+        }
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     dependencies {
@@ -123,12 +130,16 @@ android {
 
         //event bus
         implementation 'org.greenrobot:eventbus:3.1.1'
+        kapt 'org.greenrobot:eventbus-annotation-processor:3.1.1'
 
         //sweet kotlin
         implementation 'androidx.core:core-ktx:0.1'
 
         //app intro
         implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
+
+        //data binding
+        //kapt "com.android.databinding:compiler:27.0.0"
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/xml'] } }
 }
