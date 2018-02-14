@@ -3,6 +3,8 @@ package com.iamsdt.shokherschool.data.utilities
 import android.content.Context
 import androidx.content.edit
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.APP_RUN_FOR_FIRST_TIME
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.FIRST_SERVICE_RUNNING_COMPLETE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_SERVICE_COMPLETE
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,6 +67,26 @@ class SpUtils {
         fun saveAppRunFirstTime(context: Context) {
             val sp = context.getSharedPreferences(APP_RUN_FOR_FIRST_TIME, Context.MODE_PRIVATE)
             sp.edit { putBoolean(APP_RUN_FOR_FIRST_TIME, false) }
+        }
+
+        fun isServiceComplete(context: Context): Boolean {
+            val sp = context.getSharedPreferences(FIRST_SERVICE_RUNNING_COMPLETE, Context.MODE_PRIVATE)
+            return sp.getBoolean(FIRST_SERVICE_RUNNING_COMPLETE, false)
+        }
+
+        fun saveServiceComplete(context: Context) {
+            val sp = context.getSharedPreferences(FIRST_SERVICE_RUNNING_COMPLETE, Context.MODE_PRIVATE)
+            sp.edit { putBoolean(FIRST_SERVICE_RUNNING_COMPLETE, true) }
+        }
+
+        fun isPostServiceComplete(context: Context): Boolean {
+            val sp = context.getSharedPreferences(FIRST_SERVICE_RUNNING_COMPLETE, Context.MODE_PRIVATE)
+            return sp.getBoolean(POST_SERVICE_COMPLETE, false)
+        }
+
+        fun savePostServiceComplete(context: Context) {
+            val sp = context.getSharedPreferences(FIRST_SERVICE_RUNNING_COMPLETE, Context.MODE_PRIVATE)
+            sp.edit { putBoolean(POST_SERVICE_COMPLETE, true) }
         }
     }
 }

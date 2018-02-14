@@ -27,14 +27,25 @@ class ConstantUtil{
 
         //all sp
         const val APP_RUN_FOR_FIRST_TIME = "appRunForFirstTime"
+        const val FIRST_SERVICE_RUNNING_COMPLETE = "ServiceRunningComplete"
+        const val POST_SERVICE_COMPLETE = "POST_SERVICE_COMPLETE"
+
 
         //event bus
         const val UPDATE_SERVICE = "UpdateService"
         const val DATA_INSERT_SERVICE = "dataInsertService"
         const val POST_DATA_SERVICE = "postDataService"
+        //new post found
+        const val NEW_POST_FOUND = "NewPostFound"
+
+        //types of data
+        const val POST = "POST"
+        const val TAG = "TAG"
+        const val CATEGORY = "CATEGORY"
+        const val PAGE = "PAGE"
+
 
         //success and error
-        const val SUCCESS = "SUCCESS"
         const val ERROR = "ERROR"
     }
 }

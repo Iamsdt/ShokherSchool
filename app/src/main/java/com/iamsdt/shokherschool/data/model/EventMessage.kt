@@ -6,5 +6,4 @@ package com.iamsdt.shokherschool.data.model
  */
 class EventMessage(var key:String = "",
                    var message:String = "",
-                   var message2:String = "",
                    var errorMessage:String = "")

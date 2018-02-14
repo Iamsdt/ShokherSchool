@@ -21,8 +21,13 @@ import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.CATEGORY
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.DATA_INSERT_SERVICE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.NEW_POST_FOUND
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.PAGE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_DATA_SERVICE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.TAG
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.UPDATE_SERVICE
 import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.data.utilities.ThemeUtils
@@ -38,6 +43,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -102,14 +108,6 @@ class MainActivity : BaseActivity(),
                             Snackbar.make(mainLayout, "No Internet available", Snackbar.LENGTH_LONG)
                                     .show()
                         }
-
-                        if (showNewDataToast) {
-                            Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT)
-                                    .show()
-                            showNewDataToast = false
-
-                        }
-
                         //stop animation
 
                         //save date to sp
@@ -130,7 +128,7 @@ class MainActivity : BaseActivity(),
                     //completed 1/1/2018 prevent multiple request
                     if (!request && Utility.isNetworkAvailable(this@MainActivity)) {
                         viewModel.requestNewPost(wpRestInterface,
-                                SpUtils.getPostDateFromSp(this@MainActivity))
+                                SpUtils.getPostDateFromSp(this@MainActivity), eventBus)
                         request = true
                         Timber.i("New request start")
                     }
@@ -223,15 +221,69 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    @Subscribe
-    fun onMessageRecive(evenMessage: EventMessage) {
-        if (evenMessage.key == UPDATE_SERVICE) {
-            if (evenMessage.errorMessage.isEmpty()) {
+
+    //subscriber
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onReciveEvent(evenMessage: EventMessage){
+
+        Timber.w("**********Event bus received********")
+
+        if (evenMessage.key == NEW_POST_FOUND) {
+            Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT).show()
+            request = false
+
+        } else if (evenMessage.key == UPDATE_SERVICE) {
+            //event message for update service
+            if (evenMessage.message == POST) {
+                if (evenMessage.errorMessage.isEmpty()) {
+                    updatePostComplete = true
+                }
+
+            }else if (evenMessage.message == TAG) {
+                if (evenMessage.errorMessage.isEmpty()) {
+                    updateTagComplete = true
+                }
+
+            } else if (evenMessage.message == CATEGORY) {
+                if (evenMessage.errorMessage.isEmpty()) {
+                    updateCategoryComplete = true
+                }
+
+            } else if (evenMessage.message == PAGE) {
+                if (evenMessage.errorMessage.isEmpty()) {
+                    updatePageComplete = true
+                }
+
+            }
+
+            if (dataCategoryComplete && dataTagComplete && dataPageComplete) {
                 if (UpdateServices.isRunning) {
                     stopService(Intent(this, UpdateServices::class.java))
                 }
-            } else {
-                startService(Intent(this, UpdateServices::class.java))
+                SpUtils.saveUpdateServiceDateOnSp(this)
+            }
+
+        } else if (evenMessage.key == DATA_INSERT_SERVICE) {
+
+            if (evenMessage.message == TAG) {
+                if (evenMessage.errorMessage.isEmpty()) {
+                    dataTagComplete = true
+                }
+            } else if (evenMessage.message == CATEGORY) {
+                if (evenMessage.errorMessage.isEmpty()) {
+                    dataCategoryComplete = true
+                }
+            } else if (evenMessage.message == PAGE) {
+                if (evenMessage.errorMessage.isEmpty()) {
+                    dataPageComplete = true
+                }
+            }
+
+            if (dataCategoryComplete && dataTagComplete && dataPageComplete) {
+                if (DataInsertService.isRunning) {
+                    stopService(Intent(this, DataInsertService::class.java))
+                }
+                SpUtils.saveServiceComplete(this)
             }
 
         } else if (evenMessage.key == POST_DATA_SERVICE) {
@@ -239,6 +291,7 @@ class MainActivity : BaseActivity(),
             if (evenMessage.errorMessage.isEmpty()) {
                 //start data insert services
                 startService(Intent(this, DataInsertService::class.java))
+                SpUtils.savePostServiceComplete(this)
 
                 if (PostDataService.isRunning) {
                     //stop post dataServices
@@ -247,16 +300,23 @@ class MainActivity : BaseActivity(),
             } else {
                 startService(Intent(this, PostDataService::class.java))
             }
-
-        } else if (evenMessage.key == DATA_INSERT_SERVICE) {
-            if (evenMessage.errorMessage.isEmpty()) {
-                if (DataInsertService.isRunning) {
-                    stopService(Intent(this, DataInsertService::class.java))
-                }
-            } else {
-                startService(Intent(this, DataInsertService::class.java))
-            }
         }
+    }
+
+    companion object {
+        var request = false
+
+        //for data insert services
+        var dataTagComplete = false
+        var dataCategoryComplete = false
+        var dataPageComplete = false
+
+        // for update service
+        var updatePostComplete = false
+        var updateTagComplete = false
+        var updateCategoryComplete = false
+        var updatePageComplete = false
+
     }
 
     //register and unregister event bus
@@ -268,12 +328,5 @@ class MainActivity : BaseActivity(),
     override fun onStop() {
         super.onStop()
         eventBus.unregister(this@MainActivity)
-    }
-
-    companion object {
-        //request to prevent duplicate request for getting new data
-        //on view model class
-        var request: Boolean = false
-        var showNewDataToast: Boolean = false
     }
 }

@@ -9,7 +9,7 @@ import com.iamsdt.shokherschool.R
 class MyAppIntro : IntroActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        isFullscreen = true
+        //isFullscreen = true
         super.onCreate(savedInstanceState)
 
         isButtonBackVisible = false

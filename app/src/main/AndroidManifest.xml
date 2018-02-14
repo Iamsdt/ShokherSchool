@@ -71,13 +71,13 @@
         <service
             android:name=".ui.services.PostDataService"
             android:enabled="true"
-            android:exported="false"
-            android:process=":post"/>
+            android:exported="false" />
         <service
             android:name=".ui.services.UpdateServices"
             android:enabled="true"
             android:exported="false"
             android:process=":update" />
+
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.base.BaseActivity
+import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.services.PostDataService
 import com.iamsdt.shokherschool.ui.services.UpdateServices
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -31,20 +32,36 @@ class SplashActivity : BaseActivity() {
             timer = 100
         }
 
+        //if service is not completed
+        //start the services
+        if (!SpUtils.isServiceComplete(this)) {
+            if (!SpUtils.isPostServiceComplete(this)){
+                startService(Intent(this, PostDataService::class.java))
+            } else{
+                startService(Intent(this, DataInsertService::class.java))
+            }
+        }
+
         if (SpUtils.isAppRunFirstTime(this)) {
             //start service and app intro
-            startService(Intent(this, PostDataService::class.java))
             //complete 2/10/2018 start app intro
             Thread({
                 try {
                     // time 1 sec
-                    Thread.sleep(timer)
+                    Thread.sleep(5000)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Timber.e(e, "Error on Splash Activity Thread")
                 } finally {
-                    startActivityForResult(Intent(this@SplashActivity,
-                            MainActivity::class.java),requestCodeIntro)
+//                    startActivityForResult(Intent(this@SplashActivity,
+//                            MyAppIntro::class.java),requestCodeIntro)
+
+                    startActivity(Intent(this@SplashActivity,
+                            MainActivity::class.java))
+                    finish()
+
+                    //same
+                    SpUtils.saveAppRunFirstTime(this)
                 }
             }).start()
 

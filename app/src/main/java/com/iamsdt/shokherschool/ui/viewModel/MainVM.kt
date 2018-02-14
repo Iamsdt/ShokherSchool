@@ -9,10 +9,12 @@ import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.database.table.AuthorTable
 import com.iamsdt.shokherschool.data.database.table.MediaTable
 import com.iamsdt.shokherschool.data.database.table.PostTable
+import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
-import com.iamsdt.shokherschool.ui.activity.MainActivity
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,19 +55,11 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         return allPost
     }
 
-    private fun addRemoteData(callback: Call<List<PostResponse>>?) {
+    private fun addRemoteData(call: Call<List<PostResponse>>, bus: EventBus) {
 
         Timber.i("call start for Remote data")
 
-        var call = callback
-
-        //if call is null make default request
-        if (call == null) {
-            //make request to database
-            call = wpRestInterface?.getAllPostList()
-        }
-
-        call?.enqueue(object : Callback<List<PostResponse>> {
+        call.enqueue(object : Callback<List<PostResponse>> {
             override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
                 Timber.e(t, "post data failed")
             }
@@ -150,9 +144,8 @@ class MainVM(application: Application) : AndroidViewModel(application) {
 
                         Timber.i("Data insert complete")
 
-                        //all data saved
-                        //now request for more data is open
-                        MainActivity.request = false
+                        //event bus
+                        bus.post(EventMessage(key = ConstantUtil.NEW_POST_FOUND,message = "found new post"))
                     })
                 }
 
@@ -167,13 +160,13 @@ class MainVM(application: Application) : AndroidViewModel(application) {
     }
 
     fun requestNewPost(wpRestInterface: WPRestInterface,
-                       date: String) {
+                       date: String,bus: EventBus) {
         val call = wpRestInterface.getFilterPostList(date)
         Timber.i("Request for new query data")
         Timber.i("Date before: $date")
-        addRemoteData(call)
+        addRemoteData(call,bus)
         //show toast message
-        MainActivity.showNewDataToast = true
+        //MainActivity.showNewDataToast = true
         Timber.i("new request finished")
     }
 }

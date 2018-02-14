@@ -9,7 +9,6 @@ import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.DATA_INSERT_SERVICE
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.ERROR
 import com.iamsdt.shokherschool.ui.base.BaseServices
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addCategoriesData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPageData
@@ -35,7 +34,7 @@ class DataInsertService : BaseServices() {
         getComponent().inject(this)
         super.onCreate()
         isRunning = true
-        this.stopSelf()
+        //this.stopSelf()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -48,10 +47,7 @@ class DataInsertService : BaseServices() {
 
         //add categories and tags and page
         //add tag data
-        val tagMap = addTagData(tagTableDao, wpRestInterface)
-        if (tagMap.containsKey(ConstantUtil.ERROR)) {
-            error = tagMap[ERROR] ?: ""
-        }
+        addTagData(tagTableDao, wpRestInterface,eventBus,true)
 
         //add categories
         val categoryMap = addCategoriesData(categoriesTableDao, wpRestInterface)

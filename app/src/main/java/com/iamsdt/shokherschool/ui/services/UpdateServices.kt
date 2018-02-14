@@ -55,18 +55,12 @@ class UpdateServices:BaseServices(){
         var error = ""
 
         //add post data
-        val postMap = addPostData(postTableDao,authorTableDao,wpRestInterface)
+        addPostData(postTableDao,authorTableDao,wpRestInterface,eventBus,false)
 
-        if (postMap.containsKey(ERROR)) {
-            error = postMap[ERROR] ?: ""
-        }
 
         //add categories and tags and page
         //add tag data
-        val tagMap = addTagData(tagTableDao, wpRestInterface)
-        if (tagMap.containsKey(ERROR)) {
-            error += tagMap[ERROR]
-        }
+        addTagData(tagTableDao, wpRestInterface,eventBus,false)
 
         //add categories
         val categoryMap = addCategoriesData(categoriesTableDao, wpRestInterface)
