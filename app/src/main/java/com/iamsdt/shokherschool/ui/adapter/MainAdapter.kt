@@ -163,7 +163,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
         var today: Date = dtf.parse(dtf.format(Date()))
 
         for (n in dateList) {
-            if (dateCheckedList.contains(n)) return
+            if (dateCheckedList.contains(n)) continue
             val date2 = dtf.parse(n)
             val date3 = MyDateUtil.compareTwoDate(today, date2)
 

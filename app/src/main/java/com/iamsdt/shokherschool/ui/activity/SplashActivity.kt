@@ -37,7 +37,8 @@ class SplashActivity : BaseActivity() {
         if (!SpUtils.isServiceComplete(this)) {
             if (!SpUtils.isPostServiceComplete(this)){
                 startService(Intent(this, PostDataService::class.java))
-            } else{
+
+            } else if (!SpUtils.isServiceComplete(this)){
                 startService(Intent(this, DataInsertService::class.java))
             }
         }

@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.ui.services
 
+import android.content.Context
 import android.os.AsyncTask
 import com.iamsdt.shokherschool.data.database.dao.*
 import com.iamsdt.shokherschool.data.database.table.*
@@ -10,12 +11,11 @@ import com.iamsdt.shokherschool.data.retrofit.pojo.page.PageResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.tags.TagResponse
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.CATEGORY
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.DATA_INSERT_SERVICE
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.PAGE
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_DATA_SERVICE
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.TAG
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.UPDATE_SERVICE
+import com.iamsdt.shokherschool.data.utilities.SpUtils
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,8 +41,8 @@ class ServiceUtils {
          */
         fun addPostData(postTableDao: PostTableDao,
                         authorTableDao: AuthorTableDao,
-                        wpRestInterface: WPRestInterface,eventBus: EventBus,
-                        from:Boolean){
+                        wpRestInterface: WPRestInterface,eventBus: EventBus?,
+                        from:Boolean,context: Context?){
             //make request to server
             try {
                 AsyncTask.execute({
@@ -51,11 +51,8 @@ class ServiceUtils {
                         override fun onFailure(call: Call<List<PostResponse>>?, t: Throwable?) {
                             Timber.e(t, "post data failed")
                             if (from) {
-                                eventBus.post(EventMessage(key = POST_DATA_SERVICE,
+                                eventBus?.post(EventMessage(key = POST_DATA_SERVICE,
                                         message = "post data failed ",errorMessage = "error on response"))
-                            } else{
-                                eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                        message = POST,errorMessage = "error on response"))
                             }
                         }
 
@@ -141,11 +138,12 @@ class ServiceUtils {
                                     Timber.i("post data save to database")
 
                                     if (from) {
-                                        eventBus.post(EventMessage(key = POST_DATA_SERVICE,
+                                        eventBus?.post(EventMessage(key = POST_DATA_SERVICE,
                                                 message = POST))
                                     } else{
-                                        eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                                message = POST))
+                                        if (context != null) {
+                                            SpUtils.setUpdateServiceComplete(context, POST)
+                                        }
                                     }
 
                                 })
@@ -156,12 +154,9 @@ class ServiceUtils {
             } catch (e: Exception) {
                 Timber.e("Error on post data insert ${e.message}")
                 if (from) {
-                    eventBus.post(EventMessage(key = POST_DATA_SERVICE,
+                    eventBus?.post(EventMessage(key = POST_DATA_SERVICE,
                             message = "Error on post data insert",
                             errorMessage = "Error on data insert"))
-                } else{
-                    eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                            message = POST,errorMessage = "Error on data insert"))
                 }
             }
         }
@@ -173,7 +168,7 @@ class ServiceUtils {
          * @param wpRestInterface retrofit interface
          * */
         fun addTagData(tagTableDao: TagTableDao, wpRestInterface: WPRestInterface,
-                       eventBus: EventBus,from: Boolean){
+                       from: Boolean,context: Context){
 
             try {
                 val tagCall = wpRestInterface.getTags()
@@ -191,11 +186,9 @@ class ServiceUtils {
                                     .forEach { tagTableDao.insert(it) }
                             Timber.i("tag insert finished")
                             if (from) {
-                                eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                                        message = TAG))
+                                SpUtils.saveServiceComplete(context, TAG)
                             } else{
-                                eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                        message = TAG))
+                                SpUtils.setUpdateServiceComplete(context, TAG)
                             }
                         })
 
@@ -203,25 +196,11 @@ class ServiceUtils {
 
                     override fun onFailure(call: Call<List<TagResponse>>?, t: Throwable?) {
                         Timber.i(t, "tag Response error ${t?.message}")
-                        if (from) {
-                            eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                                    message = TAG,errorMessage = "Error on data insert"))
-                        } else{
-                            eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                    message = TAG,errorMessage = "Error on data insert"))
-                        }
                     }
 
                 })
             } catch (e: Exception) {
                 Timber.e(e, "Exception on tag data insert ${e.message}")
-                if (from) {
-                    eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                            message = TAG,errorMessage = "Error on data insert"))
-                } else{
-                    eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                            message = TAG,errorMessage = "Error on data insert"))
-                }
             }
 
         }
@@ -236,7 +215,7 @@ class ServiceUtils {
          */
         fun addCategoriesData(categoriesTableDao: CategoriesTableDao,
                               wpRestInterface: WPRestInterface,
-                              eventBus:EventBus,from: Boolean){
+                              context: Context,from: Boolean){
 
             try {
                 val categoriesCall = wpRestInterface.getCategories()
@@ -259,11 +238,9 @@ class ServiceUtils {
 
                             Timber.i("category insert finished")
                             if (from) {
-                                eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                                        message = CATEGORY))
+                                SpUtils.saveServiceComplete(context, CATEGORY)
                             } else{
-                                eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                        message = CATEGORY))
+                                SpUtils.setUpdateServiceComplete(context, CATEGORY)
                             }
                         })
 
@@ -271,25 +248,12 @@ class ServiceUtils {
 
                     override fun onFailure(call: Call<List<CategoriesResponse>>?, t: Throwable?) {
                         Timber.i(t, "Categories Response error ${t?.message}")
-                        if (from) {
-                            eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                                    message = CATEGORY,errorMessage = "Error on data insert"))
-                        } else{
-                            eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                    message = CATEGORY,errorMessage = "Error on data insert"))
-                        }
+
                     }
 
                 })
             } catch (e: Exception) {
                 Timber.e(e, "Error on categories data insert ${e.message}")
-                if (from) {
-                    eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                            message = CATEGORY,errorMessage = "Error on data insert"))
-                } else{
-                    eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                            message = CATEGORY,errorMessage = "Error on data insert"))
-                }
             }
         }
 
@@ -300,7 +264,7 @@ class ServiceUtils {
          * @param wpRestInterface retrofit interface
          */
         fun addPageData(pageTableDao: PageTableDao, wpRestInterface: WPRestInterface,
-                        eventBus: EventBus,from: Boolean){
+                        context: Context,from: Boolean){
 
             try {
                 val pageCall = wpRestInterface.getPages()
@@ -323,37 +287,20 @@ class ServiceUtils {
 
                             Timber.i("page insert finished")
                             if (from) {
-                                eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                                        message = PAGE))
+                                SpUtils.saveServiceComplete(context, PAGE)
                             } else{
-                                eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                        message = PAGE))
+                                SpUtils.setUpdateServiceComplete(context, PAGE)
                             }
                         })
                     }
 
                     override fun onFailure(call: Call<List<PageResponse>>?, t: Throwable?) {
                         Timber.i(t, "Categories Response error ${t?.message}")
-                        if (from) {
-                            eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                                    message = PAGE,errorMessage = "Error on data insert"))
-                        } else{
-                            eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                                    message = PAGE,errorMessage = "Error on data insert"))
-                        }
                     }
 
                 })
             } catch (e: Exception) {
                 Timber.e(e, "Error on page data insert ${e.message}")
-
-                if (from) {
-                    eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                            message = PAGE,errorMessage = "Error on data insert"))
-                } else{
-                    eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                            message = PAGE,errorMessage = "Error on data insert"))
-                }
             }
         }
     }

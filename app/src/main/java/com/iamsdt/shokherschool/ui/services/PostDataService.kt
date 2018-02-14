@@ -37,7 +37,7 @@ class PostDataService : BaseServices() {
         isRunning = true
 
         //add post data
-        addPostData(postTableDao,authorTableDao,wpRestInterface,eventBus,true)
+        addPostData(postTableDao,authorTableDao,wpRestInterface,eventBus,true,null)
 
         return super.onStartCommand(intent, flags, startId)
     }

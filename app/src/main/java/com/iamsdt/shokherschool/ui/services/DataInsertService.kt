@@ -5,10 +5,7 @@ import android.os.IBinder
 import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
 import com.iamsdt.shokherschool.data.database.dao.PageTableDao
 import com.iamsdt.shokherschool.data.database.dao.TagTableDao
-import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.DATA_INSERT_SERVICE
 import com.iamsdt.shokherschool.ui.base.BaseServices
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addCategoriesData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPageData
@@ -43,26 +40,15 @@ class DataInsertService : BaseServices() {
 
         isRunning = true
 
-        var error = ""
-
         //add categories and tags and page
         //add tag data
-        addTagData(tagTableDao, wpRestInterface,eventBus,true)
+        addTagData(tagTableDao, wpRestInterface,true,this.baseContext)
 
         //add categories
-        val categoryMap = addCategoriesData(categoriesTableDao, wpRestInterface)
-        if (categoryMap.containsKey(ConstantUtil.ERROR)) {
-            error += categoryMap[ConstantUtil.ERROR]
-        }
+        addCategoriesData(categoriesTableDao, wpRestInterface,this.baseContext,true)
 
         //add page data
-        val pageMap = addPageData(pageTableDao, wpRestInterface)
-        if (pageMap.containsKey(ConstantUtil.ERROR)) {
-            error += pageMap[ConstantUtil.ERROR]
-        }
-
-        eventBus.post(EventMessage(key = DATA_INSERT_SERVICE,
-                message = "complete",errorMessage = error))
+        addPageData(pageTableDao, wpRestInterface,this.baseContext,true)
 
         Timber.i("DataInsertService complete")
 

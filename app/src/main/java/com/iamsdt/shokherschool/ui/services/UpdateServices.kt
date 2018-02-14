@@ -3,16 +3,13 @@ package com.iamsdt.shokherschool.ui.services
 import android.content.Intent
 import android.os.IBinder
 import com.iamsdt.shokherschool.data.database.dao.*
-import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.ERROR
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.UPDATE_SERVICE
+import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.ui.base.BaseServices
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addCategoriesData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPageData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPostData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addTagData
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,8 +26,6 @@ class UpdateServices:BaseServices(){
     @Inject lateinit var pageTableDao: PageTableDao
 
     @Inject lateinit var wpRestInterface: WPRestInterface
-
-    @Inject lateinit var eventBus: EventBus
 
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -52,30 +47,19 @@ class UpdateServices:BaseServices(){
 
         isRunning = true
 
-        var error = ""
-
         //add post data
-        addPostData(postTableDao,authorTableDao,wpRestInterface,eventBus,false)
-
+        addPostData(postTableDao,authorTableDao,wpRestInterface,null,false,
+                this.baseContext)
 
         //add categories and tags and page
         //add tag data
-        addTagData(tagTableDao, wpRestInterface,eventBus,false)
+        addTagData(tagTableDao, wpRestInterface,true,this.baseContext)
 
         //add categories
-        val categoryMap = addCategoriesData(categoriesTableDao, wpRestInterface)
-        if (categoryMap.containsKey(ERROR)) {
-            error += categoryMap[ERROR]
-        }
+        addCategoriesData(categoriesTableDao, wpRestInterface,this.baseContext,true)
 
         //add page data
-        val pageMap = addPageData(pageTableDao, wpRestInterface)
-        if (pageMap.containsKey(ERROR)) {
-            error += pageMap[ERROR]
-        }
-
-        eventBus.post(EventMessage(key = UPDATE_SERVICE,
-                message = "complete",errorMessage = error))
+        addPageData(pageTableDao, wpRestInterface,this.baseContext,true)
 
         return super.onStartCommand(intent, flags, startId)
     }
@@ -84,6 +68,8 @@ class UpdateServices:BaseServices(){
         super.onDestroy()
         Timber.i("*****UpdateServices is stopped*****")
         isRunning = false
+
+        SpUtils.saveUpdateServiceDateOnSp(this.baseContext)
     }
 
     companion object {

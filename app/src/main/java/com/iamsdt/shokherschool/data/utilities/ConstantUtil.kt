@@ -29,6 +29,7 @@ class ConstantUtil{
         const val APP_RUN_FOR_FIRST_TIME = "appRunForFirstTime"
         const val FIRST_SERVICE_RUNNING_COMPLETE = "ServiceRunningComplete"
         const val POST_SERVICE_COMPLETE = "POST_SERVICE_COMPLETE"
+        const val UPDATE_SERVICE_COMPLETE = "POST_SERVICE_COMPLETE"
 
 
         //event bus

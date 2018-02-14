@@ -3,8 +3,13 @@ package com.iamsdt.shokherschool.data.utilities
 import android.content.Context
 import androidx.content.edit
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.APP_RUN_FOR_FIRST_TIME
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.CATEGORY
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.FIRST_SERVICE_RUNNING_COMPLETE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.PAGE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_SERVICE_COMPLETE
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.TAG
+import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.UPDATE_SERVICE_COMPLETE
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -71,12 +76,22 @@ class SpUtils {
 
         fun isServiceComplete(context: Context): Boolean {
             val sp = context.getSharedPreferences(FIRST_SERVICE_RUNNING_COMPLETE, Context.MODE_PRIVATE)
-            return sp.getBoolean(FIRST_SERVICE_RUNNING_COMPLETE, false)
+            val page = sp.getBoolean(PAGE, false)
+            val tag = sp.getBoolean(TAG, false)
+            val cate = sp.getBoolean(CATEGORY, false)
+
+            return page && tag && cate
         }
 
-        fun saveServiceComplete(context: Context) {
+        fun saveServiceComplete(context: Context,type:String) {
             val sp = context.getSharedPreferences(FIRST_SERVICE_RUNNING_COMPLETE, Context.MODE_PRIVATE)
-            sp.edit { putBoolean(FIRST_SERVICE_RUNNING_COMPLETE, true) }
+
+            when (type) {
+                PAGE -> sp.edit { putBoolean(PAGE, true)}
+                TAG -> sp.edit { putBoolean(TAG, true)}
+                CATEGORY -> sp.edit { putBoolean(CATEGORY, true)}
+            }
+
         }
 
         fun isPostServiceComplete(context: Context): Boolean {
@@ -87,6 +102,27 @@ class SpUtils {
         fun savePostServiceComplete(context: Context) {
             val sp = context.getSharedPreferences(FIRST_SERVICE_RUNNING_COMPLETE, Context.MODE_PRIVATE)
             sp.edit { putBoolean(POST_SERVICE_COMPLETE, true) }
+        }
+
+        fun isUpdateServiceComplete(context: Context):Boolean{
+            val sp = context.getSharedPreferences(UPDATE_SERVICE_COMPLETE, Context.MODE_PRIVATE)
+
+            val page = sp.getBoolean(PAGE, false)
+            val tag = sp.getBoolean(TAG, false)
+            val cate = sp.getBoolean(CATEGORY, false)
+            val post = sp.getBoolean(POST, false)
+
+            return page && tag && cate && post
+        }
+
+        fun setUpdateServiceComplete(context: Context,type: String){
+            val sp = context.getSharedPreferences(UPDATE_SERVICE_COMPLETE, Context.MODE_PRIVATE)
+            when (type) {
+                PAGE -> sp.edit { putBoolean(PAGE, true)}
+                TAG -> sp.edit { putBoolean(TAG, true)}
+                CATEGORY -> sp.edit { putBoolean(CATEGORY, true)}
+                POST -> sp.edit { putBoolean(POST, true)}
+            }
         }
     }
 }

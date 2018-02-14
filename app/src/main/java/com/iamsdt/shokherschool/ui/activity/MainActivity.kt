@@ -21,14 +21,8 @@ import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.model.EventMessage
 import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.CATEGORY
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.DATA_INSERT_SERVICE
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.NEW_POST_FOUND
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.PAGE
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_DATA_SERVICE
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.TAG
-import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.UPDATE_SERVICE
 import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
@@ -108,10 +102,11 @@ class MainActivity : BaseActivity(),
                             Snackbar.make(mainLayout, "No Internet available", Snackbar.LENGTH_LONG)
                                     .show()
                         }
-                        //stop animation
 
                         //save date to sp
-                        adapter.saveDate()
+                        if (allPost.size >= 10) {
+                            adapter.saveDate()
+                        }
                     }
                 })
 
@@ -123,8 +118,8 @@ class MainActivity : BaseActivity(),
                 val totalItemCount = manager.itemCount
                 val lastVisible = manager.findLastVisibleItemPosition()
 
-                val endHasBeenReached = lastVisible + 5 >= totalItemCount
-                if (totalItemCount > 0 && endHasBeenReached) {
+                val endHasBeenReached = lastVisible + 7 >= totalItemCount
+                if (totalItemCount >= 10 && endHasBeenReached) {
                     //completed 1/1/2018 prevent multiple request
                     if (!request && Utility.isNetworkAvailable(this@MainActivity)) {
                         viewModel.requestNewPost(wpRestInterface,
@@ -224,67 +219,13 @@ class MainActivity : BaseActivity(),
 
     //subscriber
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onReciveEvent(evenMessage: EventMessage){
+    fun onReciveEvent(evenMessage: EventMessage) {
 
         Timber.w("**********Event bus received********")
 
         if (evenMessage.key == NEW_POST_FOUND) {
             Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT).show()
             request = false
-
-        } else if (evenMessage.key == UPDATE_SERVICE) {
-            //event message for update service
-            if (evenMessage.message == POST) {
-                if (evenMessage.errorMessage.isEmpty()) {
-                    updatePostComplete = true
-                }
-
-            }else if (evenMessage.message == TAG) {
-                if (evenMessage.errorMessage.isEmpty()) {
-                    updateTagComplete = true
-                }
-
-            } else if (evenMessage.message == CATEGORY) {
-                if (evenMessage.errorMessage.isEmpty()) {
-                    updateCategoryComplete = true
-                }
-
-            } else if (evenMessage.message == PAGE) {
-                if (evenMessage.errorMessage.isEmpty()) {
-                    updatePageComplete = true
-                }
-
-            }
-
-            if (dataCategoryComplete && dataTagComplete && dataPageComplete) {
-                if (UpdateServices.isRunning) {
-                    stopService(Intent(this, UpdateServices::class.java))
-                }
-                SpUtils.saveUpdateServiceDateOnSp(this)
-            }
-
-        } else if (evenMessage.key == DATA_INSERT_SERVICE) {
-
-            if (evenMessage.message == TAG) {
-                if (evenMessage.errorMessage.isEmpty()) {
-                    dataTagComplete = true
-                }
-            } else if (evenMessage.message == CATEGORY) {
-                if (evenMessage.errorMessage.isEmpty()) {
-                    dataCategoryComplete = true
-                }
-            } else if (evenMessage.message == PAGE) {
-                if (evenMessage.errorMessage.isEmpty()) {
-                    dataPageComplete = true
-                }
-            }
-
-            if (dataCategoryComplete && dataTagComplete && dataPageComplete) {
-                if (DataInsertService.isRunning) {
-                    stopService(Intent(this, DataInsertService::class.java))
-                }
-                SpUtils.saveServiceComplete(this)
-            }
 
         } else if (evenMessage.key == POST_DATA_SERVICE) {
 
@@ -323,6 +264,20 @@ class MainActivity : BaseActivity(),
     override fun onStart() {
         super.onStart()
         eventBus.register(this@MainActivity)
+
+        //stop services
+        if (SpUtils.isUpdateServiceComplete(this)){
+            if (UpdateServices.isRunning) {
+                stopService(Intent(this, UpdateServices::class.java))
+                Timber.i("Update service is stopped")
+            }
+        }
+
+        if (SpUtils.isServiceComplete(this)){
+            if (DataInsertService.isRunning) {
+                stopService(Intent(this, UpdateServices::class.java))
+            }
+        }
     }
 
     override fun onStop() {
