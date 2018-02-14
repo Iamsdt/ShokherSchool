@@ -23,6 +23,7 @@ import com.iamsdt.shokherschool.data.model.PostModel
 import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.NEW_POST_FOUND
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil.Companion.POST_DATA_SERVICE
+import com.iamsdt.shokherschool.data.utilities.MyDateUtil
 import com.iamsdt.shokherschool.data.utilities.SpUtils
 import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
@@ -39,6 +40,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(),
@@ -64,6 +67,9 @@ class MainActivity : BaseActivity(),
 
     //theme request code
     private val themeRequestCode = 121
+
+    //array list
+    private var dateCheckedList = ArrayList<String>()
 
     //view model
     private val viewModel by lazy {
@@ -104,9 +110,7 @@ class MainActivity : BaseActivity(),
                         }
 
                         //save date to sp
-                        if (allPost.size >= 10) {
-                            adapter.saveDate()
-                        }
+                        saveDate(allPost)
                     }
                 })
 
@@ -139,6 +143,36 @@ class MainActivity : BaseActivity(),
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun saveDate(allPost: List<PostModel>) {
+        try {
+            val pattern = "yyyy-MM-dd'T'HH:mm:ss"
+            val dtf = SimpleDateFormat(pattern, Locale.getDefault())
+
+            //current date and time
+            var today: Date = dtf.parse(dtf.format(Date()))
+
+            for (n in allPost) {
+                val date = n.date ?: ""
+                if (date.isNotEmpty()){
+                    if (dateCheckedList.contains(date)) continue
+                    val date2 = dtf.parse(date)
+                    val date3 = MyDateUtil.compareTwoDate(today, date2)
+
+                    Timber.i("Date:$date2 and $today -> $date3")
+
+                    today = date3
+                    dateCheckedList.add(date)
+                }
+            }
+
+            val spSave = dtf.format(today)
+            SpUtils.setPostDateOnSp(this, spSave)
+            Timber.i("date saved: $spSave")
+        } catch (e:Exception){
+            Timber.e(e,"Save date error")
+        }
     }
 
     override fun onBackPressed() {
