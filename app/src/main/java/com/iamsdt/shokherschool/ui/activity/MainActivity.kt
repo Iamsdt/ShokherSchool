@@ -1,5 +1,6 @@
 package com.iamsdt.shokherschool.ui.activity
 
+import am.appwise.components.ni.NoInternetDialog
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -85,6 +86,9 @@ class MainActivity : BaseActivity(),
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        //check for internetAvailAble
+        showNoInternet()
+
         val manager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false)
 
@@ -147,6 +151,16 @@ class MainActivity : BaseActivity(),
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun showNoInternet() {
+        if (!Utility.isNetworkAvailable(this)){
+            val dialog = NoInternetDialog.Builder(this)
+                    .build()
+            //not cancelable
+            dialog.setCancelable(false)
+            dialog.showDialog()
+        }
     }
 
     // this method for save date

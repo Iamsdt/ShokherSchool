@@ -102,7 +102,7 @@ android {
 
         //no internet dialog
         // it crate a leak on activity
-        //implementation 'am.appwise.components:NoInternetDialog:1.1.1'
+        implementation 'am.appwise.components:NoInternetDialog:1.1.1'
 
         //timber for logger
         implementation 'com.jakewharton.timber:timber:4.6.0'
