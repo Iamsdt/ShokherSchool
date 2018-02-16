@@ -17,8 +17,6 @@ import timber.log.Timber
 
 class SplashActivity : BaseActivity() {
 
-    private val requestCodeIntro = 10
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -48,17 +46,13 @@ class SplashActivity : BaseActivity() {
             //complete 2/10/2018 start app intro
             Thread({
                 try {
-                    // time 1 sec
-                    Thread.sleep(5000)
+                    Thread.sleep(timer)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Timber.e(e, "Error on Splash Activity Thread")
                 } finally {
-//                    startActivityForResult(Intent(this@SplashActivity,
-//                            MyAppIntro::class.java),requestCodeIntro)
-
                     startActivity(Intent(this@SplashActivity,
-                            MainActivity::class.java))
+                            MyAppIntro::class.java))
                     finish()
 
                     //same
@@ -69,7 +63,6 @@ class SplashActivity : BaseActivity() {
         } else {
             Thread({
                 try {
-                    //complete 1/18/2018 change time
                     Thread.sleep(timer)
 
                 } catch (e: Exception) {
@@ -102,22 +95,6 @@ class SplashActivity : BaseActivity() {
             startService(intent)
             //save date
             SpUtils.saveUpdateServiceDateOnSp(this@SplashActivity)
-
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == requestCodeIntro) {
-            if (resultCode == RESULT_OK) {
-                SpUtils.saveAppRunFirstTime(this)
-            } else{
-                SpUtils.saveAppRunFirstTime(this)
-            }
-
-            startActivity(Intent(this@SplashActivity,
-                    MainActivity::class.java))
-            finish()
         }
     }
 }

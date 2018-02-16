@@ -31,7 +31,6 @@ import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.services.PostDataService
-import com.iamsdt.shokherschool.ui.services.UpdateServices
 import com.iamsdt.shokherschool.ui.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -65,7 +64,7 @@ class MainActivity : BaseActivity(),
     @Inject
     lateinit var eventBus: EventBus
 
-    //theme request code
+    //theme requestForNewPost code
     private val themeRequestCode = 121
 
     //array list
@@ -110,7 +109,12 @@ class MainActivity : BaseActivity(),
                         }
 
                         //save date to sp
-                        saveDate(allPost)
+                        if (allPost.size >= 10){
+                            saveDate(allPost)
+                            requestForNewPost = false
+                        } else{
+                            requestForNewPost = true
+                        }
                     }
                 })
 
@@ -124,12 +128,12 @@ class MainActivity : BaseActivity(),
 
                 val endHasBeenReached = lastVisible + 7 >= totalItemCount
                 if (totalItemCount >= 10 && endHasBeenReached) {
-                    //completed 1/1/2018 prevent multiple request
-                    if (!request && Utility.isNetworkAvailable(this@MainActivity)) {
+                    //completed 1/1/2018 prevent multiple requestForNewPost
+                    if (!requestForNewPost && Utility.isNetworkAvailable(this@MainActivity)) {
                         viewModel.requestNewPost(wpRestInterface,
                                 SpUtils.getPostDateFromSp(this@MainActivity), eventBus)
-                        request = true
-                        Timber.i("New request start")
+                        requestForNewPost = true
+                        Timber.i("New requestForNewPost start")
                     }
                 }
 
@@ -145,33 +149,39 @@ class MainActivity : BaseActivity(),
         nav_view.setNavigationItemSelectedListener(this)
     }
 
+    // this method for save date
     private fun saveDate(allPost: List<PostModel>) {
         try {
             val pattern = "yyyy-MM-dd'T'HH:mm:ss"
             val dtf = SimpleDateFormat(pattern, Locale.getDefault())
 
             //current date and time
-            var today: Date = dtf.parse(dtf.format(Date()))
+            val saveDateStr = SpUtils.getPostDateFromSp(this)
+
+            var saveDate: Date = if (saveDateStr.isEmpty()) {
+                dtf.parse(dtf.format(Date()))
+            } else {
+                dtf.parse(saveDateStr)
+            }
 
             for (n in allPost) {
                 val date = n.date ?: ""
-                if (date.isNotEmpty()){
+                if (date.isNotEmpty()) {
                     if (dateCheckedList.contains(date)) continue
                     val date2 = dtf.parse(date)
-                    val date3 = MyDateUtil.compareTwoDate(today, date2)
+                    saveDate = MyDateUtil.compareTwoDate(saveDate, date2)
 
-                    Timber.i("Date:$date2 and $today -> $date3")
-
-                    today = date3
+                    //added to check list
                     dateCheckedList.add(date)
                 }
             }
 
-            val spSave = dtf.format(today)
+            val spSave = dtf.format(saveDate)
             SpUtils.setPostDateOnSp(this, spSave)
             Timber.i("date saved: $spSave")
-        } catch (e:Exception){
-            Timber.e(e,"Save date error")
+
+        } catch (e: Exception) {
+            Timber.e(e, "Save date error")
         }
     }
 
@@ -259,7 +269,8 @@ class MainActivity : BaseActivity(),
 
         if (evenMessage.key == NEW_POST_FOUND) {
             Snackbar.make(mainLayout, "New post found", Snackbar.LENGTH_SHORT).show()
-            request = false
+            requestForNewPost = false
+            Timber.i("******* open for new requestForNewPost*********")
 
         } else if (evenMessage.key == POST_DATA_SERVICE) {
 
@@ -279,43 +290,23 @@ class MainActivity : BaseActivity(),
     }
 
     companion object {
-        var request = false
-
-        //for data insert services
-        var dataTagComplete = false
-        var dataCategoryComplete = false
-        var dataPageComplete = false
-
-        // for update service
-        var updatePostComplete = false
-        var updateTagComplete = false
-        var updateCategoryComplete = false
-        var updatePageComplete = false
-
+        var requestForNewPost = false
     }
 
     //register and unregister event bus
     override fun onStart() {
         super.onStart()
-        eventBus.register(this@MainActivity)
 
-        //stop services
-        if (SpUtils.isUpdateServiceComplete(this)){
-            if (UpdateServices.isRunning) {
-                stopService(Intent(this, UpdateServices::class.java))
-                Timber.i("Update service is stopped")
-            }
-        }
-
-        if (SpUtils.isServiceComplete(this)){
-            if (DataInsertService.isRunning) {
-                stopService(Intent(this, UpdateServices::class.java))
-            }
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this@MainActivity)
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        eventBus.unregister(this@MainActivity)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (eventBus.isRegistered(this)) {
+            eventBus.unregister(this@MainActivity)
+        }
     }
 }

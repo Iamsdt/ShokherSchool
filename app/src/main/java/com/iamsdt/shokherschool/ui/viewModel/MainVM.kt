@@ -83,7 +83,7 @@ class MainVM(application: Application) : AndroidViewModel(application) {
                             //author id
                             val author = post.author
                             if (!authorInserted.contains(author)) {
-                                //request data from server
+                                //requestForNewPost data from server
                                 val authorResponse = wpRestInterface?.getAuthorByID(author)?.execute()
 
                                 if (authorResponse!!.isSuccessful) {
@@ -167,6 +167,6 @@ class MainVM(application: Application) : AndroidViewModel(application) {
         addRemoteData(call,bus)
         //show toast message
         //MainActivity.showNewDataToast = true
-        Timber.i("new request finished")
+        Timber.i("new requestForNewPost finished")
     }
 }

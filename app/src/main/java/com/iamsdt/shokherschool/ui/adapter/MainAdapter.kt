@@ -152,7 +152,7 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
 
 
     /**
-     * This method is for save Date for make older request
+     * This method is for save Date for make older requestForNewPost
      */
     fun saveDate() {
 

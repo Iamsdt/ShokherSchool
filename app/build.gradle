@@ -49,10 +49,6 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     dependencies {
         implementation fileTree(dir: 'libs', include: ['*.jar'])
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -136,10 +132,9 @@ android {
         implementation 'androidx.core:core-ktx:0.1'
 
         //app intro
-        implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
 
-        //data binding
-        //kapt "com.android.databinding:compiler:27.0.0"
+        implementation 'agency.tango.android:material-intro-screen:0.0.5'
+
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/xml'] } }
 }
