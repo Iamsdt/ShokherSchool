@@ -13,6 +13,7 @@ import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addTagData
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Created by Shudipto Trafder on 1/7/2018.
@@ -23,7 +24,7 @@ class DataInsertService : BaseServices() {
     @Inject lateinit var pageTableDao: PageTableDao
     @Inject lateinit var categoriesTableDao: CategoriesTableDao
     @Inject lateinit var tagTableDao: TagTableDao
-    @Inject lateinit var wpRestInterface: WPRestInterface
+    @Inject @Named("detailsRest") lateinit var wpRestInterface: WPRestInterface
 
     @Inject lateinit var eventBus: EventBus
 

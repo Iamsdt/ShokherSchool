@@ -30,7 +30,6 @@ import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.adapter.MainAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
-import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.services.PostDataService
 import com.iamsdt.shokherschool.ui.viewModel.MainVM
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,6 +42,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Named
 
 class MainActivity : BaseActivity(),
         NavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +59,7 @@ class MainActivity : BaseActivity(),
 
     //rest interface to get data from server
     @Inject
+    @Named("post")
     lateinit var wpRestInterface: WPRestInterface
 
     //event bus
@@ -290,7 +291,7 @@ class MainActivity : BaseActivity(),
 
             if (evenMessage.errorMessage.isEmpty()) {
                 //start data insert services
-                startService(Intent(this, DataInsertService::class.java))
+                //startService(Intent(this, DataInsertService::class.java))
                 SpUtils.savePostServiceComplete(this)
 
                 if (PostDataService.isRunning) {

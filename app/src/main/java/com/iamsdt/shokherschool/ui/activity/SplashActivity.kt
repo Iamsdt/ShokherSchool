@@ -33,11 +33,9 @@ class SplashActivity : BaseActivity() {
         //if service is not completed
         //start the services
         if (!SpUtils.isServiceComplete(this)) {
+            startService(Intent(this, DataInsertService::class.java))
             if (!SpUtils.isPostServiceComplete(this)){
                 startService(Intent(this, PostDataService::class.java))
-
-            } else if (!SpUtils.isServiceComplete(this)){
-                startService(Intent(this, DataInsertService::class.java))
             }
         }
 

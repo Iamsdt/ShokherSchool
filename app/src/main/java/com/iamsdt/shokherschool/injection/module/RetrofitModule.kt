@@ -10,6 +10,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 
 /**
  * Created by Shudipto Trafder on 12/29/2017.
@@ -25,12 +26,29 @@ class RetrofitModule {
 
     @Provides
     @ApplicationScope
-    fun getWPRestInterface(retrofit: Retrofit): WPRestInterface =
+    fun getWPRestInterface(@Named("post") retrofit: Retrofit): WPRestInterface =
             retrofit.create(WPRestInterface::class.java)
 
     @Provides
     @ApplicationScope
-    fun getRetrofit(okHttpClient: OkHttpClient,gson: Gson): Retrofit
+    @Named("detailsRest")
+    fun getWPRestInterfaceDetails(@Named("details") retrofit: Retrofit): WPRestInterface =
+            retrofit.create(WPRestInterface::class.java)
+
+    @Provides
+    @ApplicationScope
+    @Named("post")
+    fun getRetrofitPost(okHttpClient: OkHttpClient,gson: Gson): Retrofit
+            = Retrofit.Builder()
+            .baseUrl(ConstantUtil.retrofitBaseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+    @Provides
+    @ApplicationScope
+    @Named("details")
+    fun getRetrofitDetails(okHttpClient: OkHttpClient,gson: Gson): Retrofit
             = Retrofit.Builder()
             .baseUrl(ConstantUtil.retrofitBaseUrl)
             .client(okHttpClient)

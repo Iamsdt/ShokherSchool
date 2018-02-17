@@ -12,6 +12,7 @@ import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPostData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addTagData
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Created by Shudipto Trafder on 2/11/2018.
@@ -25,7 +26,7 @@ class UpdateServices:BaseServices(){
     @Inject lateinit var tagTableDao: TagTableDao
     @Inject lateinit var pageTableDao: PageTableDao
 
-    @Inject lateinit var wpRestInterface: WPRestInterface
+    @Inject @Named("detailsRest") lateinit var wpRestInterface: WPRestInterface
 
 
     override fun onBind(intent: Intent?): IBinder? {

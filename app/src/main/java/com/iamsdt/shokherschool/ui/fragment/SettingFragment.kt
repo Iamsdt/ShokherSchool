@@ -74,4 +74,9 @@ class SettingsFragment: PreferenceFragmentCompat(),
             preference.summary = stringValue
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    }
 }
