@@ -41,9 +41,6 @@ interface WPRestInterface {
     @GET("pages")
     fun getPages(): Call<List<PageResponse>>
 
-    @GET("categories/{id}")
-    fun getCategoryByID(@Path("id") id: Int): Call<CategoriesResponse>
-
     @GET("categories?&per_page=100")
     fun getCategories(): Call<List<CategoriesResponse>>
 
