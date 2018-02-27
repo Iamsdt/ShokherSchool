@@ -10,7 +10,6 @@ import com.iamsdt.shokherschool.ui.base.BaseServices
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addCategoriesData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addPageData
 import com.iamsdt.shokherschool.ui.services.ServiceUtils.Companion.addTagData
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
@@ -26,13 +25,10 @@ class DataInsertService : BaseServices() {
     @Inject lateinit var tagTableDao: TagTableDao
     @Inject @Named("detailsRest") lateinit var wpRestInterface: WPRestInterface
 
-    @Inject lateinit var eventBus: EventBus
-
     override fun onCreate() {
         getComponent().inject(this)
         super.onCreate()
         isRunning = true
-        //this.stopSelf()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -40,6 +36,9 @@ class DataInsertService : BaseServices() {
         Timber.i("*****DataInsertService is running*****")
 
         isRunning = true
+
+        //debug only 2/23/2018 remove later
+        Timber.i("*****WP interface from data insert services $wpRestInterface")
 
         //add categories and tags and page
         //add tag data

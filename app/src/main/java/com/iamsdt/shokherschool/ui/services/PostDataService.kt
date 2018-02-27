@@ -36,6 +36,9 @@ class PostDataService : BaseServices() {
         Timber.i("*****PostDataService is running*****")
         isRunning = true
 
+        //debug only 2/23/2018 remove later
+        Timber.i("*****WP interface from post service $wpRestInterface")
+
         //add post data
         addPostData(postTableDao,authorTableDao,wpRestInterface,eventBus,true,null)
 

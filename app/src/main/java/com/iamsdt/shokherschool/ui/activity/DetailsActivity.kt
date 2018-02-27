@@ -10,6 +10,8 @@ import android.os.Looper
 import android.support.design.widget.Snackbar
 import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.NestedScrollView
+import android.support.v7.app.AlertDialog
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.ShareActionProvider
 import android.view.Menu
 import android.view.MenuItem
@@ -18,22 +20,30 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.database.dao.CategoriesTableDao
 import com.iamsdt.shokherschool.data.database.dao.PostTableDao
 import com.iamsdt.shokherschool.data.database.dao.TagTableDao
 import com.iamsdt.shokherschool.data.model.DetailsPostModel
+import com.iamsdt.shokherschool.data.retrofit.WPRestInterface
+import com.iamsdt.shokherschool.data.retrofit.pojo.comment.CommentResponse
 import com.iamsdt.shokherschool.data.utilities.ConstantUtil
 import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
+import com.iamsdt.shokherschool.ui.adapter.CommentAdapter
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.viewModel.DetailsViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.comment_form.*
 import kotlinx.android.synthetic.main.content_details.*
+import retrofit2.Call
+import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 class DetailsActivity : BaseActivity() {
 
@@ -41,6 +51,8 @@ class DetailsActivity : BaseActivity() {
     @Inject lateinit var picasso: Picasso
     @Inject lateinit var categoriesTableDao: CategoriesTableDao
     @Inject lateinit var tagTableDao: TagTableDao
+
+    @Inject @Named("detailsRest") lateinit var wpRestInterface: WPRestInterface
 
     //view model
     private val viewModel by lazy {
@@ -71,6 +83,9 @@ class DetailsActivity : BaseActivity() {
 
         //getting intent data
         postID = intent.getIntExtra(ConstantUtil.intentDetails, 0)
+
+        //get comments
+        getComments()
 
         //initialize web view
         //complete only 11/27/2017 remove later
@@ -104,6 +119,9 @@ class DetailsActivity : BaseActivity() {
 
         settings.allowContentAccess = false
         settings.loadWithOverviewMode = true
+
+        //debug only 2/23/2018 remove later
+        Timber.i("*****WP interface from details Activity $wpRestInterface")
 
         viewModel.getData(postID, postTableDao)?.observe(this,
                 Observer<DetailsPostModel> { allData ->
@@ -184,11 +202,46 @@ class DetailsActivity : BaseActivity() {
         })
         fab.setOnClickListener { view ->
             //todo 2/10/2018 add comment option
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            postComment(view)
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun postComment(view: View?) {
+        val builder = AlertDialog.Builder(this@DetailsActivity)
+        val dialogView = layoutInflater.inflate(R.layout.comment_form,null)
+        builder.setView(dialogView)
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+        //set touch outside off
+        alertDialog.setCanceledOnTouchOutside(false)
+
+        c_button.setOnClickListener({
+            val name = c_nameET.editableText.toString()
+            val email = c_commentEt.editableText.toString()
+            val comment = c_commentEt.editableText.toString()
+
+            if (name.isNotEmpty() && name.length >= 3){
+
+                if (email.isNotEmpty() && email.length >= 5 && email.contains("@")){
+
+                    if (comment.isNotEmpty() && comment.length >= 5){
+                        //all ok do something
+                        //val data = wpRestInterface.createComment()
+                        Toast.makeText(this,"Not available now",Toast.LENGTH_SHORT).show()
+
+                    } else{
+                        c_comment_lay.error = "Too small comment!"
+                    }
+                } else{
+                    c_email_lay.error = "Please input correct email"
+                }
+            } else{
+                c_name_lay.error = "Please input your name"
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -337,6 +390,38 @@ class DetailsActivity : BaseActivity() {
                 val tag = "Categories: $categories  Tags: $tags"
                 Timber.i("New tag $tag")
                 d_tags.text = tag
+            })
+        })
+    }
+
+
+    //complete get comments
+    private fun getComments(){
+        val thread = HandlerThread("BookmarkDetailsClick")
+        thread.start()
+
+        val handler = Handler(thread.looper)
+        handler.post({
+            val callback = wpRestInterface.getCommentForId(postID)
+            callback.enqueue(object :retrofit2.Callback<List<CommentResponse>> {
+                override fun onFailure(call: Call<List<CommentResponse>>?, t: Throwable?) {
+                    details_comment_form.visibility = View.GONE
+                }
+
+                override fun onResponse(call: Call<List<CommentResponse>>?, response: Response<List<CommentResponse>>?) {
+                    val list:List<CommentResponse> = response?.body() ?: arrayListOf()
+
+                    if (list.isNotEmpty()){
+                        details_comment_form.visibility = View.VISIBLE
+                        val manager = LinearLayoutManager(this@DetailsActivity,
+                                LinearLayoutManager.VERTICAL, false)
+
+                        details_comment_form.layoutManager = manager
+                        details_comment_form.adapter = CommentAdapter(list,picasso)
+                    }
+
+                }
+
             })
         })
     }

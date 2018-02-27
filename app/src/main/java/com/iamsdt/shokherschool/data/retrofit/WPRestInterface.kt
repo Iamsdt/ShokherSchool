@@ -2,12 +2,14 @@ package com.iamsdt.shokherschool.data.retrofit
 
 import com.iamsdt.shokherschool.data.retrofit.pojo.author.AuthorResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.categories.CategoriesResponse
+import com.iamsdt.shokherschool.data.retrofit.pojo.comment.CommentResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.media.MediaResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.page.PageResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.post.PostResponse
 import com.iamsdt.shokherschool.data.retrofit.pojo.tags.TagResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -47,5 +49,10 @@ interface WPRestInterface {
     @GET("tags?&per_page=100")
     fun getTags(): Call<List<TagResponse>>
 
+    @GET("comments?&post={id}")
+    fun getCommentForId(@Path("id") postId:Int) : Call<List<CommentResponse>>
+
+    @POST("comments")
+    fun createComment(fields: Map<String, Any>): Call<String>
 
 }

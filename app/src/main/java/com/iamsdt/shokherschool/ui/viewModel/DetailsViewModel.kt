@@ -20,7 +20,7 @@ class DetailsViewModel(application: Application) :
 
     private var htmlData : LiveData<DetailsPostModel>? = null
 
-    //don not needed any more
+    //not needed any more
     private var fullData:MutableLiveData<DetailsPostModel> ?= null
 
     /**

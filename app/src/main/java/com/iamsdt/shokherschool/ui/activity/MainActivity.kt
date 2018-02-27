@@ -42,7 +42,6 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Named
 
 class MainActivity : BaseActivity(),
         NavigationView.OnNavigationItemSelectedListener {
@@ -59,7 +58,6 @@ class MainActivity : BaseActivity(),
 
     //rest interface to get data from server
     @Inject
-    @Named("post")
     lateinit var wpRestInterface: WPRestInterface
 
     //event bus
@@ -98,6 +96,10 @@ class MainActivity : BaseActivity(),
         mainRcv.itemAnimator = DefaultItemAnimator()
 
         adapter.changeContext(this@MainActivity)
+
+
+        //debug only 2/23/2018 remove later
+        Timber.i("*****WP interface from mainActivity $wpRestInterface")
 
         viewModel.setup(postTableDao, authorTableDao, wpRestInterface)
         viewModel.getAllPostList()?.observe(this,
