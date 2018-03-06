@@ -38,8 +38,8 @@ class PageAdapter(val picasso: Picasso, val activity: Activity,
         context = newContext
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent!!.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_row_main, parent, false)
 
         return MyViewHolder(view)
@@ -49,9 +49,9 @@ class PageAdapter(val picasso: Picasso, val activity: Activity,
         return list?.size ?: 0
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val post = list!![position]
-        holder?.bindTo(post)
+        holder.bindTo(post)
     }
 
     fun replaceList(post: List<PostModel>) {

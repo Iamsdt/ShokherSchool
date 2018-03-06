@@ -36,8 +36,8 @@ class ColorAdapter(private val themeIds:ArrayList<ThemesContract>,
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ColorViewHolder {
-        val view = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
+        val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.color_list_item,parent,false)
         return ColorViewHolder(view)
     }
@@ -46,7 +46,7 @@ class ColorAdapter(private val themeIds:ArrayList<ThemesContract>,
         return themeIds.size
     }
 
-    override fun onBindViewHolder(holder: ColorViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ColorViewHolder, position: Int) {
         val themeId = themeIds[position]
 
         //exert from theme
@@ -55,13 +55,13 @@ class ColorAdapter(private val themeIds:ArrayList<ThemesContract>,
         val accentColor = getThemeAttr(themeId.id, R.attr.colorAccent)
 
         //set name
-        holder?.name?.text = themeId.name
-        holder?.name?.setTextColor(primaryColor)
+        holder.name.text = themeId.name
+        holder.name.setTextColor(primaryColor)
 
         //circle of color
-        holder?.primaryColor?.background = getDrawables(primaryColor)
-        holder?.primaryColorDark?.background = getDrawables(primaryColorDark)
-        holder?.accentColor?.background = getDrawables(accentColor)
+        holder.primaryColor.background = getDrawables(primaryColor)
+        holder.primaryColorDark.background = getDrawables(primaryColorDark)
+        holder.accentColor.background = getDrawables(accentColor)
     }
 
     /**

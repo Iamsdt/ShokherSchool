@@ -53,11 +53,11 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
         context = newContext
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val post = list!![position]
-        holder?.bindTo(post)
+        holder.bindTo(post)
 
-        holder!!.cardView.setOnClickListener {
+        holder.cardView.setOnClickListener {
             context?.startActivity(
                     Intent(context,DetailsActivity::class.java)
                             .putExtra(ConstantUtil.intentDetails,post.id))
@@ -105,8 +105,8 @@ class MainAdapter(val picasso: Picasso,val activity: Activity,
 
     override fun getItemCount(): Int = list?.size ?: 0
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent!!.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_row_main, parent, false)
 
         return MyViewHolder(view)

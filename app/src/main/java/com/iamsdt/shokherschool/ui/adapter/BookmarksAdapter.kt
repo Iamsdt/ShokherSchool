@@ -57,11 +57,11 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
         mContext = newContext
     }
 
-    override fun onBindViewHolder(holder: BookmarksAdapter.MyViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: BookmarksAdapter.MyViewHolder, position: Int) {
         val post = list!![position]
 
         if (itemsPendingRemoval.contains(post.id)) {
-            holder!!.cardView.visibility = View.GONE
+            holder.cardView.visibility = View.GONE
             holder.undoLayout.visibility = View.VISIBLE
 
             //undo click listener
@@ -70,7 +70,7 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
             })
         } else{
             //show regular layout
-            holder!!.cardView.visibility = View.VISIBLE
+            holder.cardView.visibility = View.VISIBLE
             holder.undoLayout.visibility = View.GONE
 
             holder.bindTo(post)
@@ -162,8 +162,8 @@ class BookmarksAdapter(val picasso: Picasso, val activity: Activity,
 
     override fun getItemCount(): Int = list?.size ?: 0
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent!!.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.bookmark_item, parent, false)
 
         return MyViewHolder(view)
