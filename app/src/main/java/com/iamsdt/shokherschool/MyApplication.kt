@@ -1,6 +1,8 @@
 package com.iamsdt.shokherschool
 
 import android.app.Application
+import android.content.Context
+import android.support.multidex.MultiDex
 import com.iamsdt.shokherschool.injection.DaggerMyApplicationComponent
 import com.iamsdt.shokherschool.injection.MyApplicationComponent
 import com.iamsdt.shokherschool.injection.module.ContextModule
@@ -31,7 +33,7 @@ class MyApplication : Application() {
                 .contextModule(ContextModule(this)).build()
 
 
-        //todo 1/14/2018 add more themes
+        //replaced by other library 1/14/2018 add more themes
 //        Scoop.waffleCone()
 //                .addFlavor("Light", R.style.AppTheme_NoActionBar,true)
 //                .addDayNightFlavor("DayNight", R.style.Theme_Scoop_DayNight)
@@ -39,6 +41,11 @@ class MyApplication : Application() {
 //                .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
 //                .initialize()
 
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     fun getComponent() = dagger
