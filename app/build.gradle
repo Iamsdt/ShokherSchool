@@ -138,7 +138,7 @@ android {
         implementation 'agency.tango.android:material-intro-screen:0.0.5'
 
         //theme library
-        implementation 'com.github.Iamsdt:ThemeLibrary:1.7'
+        //implementation 'com.github.Iamsdt:ThemeLibrary:1.7'
 
         //multidex
         implementation 'com.android.support:multidex:1.0.3'

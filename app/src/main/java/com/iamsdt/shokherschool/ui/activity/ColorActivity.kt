@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
 import android.view.MenuItem
 import androidx.content.edit
 import com.iamsdt.shokherschool.R
@@ -60,16 +61,6 @@ class ColorActivity : AppCompatActivity(), ClickListener {
         themes.add(ThemesContract("Green", R.style.green))
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //buy calling android.R.id.home
-        val id = item.itemId
-        if (id == android.R.id.home) {
-            onBackPressed()
-            finish()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onItemClick(themeID: Int) {
         val themeCont = themes[themeID]
 
@@ -77,17 +68,105 @@ class ColorActivity : AppCompatActivity(), ClickListener {
 
         sp.edit { putInt(ConstantUtil.themeKey, themeCont.id) }
 
-        val restartIntent = Intent(this, ColorActivity::class.java)
+        restartActivity()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val id = item.itemId
+        if (id == android.R.id.home) {
+            onBackPressed()
+            //setResult(Activity.RESULT_OK)
+            finish()
+
+        } else if (id == R.id.nightMode && showNightModeIcon) {
+
+            nightModeStatus = if (nightModeStatus) {
+                //night mode on
+                //now off night mode
+                turnOffNightMode(this@ColorActivity)
+                setResult(Activity.RESULT_OK)
+                restartActivity()
+                false
+            } else {
+                //night mode false
+                //now on night mode
+                turnOnNightMode(this@ColorActivity)
+                restartActivity()
+                true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        if (showNightModeIcon) {
+            menuInflater.inflate(R.menu.color, menu)
+
+            val nightMode = menu?.findItem(R.id.nightMode)
+
+            if (nightModeStatus) {
+                nightMode?.setIcon(R.drawable.ic_half_moon)
+            } else {
+                nightMode?.setIcon(R.drawable.ic_wb_sunny_black_24dp)
+            }
+        }
+
+        return true
+    }
+
+    private fun restartActivity() {
+        val restartIntent = Intent(this@ColorActivity, ColorActivity::class.java)
         setResult(Activity.RESULT_OK)
+
         finish()
+
         startActivity(restartIntent)
         overridePendingTransition(0, 0)
     }
 
     companion object {
+        private var nightModeStatus = false
+
+        private var showNightModeIcon = true
+
+        /**
+         * Create Intent for launcher class
+         * @param context of the class
+         * @return Intent
+         */
         fun createIntent(context: Context): Intent {
             return Intent(context, ColorActivity::class.java)
         }
+
+
+        /**
+         * Method for turn on night mode
+         * this only change the value of sp
+         * @param context for access sp
+         */
+        private fun turnOnNightMode(context: Context) {
+            val sp = context.getSharedPreferences(ConstantUtil.NIGHT_MODE_SP_KEY, Context.MODE_PRIVATE)
+            val editor = sp.edit()
+            editor.putBoolean(ConstantUtil.NIGHT_MODE_VALUE_KEY, true)
+            editor.apply()
+        }
+
+        /**
+         * Method for turn on night mode
+         * this only change the value of sp
+         * @param context for access sp
+         */
+        private fun turnOffNightMode(context: Context) {
+            val sp = context.getSharedPreferences(ConstantUtil.NIGHT_MODE_SP_KEY, Context.MODE_PRIVATE)
+
+            val editor = sp.edit()
+            editor.putBoolean(ConstantUtil.NIGHT_MODE_VALUE_KEY, false)
+            editor.apply()
+        }
+
     }
 
 }
