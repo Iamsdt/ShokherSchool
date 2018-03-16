@@ -3,10 +3,7 @@ package com.iamsdt.shokherschool.ui.activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.os.Looper
+import android.os.*
 import android.support.design.widget.Snackbar
 import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.NestedScrollView
@@ -84,9 +81,6 @@ class DetailsActivity : BaseActivity() {
         //getting intent data
         postID = intent.getIntExtra(ConstantUtil.intentDetails, 0)
 
-        //get comments
-        getComments()
-
         //initialize web view
         //complete only 11/27/2017 remove later
         //val webView = d_webview
@@ -95,7 +89,11 @@ class DetailsActivity : BaseActivity() {
                                                   request: WebResourceRequest): Boolean {
 
                 //open external link in google chrome
-                Utility.customTab(this@DetailsActivity, request.url.toString())
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Utility.customTab(this@DetailsActivity, request.url.toString())
+                } else {
+                    //Utility.customTab(this@DetailsActivity, request.url.toString())
+                }
                 return true
             }
 
@@ -202,8 +200,11 @@ class DetailsActivity : BaseActivity() {
         })
         fab.setOnClickListener { view ->
             //todo 2/10/2018 add comment option
-            postComment(view)
+            //postComment(view)
         }
+
+        //get comments
+        getComments()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -336,6 +337,10 @@ class DetailsActivity : BaseActivity() {
             }
 
             Handler(Looper.getMainLooper()).post({
+
+                //release thread
+                thread.quitSafely()
+
                 if (set > 0){
                     Snackbar.make(detailsLayout, "Added to Bookmark", Snackbar.LENGTH_LONG)
                             .show()
@@ -348,9 +353,6 @@ class DetailsActivity : BaseActivity() {
                     item.setIcon(R.drawable.ic_bookmark)
                 }
             })
-
-            //release thread
-            thread.quitSafely()
         })
     }
 
@@ -382,11 +384,11 @@ class DetailsActivity : BaseActivity() {
                     .map { it.trim().toInt() }
                     .forEach { categories += categoriesTableDao.getCategoriesName(it) + ", " }
 
-            //release thread
-            thread.quitSafely()
-
             //create new thread with main thread
             Handler(mainLooper).post({
+                //release thread
+                thread.quitSafely()
+
                 val tag = "Categories: $categories  Tags: $tags"
                 Timber.i("New tag $tag")
                 d_tags.text = tag
@@ -403,6 +405,7 @@ class DetailsActivity : BaseActivity() {
         val handler = Handler(thread.looper)
         handler.post({
             val callback = wpRestInterface.getCommentForId(postID)
+            Timber.i("****** link: ${callback.request().url()} **********")
             callback.enqueue(object :retrofit2.Callback<List<CommentResponse>> {
                 override fun onFailure(call: Call<List<CommentResponse>>?, t: Throwable?) {
                     details_comment_form.visibility = View.GONE
@@ -411,14 +414,25 @@ class DetailsActivity : BaseActivity() {
                 override fun onResponse(call: Call<List<CommentResponse>>?, response: Response<List<CommentResponse>>?) {
                     val list:List<CommentResponse> = response?.body() ?: arrayListOf()
 
-                    if (list.isNotEmpty()){
-                        details_comment_form.visibility = View.VISIBLE
-                        val manager = LinearLayoutManager(this@DetailsActivity,
-                                LinearLayoutManager.VERTICAL, false)
+                    val postHandler = Handler(Looper.getMainLooper())
+                    postHandler.post({
 
-                        details_comment_form.layoutManager = manager
-                        details_comment_form.adapter = CommentAdapter(list,picasso)
-                    }
+                        //release thread
+                        thread.quitSafely()
+
+                        if (list.isNotEmpty()) {
+                            details_comment_form.visibility = View.VISIBLE
+
+                            //get comments
+                            val manager = LinearLayoutManager(this@DetailsActivity,
+                                    LinearLayoutManager.VERTICAL, false)
+
+                            details_comment_form.layoutManager = manager
+                            details_comment_form.adapter = CommentAdapter(list, picasso)
+                        }
+                        //release thread
+                        thread.quitSafely()
+                    })
 
                 }
 

@@ -16,10 +16,10 @@ import kotlinx.android.synthetic.main.comment_item.view.*
  * at 5:02 PM
  */
 
-class CommentAdapter(private val commentList: List<CommentResponse>,
-                     val picasso: Picasso) :
+class CommentAdapter(private val commentList: List<CommentResponse>, val picasso: Picasso) :
         RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
+    //private var commentList: List<CommentResponse> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -30,6 +30,13 @@ class CommentAdapter(private val commentList: List<CommentResponse>,
     override fun getItemCount(): Int {
         return commentList.size
     }
+
+//    fun swapList(commentList: List<CommentResponse>){
+//        this.commentList = commentList
+//        if (this.commentList.isNotEmpty()){
+//            notifyDataSetChanged()
+//        }
+//    }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val commentResponse = commentList[position]
