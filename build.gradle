@@ -4,7 +4,7 @@ buildscript {
 
     //all version
     ext.kotlin_version = '1.2.21'
-    ext.support_version = '27.1.0'
+    ext.support_version = '27.0.2'
 
     repositories {
         google()
