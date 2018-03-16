@@ -49,8 +49,8 @@ interface WPRestInterface {
     @GET("tags?&per_page=100")
     fun getTags(): Call<List<TagResponse>>
 
-    @GET("comments?&post={id}")
-    fun getCommentForId(@Path("id") postId:Int) : Call<List<CommentResponse>>
+    @GET("comments?")
+    fun getCommentForId(@Query("post") postId: Int): Call<List<CommentResponse>>
 
     @POST("comments")
     fun createComment(fields: Map<String, Any>): Call<String>
