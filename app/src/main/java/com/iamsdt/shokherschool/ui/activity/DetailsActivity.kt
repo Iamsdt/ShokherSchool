@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.*
 import android.support.design.widget.Snackbar
-import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -260,9 +259,9 @@ class DetailsActivity : BaseActivity() {
             Timber.i("Bookmark status on Menu Create: $bookmarkStatus")
         }
 
-        val shareMenuItem = menu?.findItem(R.id.action_share)
-        sap = MenuItemCompat.getActionProvider(shareMenuItem) as ShareActionProvider
-        sap?.setShareIntent(createShareIntent())
+        //val shareMenuItem = menu?.findItem(R.id.action_share)
+        //sap = MenuItemCompat.getActionProvider(shareMenuItem) as ShareActionProvider
+        //sap?.setShareIntent(createShareIntent())
 
         return true
     }
@@ -305,9 +304,9 @@ class DetailsActivity : BaseActivity() {
             R.id.action_settings -> startActivity(Intent(this@DetailsActivity,
                     SettingsActivity::class.java))
 
-            R.id.action_share -> {
-                //share logic
-            }
+//            R.id.action_share -> {
+//                //share logic
+//            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -422,6 +421,7 @@ class DetailsActivity : BaseActivity() {
 
                         if (list.isNotEmpty()) {
                             details_comment_form.visibility = View.VISIBLE
+                            details_no_comment.visibility = View.GONE
 
                             //get comments
                             val manager = LinearLayoutManager(this@DetailsActivity,

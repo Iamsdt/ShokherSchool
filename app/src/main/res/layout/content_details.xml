@@ -10,7 +10,7 @@
     tools:context="com.iamsdt.shokherschool.ui.activity.DetailsActivity"
     tools:showIn="@layout/activity_details">
 
-    <LinearLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -111,8 +111,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            tools:text="Comments:"
-            android:id="@+id/details_comment_status"/>
+            android:text="Comments:"
+            android:id="@+id/details_comment_status"
+            tools:ignore="HardcodedText" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
@@ -121,6 +122,14 @@
             android:visibility="gone">
         </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="No comment yet. create first one "
+            android:id="@+id/details_no_comment"
+            tools:ignore="HardcodedText" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
 
 </android.support.v4.widget.NestedScrollView>

@@ -3,7 +3,7 @@ package com.iamsdt.shokherschool.data.retrofit.pojo.comment
 import com.google.gson.annotations.SerializedName
 
 data class CommentResponse(@SerializedName("author_name")
-                           val authorName: String = "",
+                           val authorName: String? = "",
                            @SerializedName("date")
                            val date: String = "",
                            @SerializedName("content")

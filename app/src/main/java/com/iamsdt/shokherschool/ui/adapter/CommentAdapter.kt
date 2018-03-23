@@ -23,7 +23,7 @@ class CommentAdapter(private val commentList: List<CommentResponse>, val picasso
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.color_list_item, parent, false)
+                .inflate(R.layout.comment_item, parent, false)
         return CommentViewHolder(view)
     }
 
@@ -46,14 +46,19 @@ class CommentAdapter(private val commentList: List<CommentResponse>, val picasso
     inner class CommentViewHolder(viewItem: View)
         : RecyclerView.ViewHolder(viewItem) {
 
-        private val name: TextView = viewItem.comment_name
-        private val comment: TextView = viewItem.comment_comment
-        private val pic: ImageView = viewItem.comment_pic
+        private val name: TextView? = viewItem.comment_name
+        private val comment: TextView? = viewItem.comment_comment
+        private val pic: ImageView? = viewItem.comment_pic
 
         fun bindTo(commentResponse: CommentResponse) {
-            name.text = commentResponse.authorName
-            comment.text = commentResponse.content.rendered
-            picasso.load(commentResponse.authorAvatarUrls.authorAvatarUrls48).fit().into(pic)
+            name?.text = commentResponse.authorName ?: "Unknown"
+            comment?.text = commentResponse.content.rendered
+
+            if (pic != null) {
+                picasso.load(commentResponse.authorAvatarUrls.authorAvatarUrls48).fit().into(pic)
+            }
+
+
         }
 
     }
