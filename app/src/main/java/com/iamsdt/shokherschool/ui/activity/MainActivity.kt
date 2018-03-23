@@ -249,12 +249,11 @@ class MainActivity : BaseActivity(),
             }
 
             R.id.nav_choseColor -> {
-                startActivityForResult(
-                        ColorActivity.createIntent(this),
-                        themeRequestCode)
+                startActivityForResult(ColorActivity.createIntent(this), themeRequestCode)
             }
 
             R.id.nav_about -> {
+
             }
 
             R.id.nav_copyright -> {

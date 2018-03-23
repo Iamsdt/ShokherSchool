@@ -2,17 +2,14 @@ package com.iamsdt.shokherschool.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import com.iamsdt.shokherschool.BuildConfig
 import com.iamsdt.shokherschool.R
 import com.iamsdt.shokherschool.data.utilities.SpUtils
-import com.iamsdt.shokherschool.data.utilities.ThemeUtils
 import com.iamsdt.shokherschool.data.utilities.Utility
 import com.iamsdt.shokherschool.ui.base.BaseActivity
 import com.iamsdt.shokherschool.ui.services.DataInsertService
 import com.iamsdt.shokherschool.ui.services.PostDataService
 import com.iamsdt.shokherschool.ui.services.UpdateServices
-import kotlinx.android.synthetic.main.activity_splash.*
 import timber.log.Timber
 
 class SplashActivity : BaseActivity() {
@@ -21,9 +18,9 @@ class SplashActivity : BaseActivity() {
 
         super.onCreate(savedInstanceState)
         //set theme
-        ThemeUtils.initialize(this)
+        //ThemeUtils.initialize(this)
         setContentView(R.layout.activity_splash)
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(splashToolbar)
 
         var timer: Long = 1000 //1s
         if (BuildConfig.DEBUG) {
@@ -72,11 +69,6 @@ class SplashActivity : BaseActivity() {
                     finish()
                 }
             }).start()
-        }
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
         }
     }
 
