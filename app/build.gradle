@@ -151,6 +151,6 @@ android {
         implementation 'agency.tango.android:material-intro-screen:0.0.5'
 
         //theme library
-        //implementation "com.github.Iamsdt:ThemeLibrary:2.0"
+        implementation "com.github.Iamsdt:ThemeLibrary:2.0"
     }
 }
