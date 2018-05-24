@@ -1,12 +1,20 @@
 *.iml
 .gradle
 /local.properties
+<<<<<<< HEAD
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
+=======
+/.idea/workspace.xml
+/.idea/libraries
+>>>>>>> 80ebd20fd8ce3b25ddbe56a7efcde92941c06ffd
 .DS_Store
 /build
 /captures
 .externalNativeBuild
+<<<<<<< HEAD
 app/libs/
 /gradle
+=======
+>>>>>>> 80ebd20fd8ce3b25ddbe56a7efcde92941c06ffd

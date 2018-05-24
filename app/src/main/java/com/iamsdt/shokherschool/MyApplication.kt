@@ -2,6 +2,10 @@ package com.iamsdt.shokherschool
 
 import android.app.Application
 import android.content.Context
+<<<<<<< HEAD
+=======
+import android.support.multidex.MultiDex
+>>>>>>> 80ebd20fd8ce3b25ddbe56a7efcde92941c06ffd
 import com.iamsdt.shokherschool.injection.DaggerMyApplicationComponent
 import com.iamsdt.shokherschool.injection.MyApplicationComponent
 import com.iamsdt.shokherschool.injection.module.ContextModule
@@ -44,7 +48,11 @@ class MyApplication : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
+<<<<<<< HEAD
        //MultiDex.install(this)
+=======
+        MultiDex.install(this)
+>>>>>>> 80ebd20fd8ce3b25ddbe56a7efcde92941c06ffd
     }
 
     fun getComponent() = dagger
